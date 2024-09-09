@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E9940FC3-2C16-4DF3-B638-CC88C8EBBACE}</ProjectGuid>
+    <ProjectGuid>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OMS.VM</RootNamespace>
-    <AssemblyName>OMS.VM</AssemblyName>
+    <RootNamespace>OMS.Core</RootNamespace>
+    <AssemblyName>OMS.Core</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
