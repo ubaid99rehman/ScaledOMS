@@ -38,6 +38,10 @@
     <Reference Include="DevExpress.Data.Desktop.v24.1" />
     <Reference Include="DevExpress.Data.v24.1" />
     <Reference Include="DevExpress.Printing.v24.1.Core" />
+    <Reference Include="DevExpress.Xpf.Charts.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\DevExpress 24.1\Components\Bin\Framework\DevExpress.Xpf.Charts.v24.1.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Core.v24.1" />
     <Reference Include="DevExpress.Drawing.v24.1" />
     <Reference Include="DevExpress.Images.v24.1" />
