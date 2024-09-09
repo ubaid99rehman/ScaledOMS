@@ -43,5 +43,14 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dashboard\" />
+    <Folder Include="Main\" />
+    <Folder Include="Market\" />
+    <Folder Include="Orders\" />
+    <Folder Include="Portfolio\" />
+    <Folder Include="Stocks\" />
+    <Folder Include="Trade\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
