@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OMS.Core.Models;
+using OMS.Core.Services.AppServices;
 
 namespace OMS.Core.Services
 {
-    public interface IOrderService
+    public interface IOrderService : IAppService<Order>
     {
     }
 }

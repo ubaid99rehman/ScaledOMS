@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="OMS.Trade.TradeBookView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"             
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="greenBrush" Color="#FF1A9666"/>
+            <SolidColorBrush x:Key="redBrush" Color="#FFDD336B"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <dxg:GridControl ItemsSource="{Binding StockTrades}"
+                      ShowBorder="False"
+                      dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                      dx:DXSerializer.SerializationID="gridTradesID">
+
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="watchListView"
+                            AllowEditing="False"
+                            FadeSelectionOnLostFocus="False"
+                            AllowPerPixelScrolling="True"
+                            ShowGroupPanel="False"
+                            AllowGrouping="False"
+                            AutoWidth="True"
+                            HorizontalAlignment="Right"
+                            UseLayoutRounding="True"
+                            ShowHorizontalLines="False"
+                            ShowVerticalLines="False"
+                            ShowIndicator="False"
+                            NavigationStyle="None">
+                    <dxg:TableView.FormatConditions>
+                        <dxg:FormatCondition Expression="[Type] = OrderType.Buy" FieldName="Price">
+                            <dx:Format Foreground="{StaticResource redBrush}" TextDecorations="{x:Null}"/>
+                        </dxg:FormatCondition>
+                        <dxg:FormatCondition Expression="[Type] = OrderType.Sell" FieldName="Price">
+                            <dx:Format Foreground="{StaticResource greenBrush}" TextDecorations="{x:Null}"/>
+                        </dxg:FormatCondition>
+                    </dxg:TableView.FormatConditions>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+
+            <dxg:GridColumn FieldName="Price" Header="Price">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Quantity" Header="Volume" Width="70">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Timestamp" Header="Time">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="HH:mm:ss"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Type" Visible="False"/>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

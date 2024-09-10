@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OMS.Core.Services.AppServices
 {
-    internal interface IStockMarketService : IMarketService<StockTradingData>
+    internal interface IStockMarketService : IMarketService<StockTradingData>, IRealtimeService
     {
     }
 }

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="OMS.Main.InformationPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Connection Status -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
+            <TextBlock Text="Connection Status: " Foreground="LightGray" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.ConnectionStatus}" Foreground="Yellow"/>
+        </StackPanel>
+
+        <!-- Login Time -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
+            <TextBlock Text="Login Time: " Foreground="LightGray" FontWeight="Bold"/>
+
+            <TextBlock Text="{Binding SessionInfo.LoginTime, StringFormat='MMMM dd, yyyy H:mm:ss'}" Foreground="Yellow"/>
+        </StackPanel>
+
+        <!-- Session Duration -->
+        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
+            <TextBlock Text="Session Duration: " Foreground="LightGray" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.SessionTime}" Foreground="Yellow"/>
+        </StackPanel>
+
+        <!-- Internet Connection Status -->
+        <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
+            <TextBlock Text="Ping: " Foreground="LightGray" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.Ping}" Foreground="Yellow"/>
+        </StackPanel>
+
+    </Grid>
+
+
+</UserControl>

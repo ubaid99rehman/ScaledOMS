@@ -39,13 +39,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\SessionInfoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppServices\" />
     <Folder Include="RealtimeServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
+      <Project>{558a350a-6a96-4f41-96c7-10c8b3f74bfd}</Project>
+      <Name>OMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

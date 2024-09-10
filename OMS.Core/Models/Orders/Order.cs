@@ -8,9 +8,8 @@ namespace OMS.Core.Models
 {
     public class Order : NumericValueFormatter, INotifyPropertyChanged
     {
-        //Constructor
-        public Order(){ _orderID = 0; }
 
+        public Order(){ _orderID = 0; }
         public int? ID { get; set; }
         public int ParentID { get; set; } = 0;
         private int? _orderID;

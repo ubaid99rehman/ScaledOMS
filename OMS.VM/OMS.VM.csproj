@@ -31,6 +31,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Mvvm.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\DevExpress 24.1\Components\Bin\Framework\DevExpress.Xpf.Core.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v24.1.Extensions, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\DevExpress 24.1\Components\Bin\Framework\DevExpress.Xpf.Core.v24.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,18 +52,34 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dashboard\DashboardViewModel.cs" />
+    <Compile Include="Loading\LoadingViewModel.cs" />
+    <Compile Include="Main\InformationPanelViewModel.cs" />
+    <Compile Include="Main\MainViewModel.cs" />
+    <Compile Include="Market\StockMarketModel.cs" />
+    <Compile Include="Orders\AddOrderModel.cs" />
+    <Compile Include="Orders\OrderBookModel.cs" />
+    <Compile Include="Orders\OrderHistoryViewModel.cs" />
+    <Compile Include="Orders\OrderModel.cs" />
+    <Compile Include="Orders\OrdersListModel.cs" />
+    <Compile Include="Portfolio\AccountPortfolioViewModel .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stocks\StockChartModel.cs" />
+    <Compile Include="Stocks\StockDetailViewModel.cs" />
+    <Compile Include="Trade\TradeBookModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dashboard\" />
-    <Folder Include="Main\" />
-    <Folder Include="Market\" />
-    <Folder Include="Orders\" />
-    <Folder Include="Portfolio\" />
-    <Folder Include="Stocks\" />
-    <Folder Include="Trade\" />
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
+      <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>
+      <Name>OMS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
+      <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
+      <Name>OMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
