@@ -5,10 +5,6 @@ using OMS.Core.Services.RealtimeServices;
 using OMS.Core.Services;
 using OMS.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OMS.Services.AppServices;
 
 namespace OMS
@@ -34,13 +30,24 @@ namespace OMS
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<ISessionInfoServce, SessionInfoService>();
+            services.AddSingleton<IAppTimerService, AppTimerService>();
 
             //Views
             services.AddSingleton<MainWindow>();
 
-            //ViewModels
+            //ViewModels//
+            /////////////
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<InformationPanelViewModel>();
+            services.AddSingleton<DashboardViewModel>();
+            
+
+            //Orders
+            services.AddSingleton<AddOrderModel>();
+            services.AddSingleton<OrderBookModel>();
+            services.AddSingleton<OrdersListModel>();
+            services.AddSingleton<OrderHistoryViewModel>();
+            services.AddSingleton<OrderModel>();
             
             return services.BuildServiceProvider();
         }

@@ -2,8 +2,10 @@
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Docking;
+using OMS.Core.Models;
 using OMS.Core.Models.User;
 using OMS.Core.Services;
+using OMS.Core.Services.RealtimeServices;
 using System;
 using System.Windows.Threading;
 
@@ -12,7 +14,12 @@ namespace OMS.ViewModels
     public partial class MainViewModel : ViewModelBase
     {
         [ServiceProperty(Key = "documentManagerService")]
-        public virtual IDocumentManagerService DocumentManagerService { get; }
+        public virtual IDocumentManagerService DocumentManagerService
+        { 
+            get{ return GetService<IDocumentManagerService>(); } 
+        }
+
+        public IAppTimerService AppTimerService { get; }
 
         private AddOrderModel _orderModel;
         public AddOrderModel NewOrderModel
@@ -21,11 +28,11 @@ namespace OMS.ViewModels
             set { SetProperty(ref _orderModel, value, nameof(NewOrderModel)); }
         }
 
-        private readonly Random _random;
-
-        public const int Tick = 500;
-        readonly DispatcherTimer updateTimer;
-        public virtual DateTime CurrentTime { get; protected set; }
+        #region Bindable Props
+        public AppTime CurrentTime 
+        {
+            get { return AppTimerService.GetCurrentDateTime(); }
+        }
 
         private bool _isPopupOpen;
         public bool IsPopupOpen
@@ -53,18 +60,19 @@ namespace OMS.ViewModels
             {
                 SetProperty(ref _isLoadingScreen, value, nameof(IsLoadingScreen));
             }
-        }
+        } 
+        #endregion
 
-        public MainViewModel()
+        #region Constructor
+        public MainViewModel(IAppTimerService timerService)
         {
+            AppTimerService = timerService;
+            AppTimerService.StartSession();
             Title = "OMS";
             IsPopupOpen = false;
-            _random = new Random();
-
             NewOrderModel = new AddOrderModel();
-            updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            InitTimer();
-        }
+        } 
+        #endregion
 
         #region Loading Decorator Methods
         private void Navigating()
@@ -78,69 +86,74 @@ namespace OMS.ViewModels
         }
         #endregion
 
-        #region Views Navigations
-
+        #region Views Navigation Commands
+        [Command]
         public void Dashboard()
         {
             AddView("DashboardView", "Dashboard");
         }
 
+        [Command]
         public void Portfolio()
         {
             AddView("AccountPortfolioView", "Portfolio");
         }
 
+        [Command]
         public void StockMarket()
         {
             AddView("StockMarketView", "Market Watch");
         }
 
+        [Command]
         public void NewOrder()
         {
             ShowAddOrderForm();
         }
 
+        [Command]
         public void ShowAddOrderForm()
         {
             IsPopupOpen = true;
         }
 
+        [Command]
         public void CloseAddOrderForm()
         {
             IsPopupOpen = false;
         }
 
+        [Command]
         public void OpenOrders()
         {
             AddView("NewOrder", "Manage Orders");
         }
 
+        [Command]
         public void ManageOrders()
         {
             AddView("ManageOrderView", "Manage Orders");
         }
 
+        [Command]
         public void OrderHistory()
         {
             AddView("OrderHistoryView", "Orders History");
         }
 
+        [Command]
         public void Profile()
         {
             AddView("ProfileView", "Appearance");
         }
-
+        
+        [Command]
         public void Appearance()
         {
             AddView("AppearanceView", "Appearance");
         }
-        #endregion
-
-        private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
-        {
-            Title = (string)e.NewDocument?.Title ?? "HOME";
-        }
-
+        
+        [Command]
         public void OnViewLoaded()
         {
             if (DocumentManagerService != null)
@@ -153,6 +166,15 @@ namespace OMS.ViewModels
                 throw new InvalidOperationException("DocumentManagerService is not available.");
             }
         }
+        #endregion
+
+        #region Event Handler
+
+        private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
+        {
+            Title = (string)e.NewDocument?.Title ?? "HOME";
+        } 
+        #endregion
 
         public void AddView(string view, string header)
         {
@@ -169,16 +191,5 @@ namespace OMS.ViewModels
             Navigated();
         }
 
-        void UpdateOnTimer(object sender, EventArgs e)
-        {
-            CurrentTime = DateTime.Now;
-        }
-
-        void InitTimer()
-        {
-            updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
-            updateTimer.Tick += new EventHandler(UpdateOnTimer);
-            updateTimer.Start();
-        }
     }
 }

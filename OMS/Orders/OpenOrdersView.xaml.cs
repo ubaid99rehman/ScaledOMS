@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OMS.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,7 @@ namespace OMS.Orders
         public OpenOrdersView()
         {
             InitializeComponent();
+            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<OrdersListModel>();
         }
 
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)

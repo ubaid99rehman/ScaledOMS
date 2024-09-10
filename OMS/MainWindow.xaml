@@ -19,7 +19,6 @@
     xmlns:orderviews="clr-namespace:OMS.Orders"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
-    DataContext="{dxmvvm:ViewModelSource Type={x:Type Model:MainViewModel}}"
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
     Width="1600" Height="900">
@@ -258,7 +257,7 @@
                     <dxmvvm:EventToCommand EventName="Loaded" 
                                            Command="{Binding OnViewLoadedCommand}" />
                     <dxdo:TabbedDocumentUIService Name="documentManagerService" 
-                                          DocumentGroup="{Binding ElementName=documentGroup}" />
+                                                  DocumentGroup="{Binding ElementName=documentGroup}" />
                 </dxmvvm:Interaction.Behaviors>
                 <dxdo:LayoutGroup>
                     <dxdo:DocumentGroup x:Name="documentGroup"/>
@@ -266,7 +265,7 @@
             </dxdo:DockLayoutManager>
 
             <TextBlock Grid.Row="1" Margin="0 0 5 5"
-                       Text="{Binding CurrentTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"
+                       Text="{Binding CurrentTime.CurrentTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Bottom"/>
 

@@ -136,10 +136,6 @@
     <Compile Include="Trade\TradeHistory.xaml.cs">
       <DependentUpon>TradeHistory.xaml</DependentUpon>
     </Compile>
-    <Page Include="Home\Dashbaord.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Home\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,9 +163,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Home\Dashbaord.xaml.cs">
-      <DependentUpon>Dashbaord.xaml</DependentUpon>
     </Compile>
     <Compile Include="Loading\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>

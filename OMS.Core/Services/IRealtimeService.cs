@@ -8,6 +8,7 @@ namespace OMS.Core.Services
 {
     public interface IRealtimeService
     {
+        void StartSession();
         void Refresh(object sender, EventArgs e);
     }
 }
