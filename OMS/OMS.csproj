@@ -279,9 +279,17 @@
       <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
       <Name>OMS.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OMS.DataAccess\OMS.DataAccess.csproj">
+      <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
+      <Name>OMS.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OMS.Services\OMS.Services.csproj">
       <Project>{4A4CC3B2-7326-4BC7-9259-B88CB3C86F94}</Project>
       <Name>OMS.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.SqlData\OMS.SqlData.csproj">
+      <Project>{1218F48F-E103-4D02-97ED-5DC2B81C3CB2}</Project>
+      <Name>OMS.SqlData</Name>
     </ProjectReference>
     <ProjectReference Include="..\OMS.VM\OMS.VM.csproj">
       <Project>{E9940FC3-2C16-4DF3-B638-CC88C8EBBACE}</Project>

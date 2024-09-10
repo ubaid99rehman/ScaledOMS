@@ -10,6 +10,7 @@ namespace OMS.DataAccess.UnitOfWork
     public interface IUnitOfWork : IDisposable
     {
         IOrderRepository Orders { get; }
+        IAccountRepository Accounts { get; }
         void Complete();
     }
 }

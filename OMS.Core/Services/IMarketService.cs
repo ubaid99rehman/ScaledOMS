@@ -5,7 +5,7 @@ namespace OMS.Core.Services
 {
     public interface IMarketService<T>
     {
-        T GetById(string key);
+        T GetById(int key);
         ObservableCollection<T> GetAll();
     }
 }

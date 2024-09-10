@@ -24,7 +24,6 @@ namespace OMS.Services.AppServices
         {
             CurrentTime = new AppTime();
             _random = new Random();
-
             updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
             InitTimer();
         }

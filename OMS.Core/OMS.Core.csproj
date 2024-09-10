@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Xpf.Core.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +46,7 @@
     <Compile Include="Enums\MeasureUnit.cs" />
     <Compile Include="Enums\OrderStatus.cs" />
     <Compile Include="Enums\OrderType.cs" />
+    <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\AppTime.cs" />
     <Compile Include="Models\Books\BookBase.cs" />
     <Compile Include="Models\Books\OrderBook.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Models\User\User.cs" />
     <Compile Include="Models\User\UserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AppServices\IAccountService.cs" />
     <Compile Include="Services\AppServices\IAuthService.cs" />
     <Compile Include="Services\RealtimeServices\IAppTimerService.cs" />
     <Compile Include="Services\RealtimeServices\IStockDataService.cs" />

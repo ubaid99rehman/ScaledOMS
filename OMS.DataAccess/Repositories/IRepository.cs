@@ -1,6 +1,7 @@
 ﻿using OMS.Core.Core.Models.User;
 using OMS.Core.Enums;
 using OMS.Core.Models;
+using OMS.Core.Models.Account;
 using OMS.Core.Models.Stocks;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,12 @@ namespace OMS.DataAccess.Repositories
         void Add(Order order);
         void Update(Order order);
         void Delete(int orderID);
+    }
+
+    public interface IAccountRepository
+    {
+        IEnumerable<Account> GetAll();
+        Account GetById(int orderID);
     }
 
     public interface IOrderTypeRepository

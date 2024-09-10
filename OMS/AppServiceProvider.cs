@@ -6,6 +6,12 @@ using OMS.Core.Services;
 using OMS.ViewModels;
 using System;
 using OMS.Services.AppServices;
+using OMS.Core.Services.AppServices;
+using OMS.DataAccess.UnitOfWork;
+using OMS.SqlData;
+using OMS.DataAccess.Repositories;
+using OMS.SqlData.Repositories;
+using OMS.Orders;
 
 namespace OMS
 {
@@ -27,27 +33,43 @@ namespace OMS
         {
             var services = new ServiceCollection();
             //Services
+            services.AddSingleton<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+
+            //Cache Services
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton<ICacheService, CacheService>();
+            
+            //Realtime App Services
             services.AddSingleton<ISessionInfoServce, SessionInfoService>();
             services.AddSingleton<IAppTimerService, AppTimerService>();
+            
+            //App Services
+            services.AddSingleton<IOrderService, OrderService>();
+            services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IStockDataService, StockDataService>();
 
-            //Views
-            services.AddSingleton<MainWindow>();
+
+            //Market Services
+
 
             //ViewModels//
-            /////////////
-            services.AddSingleton<MainViewModel>();
-            services.AddSingleton<InformationPanelViewModel>();
-            services.AddSingleton<DashboardViewModel>();
-            
-
             //Orders
             services.AddSingleton<AddOrderModel>();
             services.AddSingleton<OrderBookModel>();
             services.AddSingleton<OrdersListModel>();
             services.AddSingleton<OrderHistoryViewModel>();
             services.AddSingleton<OrderModel>();
+
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<InformationPanelViewModel>();
+            services.AddSingleton<DashboardViewModel>();
+            
+
+            //Views
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<OpenOrdersView>();
             
             return services.BuildServiceProvider();
         }
