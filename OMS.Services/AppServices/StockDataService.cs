@@ -46,7 +46,9 @@ namespace OMS.Services.AppServices
 
         public Stock GetStock(string symbol)
         {
-            return GetStocks().Where(s => s.Symbol == symbol).FirstOrDefault();
+            var stocks = GetStocks();
+            Stock stock = stocks.Where(s => s.Symbol == symbol).FirstOrDefault();
+            return stock;
         }
 
         public StockDetail GetStockDetail(string symbol)

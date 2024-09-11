@@ -193,6 +193,18 @@ namespace OMS.ViewModels
         #region Constructors
         public OrderModel(IStockDataService stockDataService, IOrderService orderService, IAccountService accountService)
         {
+
+            _stockDetailsModel = new StockDetailViewModel(StockDataService);
+            SelectedOrder = new Order();
+            SelectedStock = new Stock();
+
+
+            #region Services Initialization
+            StockDataService = stockDataService;
+            AccountService = accountService;
+            OrderService = orderService;
+            #endregion
+            
             #region Initialized Collections
             Accounts = new ObservableCollection<int>();
             Orders = new ObservableCollection<Order>();
@@ -200,17 +212,7 @@ namespace OMS.ViewModels
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
             #endregion
-
-            #region Services Initialization
-            StockDataService = stockDataService;
-            AccountService = accountService;
-            OrderService = orderService;
-
-            #endregion
-            
-            _stockDetailsModel = new StockDetailViewModel(StockDataService);
-            SelectedOrder = new Order();
-            SelectedStock = new Stock();
+          
 
             InitData();
         }
