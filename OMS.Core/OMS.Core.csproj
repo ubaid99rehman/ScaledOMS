@@ -48,10 +48,12 @@
     <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\AppTime.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Books\BookBase.cs" />
     <Compile Include="Models\Books\OrderBook.cs" />
     <Compile Include="Models\Books\TradeBook.cs" />
     <Compile Include="Models\Orders\Order.cs" />
+    <Compile Include="Models\Stocks\IStock.cs" />
     <Compile Include="Models\Stocks\Stock.cs" />
     <Compile Include="Models\Stocks\StockDetail.cs" />
     <Compile Include="Models\Stocks\StockTradingData.cs" />

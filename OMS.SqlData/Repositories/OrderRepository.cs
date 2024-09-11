@@ -1,38 +1,145 @@
 ﻿using OMS.Core.Models;
 using OMS.DataAccess.Repositories;
+using OMS.Helpers;
+using OMS.Core.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace OMS.SqlData.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        public void Add(Order order)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly string _connectionString;
 
-        public void Delete(int orderID)
+        public OrderRepository()
         {
-            throw new NotImplementedException();
+            _connectionString = DbHelper.Connection;
         }
 
         public IEnumerable<Order> GetAll()
         {
-            throw new NotImplementedException();
+            var orders = new List<Order>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT s.StockSymbol,o.* FROM Orders o inner join Stocks s on s.StockID = o.StockID", connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        orders.Add(new Order
+                        {
+                            OrderID = (int)reader["OrderID"],
+                            OrderDate = (DateTime)reader["OrderDate"],
+                            Symbol = reader["StockSymbol"].ToString(),
+                            OrderType = (OrderType)((int)reader["OrderType"]),
+                            Quantity = (int)reader["Quantity"],
+                            Price = (decimal)reader["Price"],
+                            Total = (decimal)reader["Total"],
+                            Status = (OrderStatus)((int)reader["Status"]),
+                            AccountID = (int)reader["AccountID"],
+                            CreatedDate = (DateTime)reader["CreatedDate"]
+                        });
+                    }
+                }
+            }
+            return orders;
         }
 
         public Order GetById(int orderID)
         {
-            throw new NotImplementedException();
+            Order order = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Orders WHERE OrderID = @OrderID", connection);
+                command.Parameters.AddWithValue("@OrderID", orderID);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        order = new Order
+                        {
+                            OrderID = (int)reader["OrderID"],
+                            OrderDate = (DateTime)reader["OrderDate"],
+                            Symbol = reader["StockSymbol"].ToString(),
+                            OrderType = (OrderType)((int)reader["OrderType"]),
+                            Quantity = (int)reader["Quantity"],
+                            Price = (decimal)reader["Price"],
+                            Total = (decimal)reader["Total"],
+                            Status = (OrderStatus)((int)reader["Status"]),
+                            AccountID = (int)reader["AccountID"],
+                            CreatedDate = (DateTime)reader["CreatedDate"]
+                        };
+                    }
+                }
+            }
+            return order;
         }
 
-        public void Update(Order order)
+        public bool Add(Order order)
         {
-            throw new NotImplementedException();
+            bool isAdded = false;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("INSERT INTO Orders (OrderDate, StockID, OrderType, Quantity, Price, Total, Status, AccountID, ExpirationDate, LastUpdatedDate, CreatedDate) VALUES (@OrderDate, @StockID, @OrderType, @Quantity, @Price, @Total, @Status, @AccountID, @ExpirationDate, @LastUpdatedDate, @CreatedDate)", connection);
+                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
+                command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
+                command.Parameters.AddWithValue("@Quantity", order.Quantity);
+                command.Parameters.AddWithValue("@Price", order.Price);
+                command.Parameters.AddWithValue("@Total", order.Total);
+                command.Parameters.AddWithValue("@Status", (int) order.Status);
+                command.Parameters.AddWithValue("@AccountID", order.AccountID);
+                command.Parameters.AddWithValue("@CreatedDate", order.CreatedDate);
+                connection.Open();
+                command.ExecuteNonQuery();
+                isAdded = true;
+            }
+            return isAdded; 
+        }
+
+        public bool Update(Order order)
+        {
+            bool isUpdated = false;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("UPDATE Orders SET OrderDate = @OrderDate, StockID = @StockID, OrderType = @OrderType, Quantity = @Quantity, Price = @Price, Total = @Total, Status = @Status, AccountID = @AccountID, ExpirationDate = @ExpirationDate, LastUpdatedDate = @LastUpdatedDate WHERE OrderID = @OrderID", connection);
+                command.Parameters.AddWithValue("@OrderID", order.OrderID);
+                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
+                command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
+                command.Parameters.AddWithValue("@Quantity", order.Quantity);
+                command.Parameters.AddWithValue("@Price", order.Price);
+                command.Parameters.AddWithValue("@Total", order.Total);
+                command.Parameters.AddWithValue("@Status", (int) order.Status);
+                command.Parameters.AddWithValue("@AccountID", order.AccountID);
+                connection.Open();
+                command.ExecuteNonQuery();
+                isUpdated = true;
+            }
+            return isUpdated;
+        }
+
+        public bool Delete(Order order)
+        {
+            bool isDeleted = false;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("DELETE FROM Orders WHERE OrderID = @OrderID", connection);
+                command.Parameters.AddWithValue("@OrderID", order.ID);
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                if(GetById((int)order.ID) == null)
+                {
+                    isDeleted = true;
+                }
+            }
+            return isDeleted;
         }
     }
 }

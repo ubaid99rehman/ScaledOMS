@@ -9,12 +9,9 @@ namespace OMS.Core.Services.AppServices
 {
     public interface IAppService<T>
     {
-        T GetById(string key);
+        T GetById(int key);
         ObservableCollection<T> GetAll();
         bool Add(T entity);
         bool Update(T entity);
-        bool UpdateById(int id);
-        bool Delete(T entity);
-        bool DeleteById(int id);
     }
 }

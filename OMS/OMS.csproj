@@ -91,12 +91,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppServiceProvider.cs" />
+    <Compile Include="BootStrapper.cs" />
     <Compile Include="Home\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home\StockMarketView.xaml.cs">
       <DependentUpon>StockMarketView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IBootStrapper.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -282,6 +284,10 @@
     <ProjectReference Include="..\OMS.DataAccess\OMS.DataAccess.csproj">
       <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
       <Name>OMS.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.MarketData\OMS.MarketData.csproj">
+      <Project>{E36DD549-8569-476D-A418-618987E3344A}</Project>
+      <Name>OMS.MarketData</Name>
     </ProjectReference>
     <ProjectReference Include="..\OMS.Services\OMS.Services.csproj">
       <Project>{4A4CC3B2-7326-4BC7-9259-B88CB3C86F94}</Project>

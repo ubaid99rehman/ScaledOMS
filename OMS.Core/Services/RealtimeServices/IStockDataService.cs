@@ -2,12 +2,14 @@
 using OMS.Core.Enums;
 using OMS.Core.Models;
 using OMS.Core.Models.Stocks;
+using System;
 using System.Collections.ObjectModel;
 
 namespace OMS.Core.Services.AppServices
 {
     public interface IStockDataService : IRealtimeService
     {
+        event Action DataUpdated;
         Stock GetStock(string symbol);
         ObservableCollection<Stock> GetStocks();
         
@@ -15,17 +17,6 @@ namespace OMS.Core.Services.AppServices
         ObservableCollection<StockDetail> GetStockDetails();
 
         ObservableCollection<string> GetStockSymbols();
-
-        ObservableCollection<StockTradingData> GetStockTradingData(string symbol);
-        ObservableCollectionCore<StockTradingData> GetTradingData(string symbol, MeasureUnit unit = MeasureUnit.Month, int period = 1);
-
-        void LazyLoadStocksTradingData();
-        void LazyLoadStocksDetailData();
-
-        void LoadStocks();
-        void LoadStockSymbols();
-        void LoadInitialStockDetailData();
-        void LoadInitialStocksTradingData();
     }
 
 }

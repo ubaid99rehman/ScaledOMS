@@ -11,7 +11,6 @@ namespace OMS
         {
             CompatibilitySettings.UseLightweightThemes = true;
             ApplicationThemeHelper.Preload(PreloadCategories.Core);
-            
         }
         
         protected override void OnStartup(StartupEventArgs e)

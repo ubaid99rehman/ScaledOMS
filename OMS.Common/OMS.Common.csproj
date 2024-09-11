@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Helper\DateTimeHelper.cs" />
     <Compile Include="Helper\DbHelper.cs" />
-    <Compile Include="Helper\NumericValueFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

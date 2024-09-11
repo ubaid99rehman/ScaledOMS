@@ -15,6 +15,19 @@ namespace OMS.ViewModels
 {
     public class StockChartModel : ViewModelBase
     {
+        private string selectedStockSymbol;
+        public string SelectedStockSymbol
+        {
+            get { return selectedStockSymbol; }
+            set
+            {
+                SetProperty(ref selectedStockSymbol, value, nameof(SelectedStockSymbol));
+            }
+        }
 
+        public StockChartModel()
+        {
+            
+        }
     }
 }

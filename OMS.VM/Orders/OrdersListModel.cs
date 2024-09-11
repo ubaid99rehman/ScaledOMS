@@ -12,12 +12,10 @@ namespace OMS.ViewModels
 {
     public class OrdersListModel : ViewModelBase
     {
-
-
-
         IOrderService OrderService;
         IStockDataService StockDataService;
         IAccountService AccountService;
+        ICacheService CacheService;
 
         private int _quantity;
         public int OrderUpdatedQuantity
@@ -73,6 +71,14 @@ namespace OMS.ViewModels
             set { SetProperty(ref _accounts, value, nameof(AccountsList)); }
         }
 
+        private ObservableCollection<Order> _orders;
+        public ObservableCollection<Order> Orders
+        {
+            get { return OrderService.GetOpenOrders(); }
+            set { SetProperty(ref _orders, value, nameof(Orders)); }
+
+        }
+
         private Order _selectedOrder;
         public Order SelectedOrder
         {
@@ -91,6 +97,24 @@ namespace OMS.ViewModels
                 }
             }
         }
+        
+        public OrdersListModel(IOrderService _orderService, ICacheService cacheService, 
+            IStockDataService _stockDataService, IAccountService _accountService)
+        {
+            CacheService = cacheService;
+            OrderService = _orderService;
+            AccountService = _accountService;
+            StockDataService = _stockDataService;
+
+            _isPopupOpen = false;
+            SelectedOrder = new Order();
+            _orders = new ObservableCollection<Order>();
+            _accounts = new ObservableCollection<int>();
+            //Loads Accounts and Orders List
+            InitData();
+            OrderService.DataUpdated += UpdateData;
+
+        }
 
         private void UpdateCurrentOrder()
         {
@@ -100,33 +124,10 @@ namespace OMS.ViewModels
             StockCurrentPrice = StockDataService.GetStock(SelectedOrder.Symbol).LastPrice;
         }
 
-        private ObservableCollection<Order> _orders;
-        public ObservableCollection<Order> Orders
-        {
-            get { return _orders; }
-            set { SetProperty(ref _orders, value, nameof(Orders)); }
-
-        }
-
-        public OrdersListModel(IOrderService _orderService, IStockDataService _stockDataService, IAccountService _accountService)
-        {
-            OrderService = _orderService;
-            AccountService = _accountService;
-            StockDataService = _stockDataService;
-            SelectedOrder = new Order();
-            _isPopupOpen = false;
-            _accounts = new ObservableCollection<int>();
-            _orders = new ObservableCollection<Order>();
-            //Loads Accounts and Orders List
-            InitData();
-        }
-
         private void InitData()
         {
-            //Accounts List
             AccountsList = AccountService.GetAccountsList();
-            //Orders List
-            Orders = OrderService.GetOpenOrders();
+            UpdateData();
             SelectedOrder = Orders.FirstOrDefault();
         }
 
@@ -163,7 +164,6 @@ namespace OMS.ViewModels
                     if (message.Equals("Updated!"))
                     {
                         isCancelled = true;
-                        UpdateData();
                     }
                 }
             }

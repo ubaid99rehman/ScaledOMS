@@ -1,55 +1,45 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Models;
 using OMS.Core.Models.Account;
+using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
-using OMS.DataAccess.UnitOfWork;
-using OMS.Helpers;
-using System;
-using System.Collections.Generic;
+using OMS.DataAccess.Repositories;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OMS.Services.AppServices
 { 
     public class AccountService : IAccountService
     {
-        private IUnitOfWork unitOfWork;
+        private IAccountRepository accountRepository;
+        private ICacheService CacheService;
 
-        public AccountService(IUnitOfWork _unitOfWork)
+        public AccountService(IAccountRepository _accountRepository, ICacheService cacheService)
         {
-            unitOfWork = _unitOfWork;
+            accountRepository = _accountRepository;
+            CacheService = cacheService;
         }
-
-        private ObservableCollection<Account> accounts;
-        private ObservableCollection<int> AccountsList;
 
         public ObservableCollection<int> GetAccountsList()
         {
-            if(AccountsList == null)
+            if(CacheService.ContainsKey("AccountsList"))
             {
-                foreach (var account in accounts)
-                {
-                    AccountsList.Add((int)account.AccountID);
-                }
+                return CacheService.Get<ObservableCollection<int>>("AccountsList");
             }
-            return AccountsList;
+            return new ObservableCollection<int>( GetAll().Select(s => s.AccountID));
         }
 
         public ObservableCollection<Account> GetAll()
         {
-            if(accounts == null)
+            if (CacheService.ContainsKey("Accounts"))
             {
-                accounts = unitOfWork.Accounts.GetAll().ToObservableCollection<Account>();
-                return accounts;
+                return CacheService.Get<ObservableCollection<Account>>("Accounts");
             }
-            return accounts;
+            return accountRepository.GetAll().ToObservableCollection<Account>();
         }
 
         public Account GetById(int key)
         {
-            return unitOfWork.Accounts.GetById(key);
+            return GetAll().Where(a => a.AccountID == key).FirstOrDefault();
         }
     }
 }

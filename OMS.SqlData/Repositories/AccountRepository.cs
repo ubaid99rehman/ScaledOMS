@@ -1,23 +1,71 @@
 ﻿using OMS.Core.Models.Account;
 using OMS.DataAccess.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OMS.Helpers;
+using System;
+using System.Data.SqlClient;
 
 namespace OMS.SqlData.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        public IEnumerable<Account> GetAll()
+        private readonly string _connectionString;
+
+        public AccountRepository()
         {
-            throw new NotImplementedException();
+            _connectionString = DbHelper.Connection;
         }
 
-        public Account GetById(int orderID)
+        public IEnumerable<Account> GetAll()
         {
-            throw new NotImplementedException();
+            var accounts = new List<Account>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Account", connection);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        accounts.Add(new Account
+                        {
+                            AccountID = (int)reader["AccountID"],
+                            AccountName = (string)reader["AccountName"],
+                            AccountNumber = (string)reader["AccountNumber"],
+                            CreatedDate = (DateTime)reader["CreatedDate"]
+                        });
+                    }
+                }
+            }
+            return accounts;
         }
-    }
+
+        public Account GetById(int id)
+        {
+            Account account = null;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Account WHERE AccountID = @AccountID", connection);
+                command.Parameters.AddWithValue("@AccountID", id);
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        account = new Account
+                        {
+                            AccountID = (int)reader["AccountID"],
+                            AccountName = (string)reader["AccountName"],
+                            AccountNumber = (string)reader["AccountNumber"],
+                            CreatedDate = (DateTime)reader["CreatedDate"]
+                        };
+                    }
+                }
+            }
+            return account;
+        }
+
+       }
 }

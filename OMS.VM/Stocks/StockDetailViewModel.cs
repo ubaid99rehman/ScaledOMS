@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Models;
+using OMS.Core.Services.AppServices;
 using System;
 using System.Windows.Threading;
 
@@ -7,41 +8,41 @@ namespace OMS.ViewModels
 {
     public class StockDetailViewModel : ViewModelBase
     {
-        private readonly DispatcherTimer _updateTimer;
-        private readonly Random _random;
+        IStockDataService StockDataService;
+
+        private string symbol;
+        public string Symbol
+        {
+            get { return symbol; }
+            set
+            {
+                SetProperty(ref symbol, value, nameof(Symbol));
+                UpdateSelectedStockDetails();
+            }
+        }
 
         private StockDetail _selectedStockDetails;
         public StockDetail SelectedStockDetails
         {
-            get => _selectedStockDetails;
+            get => StockDataService.GetStockDetail(symbol);
             set => SetProperty(ref _selectedStockDetails, value, nameof(SelectedStockDetails));
         }
 
-        public StockDetailViewModel()
+        public StockDetailViewModel(IStockDataService stockDataService)
         {
-            _random = new Random();
-            SelectedStockDetails = new StockDetail(0);
-            _updateTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
-            _updateTimer.Tick += new EventHandler(UpdateStockDetails);
-            _updateTimer.Start();
+            SelectedStockDetails = new StockDetail();
+            StockDataService = stockDataService;
+            StockDataService.DataUpdated += OnDataRefreshed;
         }
 
-        private void UpdateStockDetails(object sender, EventArgs e)
+        private void UpdateSelectedStockDetails()
         {
-            decimal randomFactor = (decimal)(_random.NextDouble() * 0.02 - 0.01); // -1% to +1%
+            SelectedStockDetails = StockDataService.GetStockDetail(Symbol);
+        }
 
-            if(string.IsNullOrEmpty(SelectedStockDetails.Symbol) )
-            {
-                SelectedStockDetails.Symbol = "Stock";
-            }
-            SelectedStockDetails.LastPrice = Math.Round(SelectedStockDetails.LastPrice * (1 + randomFactor), 3);
-            SelectedStockDetails.Volume24H = Math.Round(SelectedStockDetails.Volume24H * (1 + randomFactor), 3);
-            SelectedStockDetails.Change24H = randomFactor * 100; // Change in percentage
-            SelectedStockDetails.High24H = Math.Max(SelectedStockDetails.High24H, SelectedStockDetails.LastPrice); // Update high if new price is higher
-            SelectedStockDetails.Low24H = Math.Min(SelectedStockDetails.Low24H, SelectedStockDetails.LastPrice); // Update low if new price is lower
+        public void OnDataRefreshed()
+        {
+            UpdateSelectedStockDetails();
         }
     }
 }

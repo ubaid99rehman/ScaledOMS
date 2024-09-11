@@ -7,11 +7,10 @@ using OMS.ViewModels;
 using System;
 using OMS.Services.AppServices;
 using OMS.Core.Services.AppServices;
-using OMS.DataAccess.UnitOfWork;
-using OMS.SqlData;
 using OMS.DataAccess.Repositories;
 using OMS.SqlData.Repositories;
 using OMS.Orders;
+using OMS.MarketData.Stocks;
 
 namespace OMS
 {
@@ -33,9 +32,10 @@ namespace OMS
         {
             var services = new ServiceCollection();
             //Services
+            services.AddSingleton<IStockRepository, StockRepository>();
+            services.AddSingleton<IStockDetailRepository, StockDetailRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             //Cache Services
             services.AddSingleton<ICacheManager, CacheManager>();
@@ -62,14 +62,20 @@ namespace OMS
             services.AddSingleton<OrderHistoryViewModel>();
             services.AddSingleton<OrderModel>();
 
+            //Main
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<InformationPanelViewModel>();
+            
+            //Home
+            services.AddSingleton<StockMarketModel>();
             services.AddSingleton<DashboardViewModel>();
             
 
             //Views
             services.AddSingleton<MainWindow>();
-            services.AddSingleton<OpenOrdersView>();
+            //services.AddSingleton<OpenOrdersView>();
+
+            services.AddSingleton<IBootStrapper, BootStrapper>();
             
             return services.BuildServiceProvider();
         }

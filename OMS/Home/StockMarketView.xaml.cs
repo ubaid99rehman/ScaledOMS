@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OMS.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,7 @@ namespace OMS.Home
         public StockMarketView()
         {
             InitializeComponent();
+            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<StockMarketModel>();
         }
     }
 }

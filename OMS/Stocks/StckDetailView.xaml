@@ -24,22 +24,22 @@
 
         <StackPanel Grid.Column="1" Orientation="Horizontal">
             <TextBlock  Text="24 Volume: " FontWeight="Bold"/>
-            <TextBlock  Text="{Binding SelectedStockDetails.FormattedVolume24H}" Margin="5,0"/>
+            <TextBlock  Text="{Binding SelectedStockDetails.FormattedVolume}" Margin="5,0"/>
         </StackPanel>
 
         <StackPanel Grid.Column="2" Orientation="Horizontal">
             <TextBlock  Text="24h Change: " FontWeight="Bold" Margin="10,0,0,0"/>
-            <TextBlock  Text="{Binding SelectedStockDetails.Change24H, StringFormat={}{0}%}"  Margin="5,0"/>
+            <TextBlock  Text="{Binding SelectedStockDetails.FormattedChange, StringFormat={}{0}%}"  Margin="5,0"/>
         </StackPanel>
 
         <StackPanel Grid.Column="3" Orientation="Horizontal">
             <TextBlock  Text="24h Low: " FontWeight="Bold" Margin="0,0,0,0"/>
-            <TextBlock  Text="{Binding SelectedStockDetails.FormattedLow24H}" Margin="5,0"/>
+            <TextBlock  Text="{Binding SelectedStockDetails.FormattedLow}" Margin="5,0"/>
         </StackPanel>
 
         <StackPanel Grid.Column="4" Orientation="Horizontal">
             <TextBlock  Text="24h High: " FontWeight="Bold" Margin="10,0,0,0"/>
-            <TextBlock  Text="{Binding SelectedStockDetails.FormattedHigh24H}" Margin="5,0"/>
+            <TextBlock  Text="{Binding SelectedStockDetails.FormattedHigh}" Margin="5,0"/>
         </StackPanel>
     </Grid>
 </UserControl>

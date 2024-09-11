@@ -1,17 +1,37 @@
 ﻿using OMS.Core.Core.Models.User;
-using OMS.Core.Enums;
 using OMS.Core.Models;
 using OMS.Core.Models.Account;
-using OMS.Core.Models.Stocks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OMS.DataAccess.Repositories
 {
-    public interface IRepository<T> where T : class
+    //Market Services
+    public interface IMarketRepository<T> where T: class
+    {
+        IEnumerable<T> GetAll();
+        T GetById(int id);
+    }
+
+    public interface IStockRepository : IMarketRepository<Stock>
+    {
+        IEnumerable<string> GetStockSymbols();
+        Stock GetBySymbol(string symbol);
+    }
+
+    public interface IStockDetailRepository : IMarketRepository<StockDetail>
+    {
+        StockDetail GetBySymbol(string symbol);
+    }
+
+    //App Services
+    //Read Only Repo 
+    public interface IAppReadRepository<T> where T : class
+    {
+        IEnumerable<T> GetAll();
+        T GetById(int id);
+    }
+
+    public interface IAppRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
@@ -20,75 +40,19 @@ namespace OMS.DataAccess.Repositories
         bool Update(T entity);
     }
 
-    public interface IStockDetailRepository
+    public interface IOrderRepository : IAppRepository<Order>
     {
-        IEnumerable<StockDetail> GetAll();
-        StockDetail GetById(int id);
-        void Add(StockDetail stockDetail);
-        void Update(StockDetail stockDetail);
-        void Delete(int id);
+
     }
 
-    public interface IStockTradeRepository
+    public interface IAccountRepository : IAppReadRepository<Account>
     {
-        IEnumerable<StockTradingData> GetAll();
-        StockTradingData GetById(int id);
-        void Add(StockTradingData stockTrade);
-        void Update(StockTradingData stockTrade);
-        void Delete(int id);
-    }
 
-    public interface IStockHistoryRepository
-    {
-        IEnumerable<StockTradingData> GetAll();
-        StockTradingData GetById(int id);
-        void Add(StockTradingData stockHistory);
-        void Update(StockTradingData stockHistory);
-        void Delete(int id);
     }
-
-    public interface IOrderRepository
+    
+    public interface IUserRepository : IAppReadRepository<User>
     {
-        IEnumerable<Order> GetAll();
-        Order GetById(int orderID);
-        void Add(Order order);
-        void Update(Order order);
-        void Delete(int orderID);
-    }
-
-    public interface IAccountRepository
-    {
-        IEnumerable<Account> GetAll();
-        Account GetById(int orderID);
-    }
-
-    public interface IOrderTypeRepository
-    {
-        IEnumerable<OrderType> GetAll();
-        OrderType GetById(int id);
-        void Add(OrderType orderType);
-        void Update(OrderType orderType);
-        void Delete(int id);
-    }
-
-    public interface IOrderStatusRepository
-    {
-        IEnumerable<OrderStatus> GetAll();
-        OrderStatus GetById(int id);
-        void Add(OrderStatus orderStatus);
-        void Update(OrderStatus orderStatus);
-        void Delete(int id);
-    }
-
-    public interface IUserRepository
-    {
-        IEnumerable<User> GetAll();
-        User GetById(int id);
-        void Add(User user);
-        void Update(User user);
-        void Delete(int id);
         bool AuthenticateUser(string username, string password, out string message, out int isDisabled, out int userID);
-
     }
 
 }

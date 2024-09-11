@@ -1,15 +1,12 @@
-﻿using OMS.Common.Helpers;
-using OMS.Core.Enums;
+﻿using OMS.Core.Enums;
+using OMS.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OMS.Core.Core.Models.Books
 {
-    public abstract class BookBase : NumericValueFormatter, INotifyPropertyChanged
+    public abstract class BookBase : BaseModel
     {
         #region Props
         private string _symbol;

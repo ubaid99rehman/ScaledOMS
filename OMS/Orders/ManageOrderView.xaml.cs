@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DevExpress.Mvvm.POCO;
+using Microsoft.Extensions.DependencyInjection;
+using OMS.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace OMS.Orders
 {
-    /// <summary>
-    /// Interaction logic for ManageOrderView.xaml
-    /// </summary>
+
     public partial class ManageOrderView : UserControl
     {
         public ManageOrderView()
         {
             InitializeComponent();
+            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<OrderModel>();
         }
 
         private void btnUpdateOrder_Click(object sender, RoutedEventArgs e)

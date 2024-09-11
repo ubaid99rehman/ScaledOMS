@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace OMS.Core.Models
 {
-    public class Order : NumericValueFormatter, INotifyPropertyChanged
+    public class Order : BaseModel
     {
 
         public Order(){ _orderID = 0; }

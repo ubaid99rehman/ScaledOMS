@@ -8,9 +8,9 @@ namespace OMS.Core.Core.Models.User
 {
     public class User
     {
-        int UserID;
-        string UserName;
-        string Email;
+        public int UserID;
+        public string UserName;
+        public string Email;
         bool UserStatus;
 
         public User() { }

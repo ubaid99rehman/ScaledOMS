@@ -7,29 +7,60 @@ using System.Threading.Tasks;
 
 namespace OMS.Core.Models.Account
 {
-    public class Account : INotifyPropertyChanged
+    public class Account : BaseModel
     {
-        public int? _accountID { get; set; }
-        public int? AccountID
+        private int _accountID;
+        private string _accountName;
+        private string _accountNumber;
+        private DateTime _createdDate;
+        
+        public int AccountID
         {
             get => _accountID;
             set
             {
                 if (_accountID != value)
                 {
-                    _accountID = value;
-                    OnPropertyChanged(nameof(AccountID));
+                    SetProperty(ref _accountID, value,nameof(AccountID));
                 }
             }
         }
 
-        #region Event Handler
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        public string AccountName
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get => _accountName;
+            set
+            {
+                if (_accountName != value)
+                {
+                    SetProperty(ref _accountName, value, nameof(AccountName));
+                }
+            }
         }
-        #endregion
+
+        public string AccountNumber
+        {
+            get => _accountNumber;
+            set
+            {
+                if (_accountNumber != value)
+                {
+                    SetProperty(ref _accountNumber, value, nameof(AccountNumber));
+                }
+            }
+        }
+
+        public DateTime CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                if (_createdDate != value)
+                {
+                    SetProperty(ref _createdDate, value, nameof(CreatedDate));
+                }
+            }
+        }
+
     }
 }

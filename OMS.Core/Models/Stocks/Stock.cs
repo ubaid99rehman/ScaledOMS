@@ -1,10 +1,11 @@
 ﻿using OMS.Common.Helpers;
+using OMS.Core.Models.Stocks;
 using System;
 using System.ComponentModel;
 
 namespace OMS.Core.Models
 {
-    public class Stock : NumericValueFormatter,INotifyPropertyChanged
+    public class Stock : BaseModel, IStock
     {
         private int _id;
         private string _symbol;
@@ -14,60 +15,26 @@ namespace OMS.Core.Models
         public int ID
         {
             get => _id;
-            set => _id = value;
+            set => SetProperty(ref _id, value);
         }
 
         public string Symbol
         {
             get => _symbol;
-            set
-            {
-                if (_symbol != value)
-                {
-                    _symbol = value;
-                    OnPropertyChanged(nameof(Symbol));
-                }
-            }
+            set => SetProperty(ref _symbol, value);
         }
 
         public string Name
         {
             get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
+            set => SetProperty(ref _name, value);
         }
 
         public decimal LastPrice
         {
             get => _lastPrice;
-            set
-            {
-                if (_lastPrice != value)
-                {
-                    _lastPrice = Math.Round(value, 3);
-                    OnPropertyChanged(nameof(LastPrice));
-                }
-            }
+            set => SetProperty(ref _lastPrice, Math.Round(value, 3));
         }
-
-        #region Event Handler
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-        #region Numeric Formatters
-        public string GetFormattedPrice() => FormatNumber(_lastPrice);
-        #endregion
-
     }
+
 }

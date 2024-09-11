@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMS.Core.Enums
+namespace MarketData
 {
-    public enum OrderType
+    public class Class1
     {
-        Buy = 1,
-        Sell = 2
     }
 }
