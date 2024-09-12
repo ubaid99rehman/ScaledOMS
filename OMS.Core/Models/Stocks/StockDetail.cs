@@ -1,11 +1,6 @@
-﻿using OMS.Common.Helpers;
-using OMS.Core.Models.Stocks;
+﻿using OMS.Core.Models.Stocks;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OMS.Core.Models
 {

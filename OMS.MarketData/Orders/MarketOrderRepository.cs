@@ -27,11 +27,11 @@ namespace OMS.MarketData.Stocks
             tradesDictionary = new Dictionary<string, List<OrderBook>>();
             Stocks = new List<Stock>();
             StockSymbols = new List<string>();
+            FetchStockData();
         }
 
         public IEnumerable<OrderBook> GetAll(string symbol)
         {
-            FetchStockData();
             if (!tradesDictionary.ContainsKey(symbol))
             {
                 AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
@@ -41,7 +41,6 @@ namespace OMS.MarketData.Stocks
 
         public IEnumerable<OrderBook> GetAll()
         {
-            FetchStockData();
             foreach (var symbol in StockSymbols)
             {
                 if (!tradesDictionary.ContainsKey(symbol))
@@ -54,7 +53,6 @@ namespace OMS.MarketData.Stocks
 
         public OrderBook GetById(int id)
         {
-            FetchStockData();
             Stock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
             if (!tradesDictionary.ContainsKey(stock.Symbol))
             {

@@ -47,6 +47,10 @@
     <Compile Include="Repositories\MarketRepositories\IMarketRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
+      <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>
+      <Name>OMS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
       <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
       <Name>OMS.Core</Name>

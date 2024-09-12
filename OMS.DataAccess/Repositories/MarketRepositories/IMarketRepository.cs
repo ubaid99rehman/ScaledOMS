@@ -1,6 +1,9 @@
 ﻿using OMS.Core.Models.Stocks;
 using OMS.Core.Models;
 using System.Collections.Generic;
+using OMS.Common.Enums;
+using System.Threading.Tasks;
+using System;
 
 namespace OMS.DataAccess.Repositories.MarketRepositories
 {
@@ -24,7 +27,7 @@ namespace OMS.DataAccess.Repositories.MarketRepositories
 
     public interface IStockTradeDataRepository : IMarketRepository<StockTradingData>
     {
-        IEnumerable<StockTradingData> GetAll(string symbol);
+        Task<IEnumerable<StockTradingData>> GetTradingData(string symbol, TimePeriod period, int time, TimeInterval interval );
     }
 
     public interface IMarketOrderRepository : IMarketRepository<OrderBook>

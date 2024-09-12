@@ -46,7 +46,7 @@
     <Compile Include="Trade\MarketTradeRepository.cs" />
     <Compile Include="Stocks\StockDetailRepository.cs" />
     <Compile Include="Stocks\StockRepository.cs" />
-    <Compile Include="Stocks\StockTradeDataService.cs" />
+    <Compile Include="Stocks\StockTradeDataRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -10,11 +10,10 @@ namespace OMS.MarketData.Stocks
     public class StockDetailRepository : IStockDetailRepository
     {
         #region Constants
-        const int volumeMinLow = 30000000;
-        const int volumeMaxLow = 60000000;
-        const int volumeMinHigh = 1000000000;
-        const int volumeMaxHigh = 2000000000;
+        const long volumeLow =  1000000000;
+        const long volumeHigh = 1000000000000;
         #endregion
+
         private readonly string _connectionString;
         IStockRepository StockRepository;
 
@@ -70,7 +69,7 @@ namespace OMS.MarketData.Stocks
             stockDetail.Name = stock.Name;
             stockDetail.Symbol = stock.Symbol;
             stockDetail.LastPrice = price * (1 - Math.Abs((decimal)_random.NextDouble() * 0.02m)); ;
-            stockDetail.Volume24H = (decimal)(_random.NextDouble() * (double)(volumeMaxHigh - volumeMinLow) + (double)volumeMinLow);
+            stockDetail.Volume24H = (decimal)(_random.NextDouble() * (double)(volumeHigh - volumeLow) + (double)volumeLow);
             stockDetail.Change24H = Math.Round((decimal)(_random.NextDouble() * 4 - 2), 2); // Random change between -2% and +2%
             stockDetail.High24H = price * (1 + Math.Abs((decimal)_random.NextDouble() * 0.02m)); // Up to +2% of LastPrice
             stockDetail.Low24H = price * (1 - Math.Abs((decimal)_random.NextDouble() * 0.02m));  // Down to -2% of LastPrice

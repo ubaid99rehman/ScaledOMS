@@ -1,9 +1,4 @@
-﻿using OMS.Common.Helpers;
-using OMS.Core.Core.Models.Books;
-using OMS.Core.Enums;
-using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using OMS.Core.Core.Models.Books;
 
 namespace OMS.Core.Models
 {

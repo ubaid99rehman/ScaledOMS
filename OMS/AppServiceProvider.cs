@@ -12,6 +12,7 @@ using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.DataAccess.Repositories.AppRepositories;
+using OMS.Services.MarketServices.RealtimeServices;
 
 namespace OMS
 {
@@ -32,24 +33,39 @@ namespace OMS
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            //Services
-            services.AddSingleton<IStockRepository, StockRepository>();
-            services.AddSingleton<IStockDetailRepository, StockDetailRepository>();
+
+            #region Repositories
+            //App Services
+            services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
 
-            //Cache Services
+            //Market Servces
+            services.AddSingleton<IStockRepository, StockRepository>();
+            services.AddSingleton<IStockDetailRepository, StockDetailRepository>();
+            services.AddSingleton<IStockTradeDataRepository, StockTradeDataRepository>();
+            services.AddSingleton<IMarketOrderRepository, MarketOrderRepository>();
+            services.AddSingleton<IMarketTradeRepository, MarketTradeRepository>();
+            #endregion
+
+            #region Cache 
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton<ICacheService, CacheService>();
-            
-            //Realtime App Services
+            #endregion
+
+            #region Services
+            //App Services
             services.AddSingleton<ISessionInfoServce, SessionInfoService>();
             services.AddSingleton<IAppTimerService, AppTimerService>();
-            
-            //App Services
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IAccountService, AccountService>();
+            
+            //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
+            services.AddSingleton<IMarketTradeService, MarketTradeService>();
+            services.AddSingleton<IMarketOrderService, MarketOrderService>();
+            
+            #endregion
 
 
             //Market Services

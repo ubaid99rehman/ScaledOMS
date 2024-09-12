@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\TimeInterval.cs" />
+    <Compile Include="Enums\TimePeriod.cs" />
     <Compile Include="Helper\DateTimeHelper.cs" />
     <Compile Include="Helper\DbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

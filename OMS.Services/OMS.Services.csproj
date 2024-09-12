@@ -45,15 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\AccountService.cs" />
-    <Compile Include="AppServices\AppTimerService.cs" />
+    <Compile Include="AppServices\RealtimeServices\AppTimerService.cs" />
     <Compile Include="AppServices\OrderService.cs" />
-    <Compile Include="AppServices\SessionInfoService.cs" />
-    <Compile Include="AppServices\StockDataService.cs" />
+    <Compile Include="AppServices\RealtimeServices\SessionInfoService.cs" />
+    <Compile Include="AppServices\UserService.cs" />
+    <Compile Include="MarketServices\RealtimeServices\MarketOrderService.cs" />
+    <Compile Include="MarketServices\RealtimeServices\MarketTradeService.cs" />
+    <Compile Include="MarketServices\RealtimeServices\StockDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RealtimeServices\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
       <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>

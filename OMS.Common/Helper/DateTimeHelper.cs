@@ -1,58 +1,40 @@
-﻿using DevExpress.Xpf.Charts;
+﻿using OMS.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMS.Common.Helpers
+namespace OMS.Common.Helper
 {
     public static class DateTimeHelper
     {
-        public static TimeSpan ConvertInterval(ChartIntervalItem interval, int intervalsCount)
+        public static DateTime GetStartTime(TimePeriod period, int multiplier)
         {
-            return GetInterval(interval.MeasureUnit, interval.MeasureUnitMultiplier * intervalsCount);
+            switch (period)
+            {
+                case TimePeriod.Minutes: return DateTime.Now.AddMinutes(multiplier);   
+                case TimePeriod.Hours: return DateTime.Now.AddHours(multiplier);       
+                case TimePeriod.Days: return DateTime.Now.AddDays(multiplier);         
+                case TimePeriod.Month: return DateTime.Now.AddMonths(multiplier);      
+                case TimePeriod.Years: return DateTime.Now.AddYears(multiplier);       
+                case TimePeriod.Max: return new DateTime(2000, 1, 1);           
+                default: return DateTime.Now;
+            }
         }
 
-        public static DateTime GetInitialDate(ChartIntervalItem interval)
+        public static TimeSpan GetTimeSpanForInterval(TimeInterval interval)
         {
-            DateTime now = DateTime.Now;
-            switch (interval.MeasureUnit)
+            switch (interval)
             {
-                case DateTimeMeasureUnit.Second:
-                    DateTime roundSeconds = now.AddMilliseconds(-now.Millisecond);
-                    return roundSeconds.AddSeconds(-roundSeconds.Second % interval.MeasureUnitMultiplier);
-                case DateTimeMeasureUnit.Minute:
-                    return now.Date.AddHours(now.Hour).AddMinutes(now.Minute - now.Minute % interval.MeasureUnitMultiplier);
-                case DateTimeMeasureUnit.Hour:
-                    return now.Date.AddHours(now.Hour - now.Hour % interval.MeasureUnitMultiplier);
-                case DateTimeMeasureUnit.Day:
-                    return now.Date;
-                case DateTimeMeasureUnit.Week:
-                    return now.Date.AddDays(-(7 + (now.DayOfWeek - DayOfWeek.Monday)) % 7);
-                case DateTimeMeasureUnit.Month:
-                    return new DateTime(now.Year, now.Month, 1);
+                case TimeInterval.Minute: return TimeSpan.FromMinutes(1);
+                case TimeInterval.Hour: return TimeSpan.FromHours(1);
+                case TimeInterval.Day: return TimeSpan.FromDays(1);
+                case TimeInterval.Month: return TimeSpan.FromDays(30); 
+                case TimeInterval.Year: return TimeSpan.FromDays(365); 
+                default: return TimeSpan.FromMinutes(1);
             }
-            return DateTime.Now;
         }
-        public static TimeSpan GetInterval(DateTimeMeasureUnit measureUnit, int multiplier)
-        {
-            switch (measureUnit)
-            {
-                case DateTimeMeasureUnit.Second:
-                    return TimeSpan.FromSeconds(multiplier);
-                case DateTimeMeasureUnit.Minute:
-                    return TimeSpan.FromMinutes(multiplier);
-                case DateTimeMeasureUnit.Hour:
-                    return TimeSpan.FromHours(multiplier);
-                case DateTimeMeasureUnit.Day:
-                    return TimeSpan.FromDays(multiplier);
-                case DateTimeMeasureUnit.Week:
-                    return TimeSpan.FromDays(multiplier * 7);
-                case DateTimeMeasureUnit.Month:
-                    return TimeSpan.FromDays(multiplier * 30);
-            }
-            return TimeSpan.Zero;
-        }
+
     }
 }

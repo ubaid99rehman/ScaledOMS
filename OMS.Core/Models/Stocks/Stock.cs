@@ -1,7 +1,5 @@
-﻿using OMS.Common.Helpers;
-using OMS.Core.Models.Stocks;
+﻿using OMS.Core.Models.Stocks;
 using System;
-using System.ComponentModel;
 
 namespace OMS.Core.Models
 {

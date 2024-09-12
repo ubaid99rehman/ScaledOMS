@@ -23,8 +23,6 @@ namespace OMS.Services.AppServices
 
         public event Action DataUpdated;
 
-        //private string filePath = "C:\\XML\\Orders.xml";
-
         public OrderService(IOrderRepository accountRepository, 
             ICacheService cacheService)
         {
