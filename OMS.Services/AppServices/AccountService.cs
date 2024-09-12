@@ -1,8 +1,8 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Core.Models.Account;
-using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
-using OMS.DataAccess.Repositories;
+using OMS.Core.Services.Cache;
+using OMS.DataAccess.Repositories.AppRepositories;
 using System.Collections.ObjectModel;
 using System.Linq;
 

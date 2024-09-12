@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OMS.Cache;
 using OMS.Core.Services.Cache;
-using OMS.Core.Services.RealtimeServices;
-using OMS.Core.Services;
 using OMS.ViewModels;
 using System;
 using OMS.Services.AppServices;
 using OMS.Core.Services.AppServices;
 using OMS.DataAccess.Repositories;
 using OMS.SqlData.Repositories;
-using OMS.Orders;
 using OMS.MarketData.Stocks;
+using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.Core.Services.AppServices.RealtimeServices;
+using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.DataAccess.Repositories.AppRepositories;
 
 namespace OMS
 {

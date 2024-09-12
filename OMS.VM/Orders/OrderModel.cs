@@ -2,8 +2,8 @@
 using DevExpress.Mvvm.Native;
 using OMS.Core.Enums;
 using OMS.Core.Models;
-using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -194,7 +194,7 @@ namespace OMS.ViewModels
         public OrderModel(IStockDataService stockDataService, IOrderService orderService, IAccountService accountService)
         {
 
-            _stockDetailsModel = new StockDetailViewModel(StockDataService);
+            _stockDetailsModel = new StockDetailViewModel(stockDataService);
             SelectedOrder = new Order();
             SelectedStock = new Stock();
 

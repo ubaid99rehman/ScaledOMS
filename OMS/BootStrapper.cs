@@ -1,6 +1,7 @@
-﻿using OMS.Core.Services;
+﻿using OMS.Core.Core.Models.User;
 using OMS.Core.Services.AppServices;
-using System;
+using OMS.Core.Services.Cache;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 
 namespace OMS
 {
@@ -25,6 +26,7 @@ namespace OMS
         {
             _cacheService.Set("accounts", _accountService.GetAll());
             _cacheService.Set("accountsList", _accountService.GetAccountsList());
+            _cacheService.Set("CurrentUser", new User{UserID =1 });
         }
     }
 }

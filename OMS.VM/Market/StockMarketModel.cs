@@ -1,8 +1,5 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Core.Models;
-using OMS.Core.Models.Stocks;
-using OMS.Core.Services;
-using OMS.Core.Services.AppServices;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 using System.Collections.ObjectModel;
 using System.Linq;
 

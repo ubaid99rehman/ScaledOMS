@@ -3,7 +3,7 @@ using OMS.Core.Services.AppServices;
 using System;
 using System.Collections.ObjectModel;
 
-namespace OMS.Core.Services
+namespace OMS.Core.Services.AppServices
 {
     public interface IOrderService : IAppService<Order>
     {

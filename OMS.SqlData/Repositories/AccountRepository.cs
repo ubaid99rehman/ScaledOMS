@@ -1,9 +1,9 @@
 ﻿using OMS.Core.Models.Account;
-using OMS.DataAccess.Repositories;
 using System.Collections.Generic;
 using OMS.Helpers;
 using System;
 using System.Data.SqlClient;
+using OMS.DataAccess.Repositories.AppRepositories;
 
 namespace OMS.SqlData.Repositories
 {

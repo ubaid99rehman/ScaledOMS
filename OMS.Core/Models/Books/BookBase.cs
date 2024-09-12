@@ -94,15 +94,6 @@ namespace OMS.Core.Core.Models.Books
         } 
         #endregion
 
-        #region Event Handler
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
         #region Numeric Formatters
         public string GetFormattedQuantity() => FormatNumber(_quantity);
         public string GetFormattedPrice() => FormatNumber(_price);

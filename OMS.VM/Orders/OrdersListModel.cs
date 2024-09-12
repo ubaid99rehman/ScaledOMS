@@ -1,11 +1,10 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Enums;
 using OMS.Core.Models;
-using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
-using System;
+using OMS.Core.Services.Cache;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace OMS.ViewModels

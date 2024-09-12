@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMS.Core.Services.RealtimeServices
+namespace OMS.Core.Services.AppServices.RealtimeServices
 {
     public interface IAppTimerService : IRealtimeService
     {

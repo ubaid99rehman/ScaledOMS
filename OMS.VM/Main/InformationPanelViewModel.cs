@@ -1,8 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Models.User;
-using OMS.Core.Services.RealtimeServices;
-using System;
-using System.Windows.Threading;
+using OMS.Core.Services.AppServices.RealtimeServices;
 
 namespace OMS.ViewModels
 {

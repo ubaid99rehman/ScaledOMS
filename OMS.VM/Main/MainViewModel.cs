@@ -1,13 +1,8 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
-using DevExpress.Xpf.Core.Native;
-using DevExpress.Xpf.Docking;
 using OMS.Core.Models;
-using OMS.Core.Models.User;
-using OMS.Core.Services;
-using OMS.Core.Services.RealtimeServices;
+using OMS.Core.Services.AppServices.RealtimeServices;
 using System;
-using System.Windows.Threading;
 
 namespace OMS.ViewModels
 {

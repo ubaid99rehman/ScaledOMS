@@ -1,5 +1,5 @@
 ﻿using OMS.Core.Models.User;
-using OMS.Core.Services.RealtimeServices;
+using OMS.Core.Services.AppServices.RealtimeServices;
 using System;
 using System.Windows.Threading;
 

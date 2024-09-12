@@ -1,6 +1,6 @@
 ﻿using OMS.Core.Models;
-using OMS.Core.Models.Stocks;
-using OMS.DataAccess.Repositories;
+using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,20 +13,26 @@ namespace OMS.MarketData.Stocks
         const int volumeMinLow = 30000000;
         const int volumeMaxLow = 60000000;
         const int volumeMinHigh = 1000000000;
-        const int volumeMaxHigh = 2000000000; 
+        const int volumeMaxHigh = 2000000000;
         #endregion
-        
+        private readonly string _connectionString;
+        IStockRepository StockRepository;
+
+        IEnumerable<Stock> _stocks;
         Random _random;
 
-        public StockDetailRepository() 
+        public StockDetailRepository(IStockRepository stockRepository) 
         {
             _random = new Random();
+            _connectionString = DbHelper.Connection;
+            StockRepository = stockRepository;
         }
 
         public IEnumerable<StockDetail> GetAll()
         {
+            FetchStocks();
             List<StockDetail> stockDetails = new List<StockDetail>();
-            foreach(Stock stock in StockSource._stocks)
+            foreach(Stock stock in _stocks)
             {
                 stockDetails.Add(GenerateDetails(stock));
             }
@@ -35,8 +41,21 @@ namespace OMS.MarketData.Stocks
 
         public StockDetail GetById(int id)
         {
-            var stock = StockSource._stocks.Where(s => s.ID == id).FirstOrDefault();
+            FetchStocks();
+            var stock = _stocks.Where(s => s.ID == id).FirstOrDefault();
+
             if(stock != null)
+            {
+                return GenerateDetails(stock);
+            }
+            return null;
+        }
+
+        public StockDetail GetBySymbol(string symbol)
+        {
+            FetchStocks();
+            var stock = _stocks.Where(s => s.Symbol == symbol).FirstOrDefault();
+            if (stock != null)
             {
                 return GenerateDetails(stock);
             }
@@ -58,15 +77,13 @@ namespace OMS.MarketData.Stocks
 
             return stockDetail;
         }
-
-        public StockDetail GetBySymbol(string symbol)
+        
+        private void FetchStocks()
         {
-            var stock = StockSource._stocks.Where(s => s.Symbol == symbol).FirstOrDefault();
-            if (stock != null)
+            if (_stocks == null || _stocks.Count() < 1)
             {
-                return GenerateDetails(stock);
+                _stocks = StockRepository.GetAll();
             }
-            return null;
         }
     }
 }

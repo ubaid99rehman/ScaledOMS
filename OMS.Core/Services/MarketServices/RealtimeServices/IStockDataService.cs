@@ -5,7 +5,7 @@ using OMS.Core.Models.Stocks;
 using System;
 using System.Collections.ObjectModel;
 
-namespace OMS.Core.Services.AppServices
+namespace OMS.Core.Services.MarketServices.RealtimeServices
 {
     public interface IStockDataService : IRealtimeService
     {

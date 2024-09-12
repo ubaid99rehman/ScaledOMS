@@ -1,7 +1,6 @@
 ﻿using OMS.Core.Models;
-using OMS.Core.Services.RealtimeServices;
+using OMS.Core.Services.AppServices.RealtimeServices;
 using System;
-using System.ComponentModel;
 using System.Windows.Threading;
 
 

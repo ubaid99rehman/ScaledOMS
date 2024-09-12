@@ -1,10 +1,10 @@
 ﻿using OMS.Core.Models;
-using OMS.DataAccess.Repositories;
 using OMS.Helpers;
 using OMS.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using OMS.DataAccess.Repositories.AppRepositories;
 
 namespace OMS.SqlData.Repositories
 {
@@ -40,7 +40,8 @@ namespace OMS.SqlData.Repositories
                             Total = (decimal)reader["Total"],
                             Status = (OrderStatus)((int)reader["Status"]),
                             AccountID = (int)reader["AccountID"],
-                            CreatedDate = (DateTime)reader["CreatedDate"]
+                            CreatedDate = (DateTime)reader["CreatedDate"],
+                            AddedBy = (int)reader["AddedBy"]
                         });
                     }
                 }
@@ -72,7 +73,8 @@ namespace OMS.SqlData.Repositories
                             Total = (decimal)reader["Total"],
                             Status = (OrderStatus)((int)reader["Status"]),
                             AccountID = (int)reader["AccountID"],
-                            CreatedDate = (DateTime)reader["CreatedDate"]
+                            CreatedDate = (DateTime)reader["CreatedDate"],
+                            AddedBy = (int)reader["AddedBy"]
                         };
                     }
                 }
@@ -85,7 +87,10 @@ namespace OMS.SqlData.Repositories
             bool isAdded = false;
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("INSERT INTO Orders (OrderDate, StockID, OrderType, Quantity, Price, Total, Status, AccountID, ExpirationDate, LastUpdatedDate, CreatedDate) VALUES (@OrderDate, @StockID, @OrderType, @Quantity, @Price, @Total, @Status, @AccountID, @ExpirationDate, @LastUpdatedDate, @CreatedDate)", connection);
+                var command = new SqlCommand("INSERT INTO Orders (OrderDate, StockID, OrderType, Quantity," +
+                    " Price, Total, Status, AccountID, ExpirationDate, LastUpdatedDate, CreatedDate, AddedBy)" +
+                    " VALUES (@OrderDate, @StockID, @OrderType, @Quantity, @Price, @Total, @Status, @AccountID," +
+                    " @ExpirationDate, @LastUpdatedDate, @CreatedDate, @AddedBy)", connection);
                 command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
                 command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
                 command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
@@ -95,6 +100,7 @@ namespace OMS.SqlData.Repositories
                 command.Parameters.AddWithValue("@Status", (int) order.Status);
                 command.Parameters.AddWithValue("@AccountID", order.AccountID);
                 command.Parameters.AddWithValue("@CreatedDate", order.CreatedDate);
+                command.Parameters.AddWithValue("@AddedBy", order.AddedBy);
                 connection.Open();
                 command.ExecuteNonQuery();
                 isAdded = true;
@@ -107,7 +113,9 @@ namespace OMS.SqlData.Repositories
             bool isUpdated = false;
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("UPDATE Orders SET OrderDate = @OrderDate, StockID = @StockID, OrderType = @OrderType, Quantity = @Quantity, Price = @Price, Total = @Total, Status = @Status, AccountID = @AccountID, ExpirationDate = @ExpirationDate, LastUpdatedDate = @LastUpdatedDate WHERE OrderID = @OrderID", connection);
+                var command = new SqlCommand("UPDATE Orders SET Quantity = @Quantity, Price = @Price, Total = @Total, " +
+                    "Status = @Status, AccountID = @AccountID, ExpirationDate = @ExpirationDate, " +
+                    "LastUpdatedDate = @LastUpdatedDate WHERE OrderID = @OrderID", connection);
                 command.Parameters.AddWithValue("@OrderID", order.OrderID);
                 command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
                 command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
@@ -129,8 +137,9 @@ namespace OMS.SqlData.Repositories
             bool isDeleted = false;
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("DELETE FROM Orders WHERE OrderID = @OrderID", connection);
+                var command = new SqlCommand("UPDATE ORDERS SET STATUS = @OrderStaus WHERE OrderID = @OrderID", connection);
                 command.Parameters.AddWithValue("@OrderID", order.ID);
+                command.Parameters.AddWithValue("@OrderStaus", order.Status);
                 connection.Open();
                 command.ExecuteNonQuery();
 

@@ -1,12 +1,12 @@
 ﻿using OMS.Core.Models;
-using OMS.Core.Services.AppServices;
 using System;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
-using OMS.DataAccess.Repositories;
 using System.Windows.Threading;
-using OMS.Core.Services;
 using System.Linq;
+using OMS.Core.Services.Cache;
+using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.DataAccess.Repositories.MarketRepositories;
 
 namespace OMS.Services.AppServices
 {

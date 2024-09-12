@@ -64,17 +64,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppServices\IAccountService.cs" />
     <Compile Include="Services\AppServices\IAuthService.cs" />
-    <Compile Include="Services\RealtimeServices\IAppTimerService.cs" />
-    <Compile Include="Services\RealtimeServices\IStockDataService.cs" />
-    <Compile Include="Services\RealtimeServices\IStockMarketService.cs" />
+    <Compile Include="Services\AppServices\RealtimeServices\IAppTimerService.cs" />
+    <Compile Include="Services\MarketServices\IMarketOrderService.cs" />
+    <Compile Include="Services\MarketServices\IMarketTradeService.cs" />
+    <Compile Include="Services\MarketServices\RealtimeServices\IStockDataService.cs" />
+    <Compile Include="Services\MarketServices\RealtimeServices\IStockMarketService.cs" />
     <Compile Include="Services\IAppService.cs" />
     <Compile Include="Cache\ICacheManager.cs" />
     <Compile Include="Services\Cache\ICacheService.cs" />
     <Compile Include="Services\IMarketService.cs" />
     <Compile Include="Services\AppServices\IOrderService.cs" />
     <Compile Include="Services\IRealtimeService.cs" />
-    <Compile Include="Services\AppServices\ITradeService.cs" />
-    <Compile Include="Services\RealtimeServices\ISessionInfoServce.cs" />
+    <Compile Include="Services\AppServices\RealtimeServices\ISessionInfoServce.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">

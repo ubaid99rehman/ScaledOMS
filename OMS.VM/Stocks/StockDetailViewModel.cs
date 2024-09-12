@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
 using System.Windows.Threading;
 
