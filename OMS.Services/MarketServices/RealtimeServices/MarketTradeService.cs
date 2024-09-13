@@ -15,7 +15,6 @@ namespace OMS.Services.MarketServices.RealtimeServices
     {
         const int Tick = 2000;
         private readonly string cacheKeyPrefix = "MarketTrades_";
-        bool FetchData = false;
         
         public event Action<string> DataUpdated;
 

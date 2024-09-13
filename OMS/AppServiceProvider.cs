@@ -62,9 +62,9 @@ namespace OMS
             
             //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
+            services.AddSingleton<IStockTradeDataService, StockTradeDataService>();
             services.AddSingleton<IMarketTradeService, MarketTradeService>();
             services.AddSingleton<IMarketOrderService, MarketOrderService>();
-            
             #endregion
 
 

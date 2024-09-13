@@ -1,7 +1,7 @@
 ﻿
 namespace OMS.Common.Enums
 {
-    public enum TimeInterval
+    public enum TradeTimeInterval
     {
         Minute = 0,
         Hour = 1,

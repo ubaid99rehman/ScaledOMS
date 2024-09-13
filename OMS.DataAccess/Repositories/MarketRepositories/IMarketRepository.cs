@@ -27,7 +27,8 @@ namespace OMS.DataAccess.Repositories.MarketRepositories
 
     public interface IStockTradeDataRepository : IMarketRepository<StockTradingData>
     {
-        Task<IEnumerable<StockTradingData>> GetTradingData(string symbol, TimePeriod period, int time, TimeInterval interval );
+        Task<IEnumerable<StockTradingData>> GetTradingData(string symbol, int time, TradeTimeInterval interval );
+        Task<StockTradingData> GetTradeData(string symbol, int time, TradeTimeInterval interval);
     }
 
     public interface IMarketOrderRepository : IMarketRepository<OrderBook>

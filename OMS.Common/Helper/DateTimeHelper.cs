@@ -1,40 +1,61 @@
-﻿using OMS.Common.Enums;
+﻿using DevExpress.Xpf.Charts;
+using OMS.Common.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OMS.Common.Helper
 {
     public static class DateTimeHelper
     {
-        public static DateTime GetStartTime(TimePeriod period, int multiplier)
+        public static DateTime GetStartTime(TradeTimeInterval period, int multiplier)
         {
             switch (period)
             {
-                case TimePeriod.Minutes: return DateTime.Now.AddMinutes(multiplier);   
-                case TimePeriod.Hours: return DateTime.Now.AddHours(multiplier);       
-                case TimePeriod.Days: return DateTime.Now.AddDays(multiplier);         
-                case TimePeriod.Month: return DateTime.Now.AddMonths(multiplier);      
-                case TimePeriod.Years: return DateTime.Now.AddYears(multiplier);       
-                case TimePeriod.Max: return new DateTime(2000, 1, 1);           
+                case TradeTimeInterval.Minute: return DateTime.Now.AddMinutes(-multiplier);   
+                case TradeTimeInterval.Hour: return DateTime.Now.AddHours(-multiplier);       
+                case TradeTimeInterval.Day: return DateTime.Now.AddDays(-multiplier);         
+                case TradeTimeInterval.Month: return DateTime.Now.AddMonths(-multiplier);      
+                case TradeTimeInterval.Year: return DateTime.Now.AddYears(-multiplier);       
                 default: return DateTime.Now;
             }
         }
 
-        public static TimeSpan GetTimeSpanForInterval(TimeInterval interval)
+        public static TimeSpan GetTimeSpanForInterval(TradeTimeInterval interval)
         {
             switch (interval)
             {
-                case TimeInterval.Minute: return TimeSpan.FromMinutes(1);
-                case TimeInterval.Hour: return TimeSpan.FromHours(1);
-                case TimeInterval.Day: return TimeSpan.FromDays(1);
-                case TimeInterval.Month: return TimeSpan.FromDays(30); 
-                case TimeInterval.Year: return TimeSpan.FromDays(365); 
+                case TradeTimeInterval.Minute: return TimeSpan.FromMinutes(1);
+                case TradeTimeInterval.Hour: return TimeSpan.FromHours(1);
+                case TradeTimeInterval.Day: return TimeSpan.FromDays(1);
+                case TradeTimeInterval.Month: return TimeSpan.FromDays(30); 
+                case TradeTimeInterval.Year: return TimeSpan.FromDays(365); 
                 default: return TimeSpan.FromMinutes(1);
             }
         }
 
+        public static TimeSpan ConvertInterval(ChartIntervalItem interval, int intervalsCount)
+        {
+            return GetInterval(interval.MeasureUnit, interval.MeasureUnitMultiplier * intervalsCount);
+        }
+
+        public static TimeSpan GetInterval(DateTimeMeasureUnit measureUnit, int multiplier)
+        {
+            switch (measureUnit)
+            {
+                case DateTimeMeasureUnit.Second:
+                    return TimeSpan.FromSeconds(multiplier);
+                case DateTimeMeasureUnit.Minute:
+                    return TimeSpan.FromMinutes(multiplier);
+                case DateTimeMeasureUnit.Hour:
+                    return TimeSpan.FromHours(multiplier);
+                case DateTimeMeasureUnit.Day:
+                    return TimeSpan.FromDays(multiplier);
+                case DateTimeMeasureUnit.Week:
+                    return TimeSpan.FromDays(multiplier * 7);
+                case DateTimeMeasureUnit.Month:
+                    return TimeSpan.FromDays(multiplier * 30);
+            }
+            return TimeSpan.Zero;
+        }
     }
 }

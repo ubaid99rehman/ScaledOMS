@@ -69,13 +69,14 @@ namespace OMS.ViewModels
 
         public StockMarketModel(IStockDataService stockDataService, 
             IMarketOrderService marketOrderService,
-            IMarketTradeService marketTradeService)
+            IMarketTradeService marketTradeService,
+            IStockTradeDataService stockTradeDataService)
         {
             _stockService = stockDataService;
             _orderBookModel = new OrderBookModel(marketOrderService);
             _tradeBookModel = new TradeBookModel(marketTradeService);
             _stockDetailsModel = new StockDetailViewModel(_stockService);
-            _stockChartViewModel = new StockChartModel();
+            _stockChartViewModel = new StockChartModel(stockTradeDataService);
             InitData();
         }
 

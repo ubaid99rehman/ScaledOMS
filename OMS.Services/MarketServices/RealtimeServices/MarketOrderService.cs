@@ -16,8 +16,6 @@ namespace OMS.Services.MarketServices.RealtimeServices
     {
         const int Tick = 2000;
         private readonly string cacheKeyPrefix = "MarketOrders_";
-        bool FetchData = false;
-
         IMarketOrderRepository marketOrderRepository;
         IStockDataService StockDataService;
         ICacheService CacheService;

@@ -73,16 +73,16 @@
 
         <Grid>
             <dxc:ChartControl x:Name="Chart"
-                              DataSource="{Binding ChartData}"
+                              DataSource="{Binding StockTradingData}"
                               AutoLayout="False"
                               BorderThickness="0"
                               Padding="0">
 
-                <dxmvvm:Interaction.Behaviors>
+                <!--<dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="BoundDataChanged" 
                                            Command="{Binding DataChangedCommand}" 
                                            PassEventArgsToCommand="True"/>
-                </dxmvvm:Interaction.Behaviors>
+                </dxmvvm:Interaction.Behaviors>-->
 
                 <dxc:ChartControl.CrosshairOptions>
                     <dxc:CrosshairOptions ShowOnlyInFocusedPane="False"

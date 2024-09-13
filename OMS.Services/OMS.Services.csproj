@@ -52,6 +52,7 @@
     <Compile Include="MarketServices\RealtimeServices\MarketOrderService.cs" />
     <Compile Include="MarketServices\RealtimeServices\MarketTradeService.cs" />
     <Compile Include="MarketServices\RealtimeServices\StockDataService.cs" />
+    <Compile Include="MarketServices\RealtimeServices\StockTradeDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
