@@ -119,7 +119,7 @@ namespace OMS.Services.AppServices
 
         public bool Add(Order entity)
         {
-            bool result = OrderRepository.Update(entity);
+            bool result = OrderRepository.Add(entity);
             if (result)
             {
                 GetAll();

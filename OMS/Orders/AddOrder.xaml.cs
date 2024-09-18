@@ -1,33 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OMS.Cache;
+using OMS.Core.Services.Cache;
+using OMS.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace OMS.Orders
 {
-    /// <summary>
-    /// Interaction logic for AddOrder.xaml
-    /// </summary>
-    public partial class AddOrder : UserControl
+    public partial class AddOrder : Window
     {
-        public AddOrder()
+        ICacheService CacheService;
+
+        public AddOrder(ICacheService cacheService)
         {
             InitializeComponent();
+            CacheService = cacheService;
+            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AddOrderModel>();
         }
 
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
+            if(this.DataContext is AddOrderModel model)
+            {
+                bool isAdded = model.AddOrder();
+                if(isAdded)
+                {
+                    MessageBox.Show("Order Added Successfully", "Order Added", MessageBoxButton.OK);
+                    CacheService.Set("NewOrderWindowOpen",false);
+                    this.Close();
 
+                }
+                else
+                {
+                    MessageBox.Show("Cannot Add Order.", "Order Failure", MessageBoxButton.OK);
+                }
+            }
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            CacheService.Set("NewOrderWindowOpen", false);
+            this.Close();   
         }
     }
 }

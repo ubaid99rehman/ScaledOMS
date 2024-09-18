@@ -72,7 +72,7 @@ namespace OMS.MarketData.Stocks
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("SELECT * FROM STCKS WHERE StockSymbol = @Symbol", connection);
+                var command = new SqlCommand("SELECT * FROM STOCKS WHERE StockSymbol = @Symbol", connection);
                 command.Parameters.AddWithValue("@Symbol", symbol);
                 connection.Open();
                 using (var reader = command.ExecuteReader())

@@ -5,16 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using OMS.DataAccess.Repositories.AppRepositories;
+using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.DataAccess.Repositories.MarketRepositories;
 
 namespace OMS.SqlData.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
         private readonly string _connectionString;
+        IStockRepository _stockDataService;
 
-        public OrderRepository()
+        public OrderRepository(IStockRepository stockDataService)
         {
             _connectionString = DbHelper.Connection;
+            _stockDataService = stockDataService;
         }
 
         public IEnumerable<Order> GetAll()
@@ -85,6 +89,7 @@ namespace OMS.SqlData.Repositories
 
         public bool Add(Order order)
         {
+            int StockID = _stockDataService.GetBySymbol(order.Symbol).ID;
             bool isAdded = false;
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -92,15 +97,19 @@ namespace OMS.SqlData.Repositories
                     " Price, Total, Status, AccountID, ExpirationDate, LastUpdatedDate, CreatedDate, AddedBy)" +
                     " VALUES (@OrderDate, @StockID, @OrderType, @Quantity, @Price, @Total, @Status, @AccountID," +
                     " @ExpirationDate, @LastUpdatedDate, @CreatedDate, @AddedBy)", connection);
+
+                //command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
                 command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
-                command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
+                command.Parameters.AddWithValue("@StockID", StockID);
                 command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
                 command.Parameters.AddWithValue("@Quantity", order.Quantity);
                 command.Parameters.AddWithValue("@Price", order.Price);
                 command.Parameters.AddWithValue("@Total", order.Total);
                 command.Parameters.AddWithValue("@Status", (int) order.Status);
                 command.Parameters.AddWithValue("@AccountID", order.AccountID);
-                command.Parameters.AddWithValue("@CreatedDate", order.CreatedDate);
+                command.Parameters.AddWithValue("@ExpirationDate", DateTime.Now);
+                command.Parameters.AddWithValue("@LastUpdatedDate", DateTime.Now.AddDays(2));
+                command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
                 command.Parameters.AddWithValue("@AddedBy", order.AddedBy);
                 connection.Open();
                 command.ExecuteNonQuery();

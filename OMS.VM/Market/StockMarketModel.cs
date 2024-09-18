@@ -106,8 +106,7 @@ namespace OMS.ViewModels
             IMarketTradeService marketTradeService,
             IStockTradeDataService stockTradeDataService,
             IOrderService orderService,
-            IAccountService accountService,
-            ICacheService cacheService)
+            IAccountService accountService)
         {
             _stockService = stockDataService;
             _orderBookModel = new OrderBookModel(marketOrderService);
@@ -115,7 +114,7 @@ namespace OMS.ViewModels
             _stockDetailsModel = new StockDetailViewModel(_stockService);
             _stockChartViewModel = new StockChartModel(stockTradeDataService);
             _orderHistoryModel = new OrderHistoryViewModel(orderService);
-            _openOrdersModel = new OrdersListModel(orderService,cacheService,stockDataService,accountService);
+            _openOrdersModel = new OrdersListModel(orderService,stockDataService,accountService);
             _tradeModel = new TradeViewModel();
             InitData();
         }

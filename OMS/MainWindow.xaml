@@ -99,7 +99,7 @@
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
-                                           Command="{Binding NewOrderCommand}" 
+                                           ItemClick="NewOrder_Click"
                                            LargeGlyph="{dx:FontIconSource Glyph=59275}"
                                            Glyph="{dx:FontIconSource Glyph=59275}"  />
                     </dxr:RibbonPageGroup>
@@ -260,7 +260,7 @@
 
                         </StackPanel>
                     </Grid>-->
-                    <orderviews:AddOrder DataContext="{Binding NewOrderModel}"/>
+                    <!--<orderviews:AddOrder DataContext="{Binding NewOrderModel}"/>-->
                 </StackPanel>
             </Border>
         </Popup>

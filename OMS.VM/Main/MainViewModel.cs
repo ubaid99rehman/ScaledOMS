@@ -1,7 +1,9 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using OMS.Core.Models;
+using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
+using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
 
 namespace OMS.ViewModels
@@ -59,13 +61,15 @@ namespace OMS.ViewModels
         #endregion
 
         #region Constructor
-        public MainViewModel(IAppTimerService timerService)
+        public MainViewModel(IAppTimerService timerService, 
+            IOrderService orderService, IAccountService accountService,
+            IStockDataService stockDataService)
         {
             AppTimerService = timerService;
             AppTimerService.StartSession();
             Title = "OMS";
             IsPopupOpen = false;
-            NewOrderModel = new AddOrderModel();
+            NewOrderModel = new AddOrderModel(orderService,stockDataService,accountService);
         } 
         #endregion
 

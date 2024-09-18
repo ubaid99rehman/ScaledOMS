@@ -15,7 +15,6 @@ namespace OMS.ViewModels
         IOrderService OrderService;
         IStockDataService StockDataService;
         IAccountService AccountService;
-        ICacheService CacheService;
 
         private int _quantity;
         public int OrderUpdatedQuantity
@@ -98,10 +97,9 @@ namespace OMS.ViewModels
             }
         }
         
-        public OrdersListModel(IOrderService _orderService, ICacheService cacheService, 
+        public OrdersListModel(IOrderService _orderService,
             IStockDataService _stockDataService, IAccountService _accountService)
         {
-            CacheService = cacheService;
             OrderService = _orderService;
             AccountService = _accountService;
             StockDataService = _stockDataService;
