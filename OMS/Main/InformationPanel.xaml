@@ -18,27 +18,27 @@
 
         <!-- Connection Status -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Connection Status: " Foreground="LightGray" FontWeight="Bold"/>
-            <TextBlock Text="{Binding SessionInfo.ConnectionStatus}" Foreground="Yellow"/>
+            <TextBlock Text="Connection Status: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.ConnectionStatus}" Foreground="Red"/>
         </StackPanel>
 
         <!-- Login Time -->
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Login Time: " Foreground="LightGray" FontWeight="Bold"/>
+            <TextBlock Text="Login Time: " Foreground="Black" FontWeight="Bold"/>
 
-            <TextBlock Text="{Binding SessionInfo.LoginTime, StringFormat='MMMM dd, yyyy H:mm:ss'}" Foreground="Yellow"/>
+            <TextBlock Text="{Binding SessionInfo.LoginTime, StringFormat='MMMM dd, yyyy H:mm:ss'}" Foreground="Red"/>
         </StackPanel>
 
         <!-- Session Duration -->
         <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Session Duration: " Foreground="LightGray" FontWeight="Bold"/>
-            <TextBlock Text="{Binding SessionInfo.SessionTime}" Foreground="Yellow"/>
+            <TextBlock Text="Session Duration: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.SessionTime}" Foreground="Red"/>
         </StackPanel>
 
         <!-- Internet Connection Status -->
         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Ping: " Foreground="LightGray" FontWeight="Bold"/>
-            <TextBlock Text="{Binding SessionInfo.Ping}" Foreground="Yellow"/>
+            <TextBlock Text="Ping: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.Ping}" Foreground="Red"/>
         </StackPanel>
 
     </Grid>

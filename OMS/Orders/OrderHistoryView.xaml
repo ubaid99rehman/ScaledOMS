@@ -22,8 +22,27 @@
             </TextBlock.Effect><Run Text="Orders History"/></TextBlock>
 
         <Grid Grid.Row="1">
+            <dxg:GridControl Name="OrderGrid" AutoExpandAllGroups="True"
+                             ItemsSource="{Binding Orders}">
+                <dxg:GridControl.View>
+                    <dxg:TableView AllowGrouping="False" AutoWidth="True" />
+                </dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="ID" Header="ID" Visible="False" />
+                    <dxg:GridColumn FieldName="Status" Header="Order Status" GroupIndex="0"  />
+                    <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
+                    <dxg:GridColumn FieldName="OrderDate" Header="Order Date" />
+                    <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
+                    <dxg:GridColumn FieldName="OrderType" Header="Order Type" />
+                    <dxg:GridColumn FieldName="AccountID" Header="Account" />
+                    <dxg:GridColumn FieldName="Price" Header="Price" />
+                    <dxg:GridColumn FieldName="Quantity" Header="Quantity" />
+                    <dxg:GridColumn FieldName="Total" Header="Total" />
+                    <dxg:GridColumn FieldName="ExpirationDate" Header="Expiration Date" />
+                    <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated" />
+                
+            </dxg:GridControl>
             <!--Working-->
-            <dxg:TreeListControl ItemsSource="{Binding Orders}">
+            <!--<dxg:TreeListControl ItemsSource="{Binding Orders}">
 
                 <dxg:TreeListControl.View>
                     <dxg:TreeListView KeyFieldName="ID"
@@ -34,7 +53,7 @@
 
                 <dxg:TreeListControl.Columns>
                     <dxg:TreeListColumn FieldName="ID" Header="ID" Visible="False" />
-                    <dxg:TreeListColumn FieldName="Status" Header="Order Status" />
+                    <dxg:TreeListColumn FieldName="Status" Header="Order Status"  />
                     <dxg:TreeListColumn FieldName="OrderID" Header="Order ID" />
                     <dxg:TreeListColumn FieldName="OrderDate" Header="Order Date" />
                     <dxg:TreeListColumn FieldName="Symbol" Header="Symbol" />
@@ -46,7 +65,7 @@
                     <dxg:TreeListColumn FieldName="ExpirationDate" Header="Expiration Date" />
                     <dxg:TreeListColumn FieldName="LasUpdatedDate" Header="Last Updated" />
                 </dxg:TreeListControl.Columns>
-            </dxg:TreeListControl>
+            </dxg:TreeListControl>-->
         </Grid>
 
     </Grid>

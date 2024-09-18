@@ -17,25 +17,43 @@
     </UserControl.Resources>
 
     <Grid>
-        <dxg:GridControl ItemsSource="{Binding StockTrades}"
-                      ShowBorder="False"
-                      dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                      dx:DXSerializer.SerializationID="gridTradesID">
+        <dxg:GridControl Name="dataGrid"
+                         ItemsSource="{Binding StockTrades}"
+                         ShowBorder="False"
+                        dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                        dx:DXSerializer.SerializationID="gridTradesID">
 
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="watchListView"
-                            AllowEditing="False"
-                            FadeSelectionOnLostFocus="False"
-                            AllowPerPixelScrolling="True"
-                            ShowGroupPanel="False"
-                            AllowGrouping="False"
-                            AutoWidth="True"
-                            HorizontalAlignment="Right"
-                            UseLayoutRounding="True"
-                            ShowHorizontalLines="False"
-                            ShowVerticalLines="False"
-                            ShowIndicator="False"
-                            NavigationStyle="None">
+                                AllowEditing="False"
+                                FadeSelectionOnLostFocus="False"
+                                AllowPerPixelScrolling="True"
+                                ShowGroupPanel="False"
+                                AllowGrouping="False"
+                                AutoWidth="True"
+                                HorizontalAlignment="Right"
+                                UseLayoutRounding="True"
+                                ShowHorizontalLines="False"
+                                ShowVerticalLines="False"
+                                ShowIndicator="False"
+                                IsGroupPanelMenuEnabled="False"
+                                IsColumnMenuEnabled ="False"
+                                IsRowCellMenuEnabled ="False"
+                                IsTotalSummaryMenuEnabled="False"
+                                IsGroupFooterMenuEnabled="False"
+                                NavigationStyle="None">
+
+                    <dxg:TableView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Align Left" Click="AlignLeft_Click"/>
+                            <MenuItem Header="Align Right" Click="AlignRight_Click"/>
+                            <MenuItem Header="Align Center" Click="AlignCenter_Click"/>
+                            <Separator />
+                            <MenuItem Header="Align Top" Click="AlignTop_Click"/>
+                            <MenuItem Header="Align Bottom" Click="AlignBottom_Click"/>
+                        </ContextMenu>
+                    </dxg:TableView.ContextMenu>
+
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition Expression="[Type] = OrderType.Buy" FieldName="Price">
                             <dx:Format Foreground="{StaticResource redBrush}" TextDecorations="{x:Null}"/>

@@ -285,6 +285,10 @@
       <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
       <Name>OMS.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OMS.Logging\OMS.Logging.csproj">
+      <Project>{3EB2D030-F27E-4B38-952F-29229F345068}</Project>
+      <Name>OMS.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OMS.MarketData\OMS.MarketData.csproj">
       <Project>{E36DD549-8569-476D-A418-618987E3344A}</Project>
       <Name>OMS.MarketData</Name>
@@ -304,6 +308,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\VS_Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Info_Circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -13,6 +13,7 @@ using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.DataAccess.Repositories.AppRepositories;
 using OMS.Services.MarketServices.RealtimeServices;
+using OMS.VM.Trades;
 
 namespace OMS
 {
@@ -39,6 +40,7 @@ namespace OMS
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
             //Market Servces
             services.AddSingleton<IStockRepository, StockRepository>();
@@ -59,41 +61,43 @@ namespace OMS
             services.AddSingleton<IAppTimerService, AppTimerService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IAuthService, AuthService>();
             
             //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
             services.AddSingleton<IStockTradeDataService, StockTradeDataService>();
             services.AddSingleton<IMarketTradeService, MarketTradeService>();
             services.AddSingleton<IMarketOrderService, MarketOrderService>();
+            services.AddSingleton<IBootStrapper, BootStrapper>();
             #endregion
 
+            #region ViewModels
+            //Loading
+            services.AddSingleton<LoadingViewModel>();
 
-            //Market Services
-
-
-            //ViewModels//
             //Orders
             services.AddSingleton<AddOrderModel>();
-            services.AddSingleton<OrderBookModel>();
+            services.AddTransient<OrderBookModel>();
+            services.AddTransient<OrderModel>();
             services.AddSingleton<OrdersListModel>();
             services.AddSingleton<OrderHistoryViewModel>();
-            services.AddSingleton<OrderModel>();
 
             //Main
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<InformationPanelViewModel>();
-            
+
             //Home
-            services.AddSingleton<StockMarketModel>();
+            services.AddTransient<StockMarketModel>();
             services.AddSingleton<DashboardViewModel>();
-            
+
+            //Trade
+            services.AddSingleton<TradeViewModel>();
 
             //Views
-            services.AddSingleton<MainWindow>();
-            //services.AddSingleton<OpenOrdersView>();
+            services.AddSingleton<MainWindow>(); 
+            services.AddSingleton<LoadingWindow>(); 
+            #endregion
 
-            services.AddSingleton<IBootStrapper, BootStrapper>();
-            
             return services.BuildServiceProvider();
         }
         #endregion

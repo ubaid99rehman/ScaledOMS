@@ -96,7 +96,6 @@
                     BorderBrush="Black"
                     BorderThickness="1"
                     Background="DeepSkyBlue"
-                    Command="{Binding LoginCommand}"
                     Click="Login_Click"/>
         </Grid>
 

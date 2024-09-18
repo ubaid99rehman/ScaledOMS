@@ -12,6 +12,6 @@ namespace OMS.Core.Services.MarketServices.RealtimeServices
 
         StockTradingData GetBySymbol(string symbol);
 
-        ObservableCollection<StockTradingData> GetTradingData(string symbol,int time=180, TradeTimeInterval interval = TradeTimeInterval.Minute);
+        ObservableCollection<StockTradingData> GetTradingData(string symbol, DateTime startTime, int time=180, TradeTimeInterval interval = TradeTimeInterval.Minute);
     }
 }

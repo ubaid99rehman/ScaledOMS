@@ -4,11 +4,11 @@ using DevExpress.Xpf.Charts;
 using OMS.Common.Enums;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
-using OMS.Core.Models.Trade;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace OMS.ViewModels
@@ -35,7 +35,7 @@ namespace OMS.ViewModels
                 {
                     if (SelectedStockSymbol != null)
                     {
-                        LoadIntervalData();
+                        GetTradeData();
                     }
                 }
             }
@@ -83,14 +83,23 @@ namespace OMS.ViewModels
         {
             StockTradingData.Clear();
             TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
-            var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol,180,interval);
-            ChangeChartSourceData(interval, tradeData);
+            if (interval == TradeTimeInterval.Year)
+            {
+                var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 25, interval);
+                ChangeChartSourceData(interval, tradeData);
+            }
+            else
+            {
+                var Data = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 180, interval);
+                ChangeChartSourceData(interval, Data);
+            }
         }
 
+        [Obsolete]
         private void LoadIntervalData()
         {
             TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
-            var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol,180,interval);
+            var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol,DateTime.Now, 180,interval);
             ChangeChartSourceData(interval,tradeData);
         }
 
@@ -144,14 +153,10 @@ namespace OMS.ViewModels
                 {
                     lock (tradesCache) 
                     {
-                        var trades = tradesCache[interval];
                         foreach (var trade in tradingData)
                         {
-                            trades.Add(trade);
+                            tradesCache[interval].Add(trade);
                         }
-
-                        tradesCache[interval].Clear();
-                        tradesCache[interval] = trades;
                     }
                 }
             }
@@ -185,8 +190,29 @@ namespace OMS.ViewModels
             {
                 if ((DateTime)eventArgs.AxisX.ActualVisualRange.ActualMinValue < (DateTime)eventArgs.AxisX.ActualWholeRange.ActualMinValue)
                 {
-                    //StockTradeDataService.AppendHistoricalData(SelectedInterval, StockSymbol, out ObservableCollectionCore<StockTradingData> data);
-                    //ChartData = data;
+                    var tradingData = new ObservableCollection<StockTradingData>();
+                    TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
+                    var lastItem = this.StockTradingData.Where(x => x.RecordedTime == StockTradingData.Min(d => d.RecordedTime)).FirstOrDefault();
+                    if(lastItem != null)
+                    {
+                        if(SelectedInterval.MeasureUnit != DateTimeMeasureUnit.Year)
+                        {
+                            tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, lastItem.RecordedTime, 10, interval );
+                        }
+                    }
+                    else
+                    {
+                        tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, DateTime.Now, 180, interval );
+                    }
+                     
+                    foreach (var trade in tradingData)
+                    {
+                        tradesCache[interval].Add(trade);
+                    }
+                    foreach(var trade in tradingData)
+                    {
+                        StockTradingData.Add(trade);
+                    }
                 }
             }
         }

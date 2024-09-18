@@ -70,6 +70,7 @@
     <Compile Include="Stocks\StockChartModel.cs" />
     <Compile Include="Stocks\StockDetailViewModel.cs" />
     <Compile Include="Trade\TradeBookModel.cs" />
+    <Compile Include="Trade\TradeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
@@ -79,6 +80,10 @@
     <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
       <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
       <Name>OMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Logging\OMS.Logging.csproj">
+      <Project>{3EB2D030-F27E-4B38-952F-29229F345068}</Project>
+      <Name>OMS.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

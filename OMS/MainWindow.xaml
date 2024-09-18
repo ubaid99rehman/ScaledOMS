@@ -23,12 +23,38 @@
     Icon="/Images/VS_Logo.png"
     Width="1600" Height="900">
 
+    <!-- Header Items: Icon with Popup -->
     <dx:ThemedWindow.HeaderItems>
+        <dx:HeaderItemControl>
+            <StackPanel>
+                <!-- Button with an Icon -->
+                <dx:SimpleButton Width="20" Height="20" 
+                                 Background="Transparent"
+                                 Foreground="Black"
+                                 Click="InfoIcon_Click"
+                                 ToolTip="Shows Connection Information"
+                                 Glyph="{dx:FontIconSource ColorName=White, Glyph=59935}"/>
+
+                <!-- Popup Definition -->
+                <Popup x:Name="InfoPopup"
+                       StaysOpen="False"
+                       Placement="Bottom">
+                    <Border BorderThickness="1" Background="White">
+                        <!-- Information Panel Content -->
+                        <Views:InformationPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,20,0" />
+                    </Border>
+                </Popup>
+            </StackPanel>
+        </dx:HeaderItemControl>
+    </dx:ThemedWindow.HeaderItems>
+    <!--<dx:ThemedWindow.HeaderItems>
         <Views:InformationPanel VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Margin="0,0,20,0"
                                 dxi:WindowChrome.IsHitTestVisibleInChrome="False"/>
-    </dx:ThemedWindow.HeaderItems>
+    </dx:ThemedWindow.HeaderItems>-->
 
     <dx:DXDockPanel>
 
@@ -268,6 +294,7 @@
                        Text="{Binding CurrentTime.CurrentTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Bottom"/>
+
 
         </Grid>
 

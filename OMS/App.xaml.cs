@@ -15,7 +15,7 @@ namespace OMS
         
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
             mainWindow.Show();
             base.OnStartup(e);
         }

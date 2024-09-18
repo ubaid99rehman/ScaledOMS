@@ -2,7 +2,6 @@
 using OMS.Common.Enums;
 using System;
 
-
 namespace OMS.Common.Helper
 {
     public static class DateTimeHelper
@@ -17,6 +16,25 @@ namespace OMS.Common.Helper
                 case TradeTimeInterval.Month: return DateTime.Now.AddMonths(-multiplier);      
                 case TradeTimeInterval.Year: return DateTime.Now.AddYears(-multiplier);       
                 default: return DateTime.Now;
+            }
+        }
+
+        public static DateTime GetStartTime(TradeTimeInterval interval, int multiplier, DateTime fromTime)
+        {
+            switch (interval)
+            {
+                case TradeTimeInterval.Minute:
+                    return fromTime.AddMinutes(-multiplier);
+                case TradeTimeInterval.Hour:
+                    return fromTime.AddHours(-multiplier);
+                case TradeTimeInterval.Day:
+                    return fromTime.AddDays(-multiplier);
+                case TradeTimeInterval.Month:
+                    return fromTime.AddMonths(-multiplier);
+                case TradeTimeInterval.Year:
+                    return fromTime.AddYears(-multiplier);
+                default:
+                    throw new ArgumentException("Unsupported interval");
             }
         }
 

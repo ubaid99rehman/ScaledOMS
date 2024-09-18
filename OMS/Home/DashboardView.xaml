@@ -18,7 +18,8 @@
                 <dxdo:LayoutGroup Orientation="Horizontal">
                     <!-- Market Overview Grid -->
                     <dxdo:LayoutPanel Caption="Market Overview" ItemWidth="*">
-                        <dxg:GridControl AutoGenerateColumns="AddNew" Margin="10" ItemsSource="{Binding MarketOverviewData}">
+                        <dxg:GridControl AutoGenerateColumns="AddNew" 
+                                         Margin="10" ItemsSource="{Binding MarketOverviewData}">
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
                                 <dxg:GridColumn FieldName="LastPrice" Header="Last Price" />
@@ -68,7 +69,17 @@
                 <dxdo:LayoutGroup Orientation="Horizontal" ItemHeight="400">
                     <!-- Portfolio Overview Grid -->
                     <dxdo:LayoutPanel Caption="Portfolio Overview" ItemWidth="2*">
-                        <dxg:GridControl AutoGenerateColumns="AddNew" Margin="10" ItemsSource="{Binding PortfolioOverviewData}">
+                        
+                        <dxg:GridControl AutoGenerateColumns="AddNew" Margin="10" 
+                                         ItemsSource="{Binding PortfolioOverviewData}">
+                            
+                            <dxg:GridControl.View>
+                                <dxg:TableView ShowCriteriaInAutoFilterRow="False" 
+                                               ShowIndicator="False" 
+                                               AllowEditing="False" 
+                                               AutoWidth="True"/>
+                            </dxg:GridControl.View>
+                            
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn FieldName="Asset" Header="Asset" />
                                 <dxg:GridColumn FieldName="Quantity" Header="Quantity" />

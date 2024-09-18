@@ -41,6 +41,7 @@ namespace OMS.SqlData.Repositories
                             Status = (OrderStatus)((int)reader["Status"]),
                             AccountID = (int)reader["AccountID"],
                             CreatedDate = (DateTime)reader["CreatedDate"],
+                            LasUpdatedDate = (DateTime)reader["LastUpdatedDate"],
                             AddedBy = (int)reader["AddedBy"]
                         });
                     }
@@ -114,12 +115,8 @@ namespace OMS.SqlData.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("UPDATE Orders SET Quantity = @Quantity, Price = @Price, Total = @Total, " +
-                    "Status = @Status, AccountID = @AccountID, ExpirationDate = @ExpirationDate, " +
-                    "LastUpdatedDate = @LastUpdatedDate WHERE OrderID = @OrderID", connection);
+                    "Status = @Status, AccountID = @AccountID WHERE OrderID = @OrderID", connection);
                 command.Parameters.AddWithValue("@OrderID", order.OrderID);
-                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
-                command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
-                command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
                 command.Parameters.AddWithValue("@Quantity", order.Quantity);
                 command.Parameters.AddWithValue("@Price", order.Price);
                 command.Parameters.AddWithValue("@Total", order.Total);

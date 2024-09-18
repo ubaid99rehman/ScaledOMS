@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Common.Enums;
+using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
@@ -61,36 +62,56 @@ namespace OMS.Services.MarketServices.RealtimeServices
             return StockTradeDataRepository.GetTradeData(symbol, 1, interval).GetAwaiter().GetResult();
         }
 
-        public ObservableCollection<StockTradingData> GetTradingData(string symbol, int time=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
+        public ObservableCollection<StockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
         {
             if(!FetchData)
             {
                 StartSession();
                 FetchData = true;
             }
+
+            if(startTime == null)
+            {
+                startTime = DateTime.Now;
+            }
+            DateTime fromTime = DateTimeHelper.GetStartTime(interval, points, startTime);
+
             string cacheKey = $"{symbol}_{interval}";
+            
             if (CacheService.ContainsKey(cacheKey))
             {
-                var cData = CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey);
-                if(cData.Count < time)
-                {
-                    var moreData = Task.Run(async () => await StockTradeDataRepository.GetTradingData(symbol, time, interval)).Result;
+            var cachedData = CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey);
 
-                    ObservableCollection<StockTradingData> newData = moreData.ToObservableCollection<StockTradingData>();
-                    CacheService.Set(cacheKey, newData);
+                var tradeData = cachedData.Where(trade => trade.RecordedTime >= fromTime && trade.RecordedTime < startTime)
+                    .ToList();
+
+                if (tradeData.Count >= points)
+                {
+                    return tradeData.Take(points).ToObservableCollection<StockTradingData>();
                 }
                 else
-                {
-                    return CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey).
-                        Take(time).ToObservableCollection<StockTradingData>();
+                { 
+
+                    var moreData = Task.Run(async () => await StockTradeDataRepository.GetTradingData(symbol, startTime, points, interval)).Result.ToObservableCollection<StockTradingData>();
+                    
+                    foreach(var trade in moreData)
+                    {
+                        if(!cachedData.Any(x => x.RecordedTime == trade.RecordedTime))
+                        {
+                            cachedData.Add(trade);
+                        }
+                        
+                    }
+                    CacheService.Set(cacheKey, cachedData);
+                    return moreData;
                 }
             }
             
-            var tradeData = Task.Run(async () => await StockTradeDataRepository.GetTradingData(symbol,time, interval)).Result;
-
-            ObservableCollection<StockTradingData> data = tradeData.ToObservableCollection<StockTradingData>();
-            CacheService.Set(cacheKey, data);
-            return data;
+            var resultData = Task.Run(async () => await StockTradeDataRepository
+            .GetTradingData(symbol,startTime, points, interval)).Result.ToObservableCollection<StockTradingData>();
+            
+            CacheService.Set(cacheKey, resultData);
+            return resultData;
         }
 
         public void Refresh(object sender, EventArgs e)

@@ -1,5 +1,9 @@
 ﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.UI.Native;
+using OMS.Core.Services.AppServices;
+using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.VM.Trades;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -14,6 +18,36 @@ namespace OMS.ViewModels
         {
             get { return _stockDetailsModel; }
             set { SetProperty(ref _stockDetailsModel, value, nameof(StockDetailsModel)); }
+        }
+
+        private OrderHistoryViewModel _orderHistoryModel;
+        public OrderHistoryViewModel OrderHistoryModel
+        {
+            get => _orderHistoryModel;
+            set
+            {
+                SetProperty(ref _orderHistoryModel, value, nameof(OrderHistoryModel));
+            }
+        }
+
+        private OrdersListModel _openOrdersModel;
+        public OrdersListModel OpenOrdersModel
+        {
+            get => _openOrdersModel;
+            set
+            {
+                SetProperty(ref _openOrdersModel, value, nameof(OpenOrdersModel));
+            }
+        }
+
+        private TradeViewModel _tradeModel;
+        public TradeViewModel TradeHistoryModel
+        {
+            get => _tradeModel;
+            set
+            {
+                SetProperty(ref _tradeModel, value, nameof(TradeHistoryModel));
+            }
         }
 
         private string _selectedStockSymbol;
@@ -70,13 +104,19 @@ namespace OMS.ViewModels
         public StockMarketModel(IStockDataService stockDataService, 
             IMarketOrderService marketOrderService,
             IMarketTradeService marketTradeService,
-            IStockTradeDataService stockTradeDataService)
+            IStockTradeDataService stockTradeDataService,
+            IOrderService orderService,
+            IAccountService accountService,
+            ICacheService cacheService)
         {
             _stockService = stockDataService;
             _orderBookModel = new OrderBookModel(marketOrderService);
             _tradeBookModel = new TradeBookModel(marketTradeService);
             _stockDetailsModel = new StockDetailViewModel(_stockService);
             _stockChartViewModel = new StockChartModel(stockTradeDataService);
+            _orderHistoryModel = new OrderHistoryViewModel(orderService);
+            _openOrdersModel = new OrdersListModel(orderService,cacheService,stockDataService,accountService);
+            _tradeModel = new TradeViewModel();
             InitData();
         }
 

@@ -1,4 +1,7 @@
 ﻿using DevExpress.Mvvm;
+using OMS.Core.Models.User;
+using OMS.Core.Services.AppServices;
+using OMS.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +12,8 @@ namespace OMS.ViewModels
     public class LoadingViewModel : ViewModelBase
     {
         public event Action AuthenticationCompleted;
+
+        private IAuthService AuthService;
 
         public void AuthenticationComplete()
         {
@@ -85,9 +90,10 @@ namespace OMS.ViewModels
             }
         }
 
-        public LoadingViewModel() 
+        public LoadingViewModel(IAuthService authService) 
         {
             IsAuthenticated = false;
+            AuthService = authService;
         }
 
         public void OnViewLoaded()
@@ -96,14 +102,15 @@ namespace OMS.ViewModels
             NavigationService.Navigate("LoginView", this, null, null, false);
         }
 
-        public void Login() 
+        public async Task<bool> Login() 
         {
+            await Task.Delay(2000);
             if (string.IsNullOrWhiteSpace(Username))
             {
                 AuthMessage = "Username Field Cannot be Empty!";
                 IsAuthenticated = false;
                 AuthenticationComplete();
-                return;
+                return false;
             }
             
             if (string.IsNullOrWhiteSpace(Password))
@@ -111,14 +118,24 @@ namespace OMS.ViewModels
                 AuthMessage = "Password Field Cannot be Empty!";
                 IsAuthenticated = false;
                 AuthenticationComplete();
-                return;
+                return false;
             }
-            Authenticate();
+            return Authenticate();
         }
 
-        public void Authenticate() 
+        public bool Authenticate() 
         {
-           
+            LogHelper.LogInfo("Authenticating User: "+Username);
+            var user = AuthService.Authenticate(new UserCredentials { Username = this.Username, Password = this.Password });
+            if(user != null)
+            {
+                IsAuthenticated=true;
+                AuthMessage = "Authenticated!";
+                LogHelper.LogInfo("Authentication For User: "+Username+" Passed.");
+                return true;
+            }
+            LogHelper.LogInfo("Authentication For User: " + Username + " Failed.");
+            return false;
         }
 
         public async Task LoadServices()

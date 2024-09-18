@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.DataAnnotations;
 using OMS.Core.Enums;
 using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
@@ -130,11 +131,13 @@ namespace OMS.ViewModels
             SelectedOrder = Orders.FirstOrDefault();
         }
 
+        [Command]
         public void ShowEditForm()
         {
             IsPopupOpen = true;
         }
 
+        [Command]
         public void CloseEditForm()
         {
             IsPopupOpen = false;
@@ -163,6 +166,35 @@ namespace OMS.ViewModels
                     if (message.Equals("Updated!"))
                     {
                         isCancelled = true;
+                    }
+                }
+            }
+        }
+
+        public void UpdateOrder(out bool isUpdated, out string message)
+        {
+            isUpdated = false;
+            message = "Cannot Update Order!";
+            if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
+            {
+                if (SelectedOrder.Status == OrderStatus.Cancelled)
+                {
+                    isUpdated = false;
+                    message = "Cannot Update Cancelled Order!";
+                }
+
+                if (SelectedOrder.Status == OrderStatus.Fulfilled)
+                {
+                    isUpdated = false;
+                    message = "Cannot Update Fulfilled Order";
+                }
+                else
+                {
+                    bool result = OrderService.Update(SelectedOrder);
+                    if (result)
+                    {
+                        isUpdated = true;
+                        message = "Order Updated Successfully!";
                     }
                 }
             }
