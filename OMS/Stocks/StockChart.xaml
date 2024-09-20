@@ -13,15 +13,22 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel>
-        <dxb:BarManager DockPanel.Dock="Top" 
-                    Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarManager}}" 
-                    dxc:ChartControlBase.Chart="{Binding ElementName=Chart}">
-            <dxb:BarManager.Bars>
-
-                <dxb:Bar x:Name="ExportGroup" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarPrintAndExportGroup}}">
-                    <dxb:BarSubItem x:Name="ExportItem" 
+        <!--Chart Toolbar Grid-->
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        
+            <dxb:BarManager Grid.Column="0" 
+                            Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarManager}}" 
+                            dxc:ChartControlBase.Chart="{Binding ElementName=Chart}">
+                <dxb:BarManager.Bars>
+                    <dxb:Bar x:Name="ExportGroup"
+                             Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarPrintAndExportGroup}}">
+                        <dxb:BarSubItem x:Name="ExportItem" 
                                     Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportItem}}">
-                        <dxb:BarButtonItem x:Name="ExportToCsvItem" 
+                            <dxb:BarButtonItem x:Name="ExportToCsvItem" 
                                            GlyphSize="Small"
                                            Glyph="{dx:DXImage GrayScaleImages/Export/ExportToCSV_16x16.png}" 
                                            Content="Export To CSV" 
@@ -34,56 +41,71 @@
                                 </dx:SuperTip>
                             </dxb:BarButtonItem.SuperTip>
                         </dxb:BarButtonItem>
-
-                        <dxb:BarButtonItem x:Name="ExportToPdfItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToPdfItem}}"/>
-                        <dxb:BarButtonItem x:Name="ExportToHtmlItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToHtmlItem}}"/>
-                        <dxb:BarSubItem x:Name="ExportToImageItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToImageItem}}">
-                            <dxb:BarButtonItem x:Name="ExportToBmpItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToBmpItem}}"/>
-                            <dxb:BarButtonItem x:Name="ExportToGifItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToGifItem}}"/>
-                            <dxb:BarButtonItem x:Name="ExportToJpegItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToJpegItem}}"/>
-                            <dxb:BarButtonItem x:Name="ExportToPngItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToPngItem}}"/>
-                            <dxb:BarButtonItem x:Name="ExportToTiffItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportToTiffItem}}"/>
+                            <dxb:BarItemSeparator/>
+                            <dxb:BarButtonItem x:Name="ExportToPdfItem" 
+                                           GlyphSize="Small"
+                                           Glyph="{dx:DXImage GrayScaleImages/Export/ExportToPDF_16x16.png}" 
+                                           Content="Export To PDF" 
+                                           ItemClick="ExportToPDF" 
+                                           CloseSubMenuOnClick="True">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Export to PDF"/>
+                                    <dx:SuperTipItem Content="Export Chart to Single Page PDF File." />
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
                         </dxb:BarSubItem>
                         <dxb:BarItemSeparator/>
-                    </dxb:BarSubItem>
+                        <dxb:BarSubItem x:Name="VolumeToggleItem"
+                                        GlyphSize="Small" Glyph="{dx:DXImage SvgImages/Spreadsheet/ChartAxesGroup.svg}">
+                            <dxb:BarSubItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Volume Chart Axis"/>
+                                    <dx:SuperTipItem Content="Change Volume Chart Axis to Millions, Billions." />
+                                </dx:SuperTip>
+                            </dxb:BarSubItem.SuperTip>
+                            <dxb:BarButtonItem x:Name="VolumeToggleMillion" 
+                                               GlyphSize="Small"
+                                               Glyph="{dx:DXImage SvgImages/Spreadsheet/ChartHorizontalAxis_Millions.svg}" 
+                                               Content="Millions" 
+                                               ItemClick="Volume_Toggle_Millions" 
+                                               CloseSubMenuOnClick="True">
+                                <dxb:BarButtonItem.SuperTip>
+                                    <dx:SuperTip>
+                                        <dx:SuperTipHeaderItem Content="Volume Axis (Millions)"/>
+                                        <dx:SuperTipItem Content="Change Volume Axis to Millions" />
+                                    </dx:SuperTip>
+                                </dxb:BarButtonItem.SuperTip>
+                            </dxb:BarButtonItem>
+                            <dxb:BarItemSeparator/>
+                            <dxb:BarButtonItem x:Name="VolumeToggleBillion" 
+                                               GlyphSize="Small"
+                                               Glyph="{dx:DXImage SvgImages/Spreadsheet/ChartHorizontalAxis_Billions.svg}" 
+                                               Content="Billions" 
+                                               ItemClick="Volume_Toggle_Billions" 
+                                               CloseSubMenuOnClick="True">
+                                <dxb:BarButtonItem.SuperTip>
+                                    <dx:SuperTip>
+                                        <dx:SuperTipHeaderItem Content="Volume Axis (Billions)"/>
+                                        <dx:SuperTipItem Content="Change Volume Axis to Billions" />
+                                    </dx:SuperTip>
+                                </dxb:BarButtonItem.SuperTip>
+                            </dxb:BarButtonItem>
+                        </dxb:BarSubItem>
                 </dxb:Bar>
-                <dxb:Bar x:Name="AnnotationGroup" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarTemplatesGroup}}">
-                    <dxb:BarCheckItem x:Name="AddTextAnnotationItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=AddTextAnnotationItem}}"/>
-                    <dxb:BarCheckItem x:Name="AddImageAnnotationItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=AddImageAnnotationItem}}"/>
-                </dxb:Bar>
-                <dxb:Bar x:Name="FinancialIndicatorsGroup" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarFinancialIndicatorsGroup}}">
-                    <dxb:BarCheckItem x:Name="DrawTrendLineIndicator" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=DrawTrendLineIndicatorItem}}"/>
-                    <dxb:BarCheckItem x:Name="DrawFibonacciArcsIndicatorItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=DrawFibonacciArcsIndicatorItem}}"/>
-                    <dxb:BarCheckItem x:Name="DrawFibonacciFansIndicatorItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=DrawFibonacciFansIndicatorItem}}"/>
-                    <dxb:BarCheckItem x:Name="DrawFibonacciRetracementIndicatorItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=DrawFibonacciRetracementIndicatorItem}}"/>
-                    <dxb:BarCheckItem x:Name="RemoveIndicatorItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=RemoveIndicatorItem}}"/>
-                    <dxb:BarItemSeparator/>
-                    <dxb:BarSubItem x:Name="AddIndicatorItem" Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=AddIndicatorItem}}"/>
-                </dxb:Bar>
-                <dxb:Bar Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarFinancialAxisGroup}}">
-                    <dxb:BarEditItem EditValue="{Binding SelectedInterval}" EditWidth="100">
-                        <dxb:BarEditItem.EditSettings>
-                            <dxe:ComboBoxEditSettings DisplayMember="Caption" IsTextEditable="False" ItemsSource="{Binding IntervalsSource}"/>
-                        </dxb:BarEditItem.EditSettings>
-                    </dxb:BarEditItem>
-                </dxb:Bar>
+                </dxb:BarManager.Bars>
+            </dxb:BarManager>
 
-            </dxb:BarManager.Bars>
-        </dxb:BarManager>
+        </Grid>
 
+        <!--Charts Grid-->
         <Grid>
             <dxc:ChartControl x:Name="Chart"
                               DataSource="{Binding StockTradingData}"
                               AutoLayout="False"
                               BorderThickness="0"
                               Padding="0">
-
-                <!--<dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="BoundDataChanged" 
-                                           Command="{Binding DataChangedCommand}" 
-                                           PassEventArgsToCommand="True"/>
-                </dxmvvm:Interaction.Behaviors>-->
-
                 <dxc:ChartControl.CrosshairOptions>
                     <dxc:CrosshairOptions ShowOnlyInFocusedPane="False"
                               LinesMode="Free"
@@ -133,6 +155,7 @@
                         </dxc:Pane>
                     </dxc:XYDiagram2D.Panes>
 
+                    <!--Stock Chart Axis--> 
                     <dxc:XYDiagram2D.AxisX>
                         <dxc:AxisX2D StickToEdge="True" GridLinesVisible="True">
                             <dxc:AxisX2D.DateTimeScaleOptions>
@@ -180,19 +203,22 @@
                             </dxc:AxisY2D.ConstantLinesInFront>
                         </dxc:AxisY2D>
                     </dxc:XYDiagram2D.AxisY>
+                    
+                    <!--Volume Chart Axis-->
                     <dxc:XYDiagram2D.SecondaryAxesY>
                         <dxc:SecondaryAxisY2D x:Name="volumeAxis"
-                                  Alignment="Near"
-                                  Brush="Transparent">
+                                              Alignment="Near"
+                                              Brush="Transparent">
                             <dxc:SecondaryAxisY2D.CrosshairAxisLabelOptions>
                                 <dxc:CrosshairAxisLabelOptions Pattern="{}{V:f2}"/>
                             </dxc:SecondaryAxisY2D.CrosshairAxisLabelOptions>
                             <dxc:SecondaryAxisY2D.Label>
-                                <dxc:AxisLabel TextPattern="{}{V:0,,}M"/>
+                                <dxc:AxisLabel Name="VolumeAxisPattern" TextPattern="{}{V:0,,,}B"/>
                             </dxc:SecondaryAxisY2D.Label>
                         </dxc:SecondaryAxisY2D>
                     </dxc:XYDiagram2D.SecondaryAxesY>
 
+                    <!--Stock Chart-->
                     <dxc:StockSeries2D ArgumentScaleType="DateTime"
                                        DisplayName="{Binding StockSymbol}"
                                        OpenValueDataMember="Open"
@@ -203,7 +229,8 @@
                                        CrosshairLabelPattern="O{OV:f2}&#x09;H{HV:f2}&#x09;L{LV:f2}&#x09;C{CV:f2}&#x09;">
 
                     </dxc:StockSeries2D>
-
+                    
+                    <!--Volume Chart-->
                     <dxc:BarSideBySideSeries2D ArgumentScaleType="DateTime"
                                                Pane="{Binding ElementName=volumePane}"
                                                AxisY="{Binding ElementName=volumeAxis}"
@@ -217,7 +244,6 @@
                     </dxc:BarSideBySideSeries2D>
 
                 </dxc:XYDiagram2D>
-
             </dxc:ChartControl>
         </Grid>
     </DockPanel>

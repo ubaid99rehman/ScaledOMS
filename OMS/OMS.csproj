@@ -42,6 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files\DevExpress 24.1\Components\Bin\Framework\DevExpress.Xpf.Charts.v24.1.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v24.1" />
     <Reference Include="DevExpress.Drawing.v24.1" />
     <Reference Include="DevExpress.Images.v24.1" />
@@ -92,6 +93,10 @@
     </ApplicationDefinition>
     <Compile Include="AppServiceProvider.cs" />
     <Compile Include="BootStrapper.cs" />
+    <Compile Include="ContextMenuHelper.cs" />
+    <Compile Include="ContextMenuResource.xaml.cs">
+      <DependentUpon>ContextMenuResource.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Home\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
@@ -99,6 +104,7 @@
       <DependentUpon>StockMarketView.xaml</DependentUpon>
     </Compile>
     <Compile Include="IBootStrapper.cs" />
+    <Compile Include="IContextMenuHelper.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -138,6 +144,10 @@
     <Compile Include="Trade\TradeHistory.xaml.cs">
       <DependentUpon>TradeHistory.xaml</DependentUpon>
     </Compile>
+    <Page Include="ContextMenuResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Home\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

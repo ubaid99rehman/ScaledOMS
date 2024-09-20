@@ -11,18 +11,23 @@
              
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
-        <dxg:GridControl ItemsSource="{Binding Orders}" 
+        <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
+                         PreviewMouseRightButtonDown="Mouse_Right_Button_Clicked"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top" >
 
             <dxg:GridControl.View>
-                <dxg:TableView ShowCriteriaInAutoFilterRow="False" 
+                <dxg:TableView Name="gridView"
+                               AutoWidth="True"
                                ShowIndicator="False" 
                                AllowEditing="False" 
-                               ShowSearchPanelMode="Always"
+                               IsGroupFooterMenuEnabled="False"
+                               IsGroupRowMenuEnabled="False"
+                               IsGroupPanelMenuEnabled="False"
                                MouseDoubleClick="Show_EditForm"
-                               AutoWidth="True"/>
+                               ShowGroupPanel="False"
+                               ShowGridMenu="ShowMenu_Click"/>
             </dxg:GridControl.View>
 
             <dxg:GridControl.Columns>

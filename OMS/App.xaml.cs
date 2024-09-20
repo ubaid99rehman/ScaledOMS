@@ -9,13 +9,20 @@ namespace OMS
     {
         public App()
         {
+            CompatibilitySettings.AllowThemePreload = true;
             CompatibilitySettings.UseLightweightThemes = true;
-            ApplicationThemeHelper.Preload(PreloadCategories.Core);
+            ApplicationThemeHelper.ApplicationThemeName = Theme.Office2013DarkGrayFullName;
+            ApplicationThemeHelper.Preload(PreloadCategories.Charts,
+                PreloadCategories.Controls,
+                PreloadCategories.Docking,
+                PreloadCategories.Grid,
+                PreloadCategories.LayoutControl,
+                PreloadCategories.Ribbon);
         }
         
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);
         }

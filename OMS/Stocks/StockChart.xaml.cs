@@ -3,6 +3,7 @@ using OMS.Core.Models.Stocks;
 using OMS.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -82,12 +83,47 @@ namespace OMS.Stocks
                             writer.WriteLine($"{data.RecordedTime},{data.Open},{data.High},{data.Low},{data.Close},{data.Volume}");
                         }
                     }
+                    Process.Start(saveFileDialog.FileName);
                 }
             }
             else
             {
                 MessageBox.Show("No visible data available for export.", "Export to CSV", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private void ExportToPDF(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            var printOptions = new ChartPrintOptions();
+            printOptions.SizeMode = PrintSizeMode.ProportionalZoom;
+            Chart.PrintOptions = printOptions;
+
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "PDF Files (*.pdf)|*.pdf",
+                FileName = "StockChart.pdf"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                Chart.ExportToPdf(saveFileDialog.FileName);
+                Process.Start(saveFileDialog.FileName);
+            }
+        }
+
+        private void Volume_Toggle_Millions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            VolumeAxisPattern.TextPattern = "{V:0,,}M";
+        }
+
+        private void Volume_Toggle_Billions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            VolumeAxisPattern.TextPattern = "{V:0,,,}B";
+        }
+
+        private void Volume_Toggle_Trillions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            VolumeAxisPattern.TextPattern = "{V:0,,,,}T";
         }
     }
 }

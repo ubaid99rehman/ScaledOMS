@@ -15,44 +15,68 @@
             <SolidColorBrush x:Key="redBrush" Color="#FFDD336B"/>
         </ResourceDictionary>
     </UserControl.Resources>
-
     <Grid>
         <dxg:GridControl Name="dataGrid"
                          ItemsSource="{Binding StockTrades}"
                          ShowBorder="False"
-                        dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                        dx:DXSerializer.SerializationID="gridTradesID">
+                         MouseRightButtonDown="Mouse_Right_Button_Clicked"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                         dx:DXSerializer.SerializationID="gridTradesID">
 
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="watchListView"
+                                ShowIndicator="False"
                                 AllowEditing="False"
-                                FadeSelectionOnLostFocus="False"
-                                AllowPerPixelScrolling="True"
+                                AutoWidth="True"
                                 ShowGroupPanel="False"
                                 AllowGrouping="False"
-                                AutoWidth="True"
                                 HorizontalAlignment="Right"
-                                UseLayoutRounding="True"
+                                FadeSelectionOnLostFocus="True"
+                                ShowVerticalLines="True"
                                 ShowHorizontalLines="False"
-                                ShowVerticalLines="False"
-                                ShowIndicator="False"
+                                AllowPerPixelScrolling="True"
+                                UseLayoutRounding="True"
                                 IsGroupPanelMenuEnabled="False"
+                                IsGroupRowMenuEnabled="False"
+                                IsGroupFooterMenuEnabled="False"
                                 IsColumnMenuEnabled ="False"
+                                IsColumnChooserVisible="False"
+                                IsManipulationEnabled="False"
                                 IsRowCellMenuEnabled ="False"
                                 IsTotalSummaryMenuEnabled="False"
-                                IsGroupFooterMenuEnabled="False"
-                                NavigationStyle="None">
+                                ShowFilterPanelMode="Never"
+                                AllowColumnFiltering="False"
+                                AllowedGroupFilters="None"
+                                AllowFilterEditor="False"
+                                ShowAutoFilterRow ="False"
+                                NavigationStyle="Row">
 
-                    <dxg:TableView.ContextMenu>
-                        <ContextMenu>
+                    <!--<dxg:TableView.ContextMenu/>-->
+                        <!--<ContextMenu>
+                            <MenuItem Name="SortAsc" Header="Sort Ascending" Click="SortAscending_Click" />
+                            <MenuItem Name="SortDesc" Header="Sort Descending" Click="SortDescending_Click" />
+                            <MenuItem Name="SortAscAll" Header="Sort All Columns Ascending" Click="SortAllColumnsAscending_Click" />
+                            <MenuItem Name="SortDescAll" Header="Sort All Columns Descending" Click="SortAllColumnsDescending_Click" />
+                            <MenuItem Name="ClearSort" IsEnabled="False" Header="Clear Sorting" Click="ClearSorting_Click" />
+                            <Separator />
                             <MenuItem Header="Align Left" Click="AlignLeft_Click"/>
-                            <MenuItem Header="Align Right" Click="AlignRight_Click"/>
                             <MenuItem Header="Align Center" Click="AlignCenter_Click"/>
+                            <MenuItem Header="Align Right" Click="AlignRight_Click"/>
+                            <MenuItem Header="Align All Columns Left" Click="AlignAllColumnsLeft_Click"/>
+                            <MenuItem Header="Align All Columns Center" Click="AlignAllColumnsCenter_Click"/>
+                            <MenuItem Header="Align All Columns Right" Click="AlignAllColumnsRight_Click"/>
                             <Separator />
                             <MenuItem Header="Align Top" Click="AlignTop_Click"/>
+                            <MenuItem Header="Align Center" Click="AlignVerticalCenter_Click"/>
                             <MenuItem Header="Align Bottom" Click="AlignBottom_Click"/>
-                        </ContextMenu>
-                    </dxg:TableView.ContextMenu>
+                            <MenuItem Header="Align All Columns Top" Click="AlignAllColumnsTop_Click"/>
+                            <MenuItem Header="Align All Columns Center" Click="AlignAllColumnsVerticalCenter_Click"/>
+                            <MenuItem Header="Align All Columns Bottom" Click="AlignAllColumnsBottom_Click"/>
+                            <Separator />
+                            <MenuItem x:Name="FilterMenu" Header="Filter Column" Click="FilterColumn_Click" />
+                            <MenuItem x:Name="ClearFilterMenu" IsEnabled="False" Header="Clear Filter" Click="ClearFilter_Click" />
+                        </ContextMenu>-->
+                    
 
                     <dxg:TableView.FormatConditions>
                         <dxg:FormatCondition Expression="[Type] = OrderType.Buy" FieldName="Price">
@@ -85,5 +109,19 @@
 
             <dxg:GridColumn FieldName="Type" Visible="False"/>
         </dxg:GridControl>
+        
+        <Popup x:Name="filterPopup" Placement="Mouse" 
+               StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                <StackPanel>
+                    <dxe:ListBoxEdit Name="FilterCheckList" SelectedIndexChanged="FilterSelectionChanged">
+                        <dxe:ListBoxEdit.StyleSettings>
+                            <dxe:CheckedListBoxEditStyleSettings />
+                        </dxe:ListBoxEdit.StyleSettings>
+                    </dxe:ListBoxEdit>
+                </StackPanel>
+            </Border>
+        </Popup>
+        
     </Grid>
 </UserControl>

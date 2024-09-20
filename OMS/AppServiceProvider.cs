@@ -92,10 +92,14 @@ namespace OMS
 
             //Trade
             services.AddSingleton<TradeViewModel>();
+            #endregion
 
+            #region Views
             //Views
-            services.AddSingleton<MainWindow>(); 
-            services.AddSingleton<LoadingWindow>(); 
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<LoadingWindow>();
+            //Controls
+            services.AddTransient<IContextMenuHelper, ContextMenuHelper>(); 
             #endregion
 
             return services.BuildServiceProvider();

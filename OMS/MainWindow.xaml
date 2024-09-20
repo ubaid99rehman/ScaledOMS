@@ -22,22 +22,23 @@
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
     Width="1600" Height="900">
-
+    
     <!-- Header Items: Icon with Popup -->
     <dx:ThemedWindow.HeaderItems>
-        <dx:HeaderItemControl>
-            <StackPanel>
+        <dx:HeaderItemControl Click="InfoIcon_Click">
+            <Grid>
                 <!-- Button with an Icon -->
-                <dx:SimpleButton Width="20" Height="20" 
-                                 Background="Transparent"
+                <dx:SimpleButton Background="Transparent"
                                  Foreground="Black"
-                                 Click="InfoIcon_Click"
                                  ToolTip="Shows Connection Information"
+                                 GlyphHeight="20"
+                                 GlyphWidth="20"
                                  Glyph="{dx:FontIconSource ColorName=White, Glyph=59935}"/>
 
                 <!-- Popup Definition -->
                 <Popup x:Name="InfoPopup"
                        StaysOpen="False"
+                       Margin="0 10 0 0"
                        Placement="Bottom">
                     <Border BorderThickness="1" Background="White">
                         <!-- Information Panel Content -->
@@ -46,18 +47,11 @@
                                 Margin="0,0,20,0" />
                     </Border>
                 </Popup>
-            </StackPanel>
+            </Grid>
         </dx:HeaderItemControl>
     </dx:ThemedWindow.HeaderItems>
-    <!--<dx:ThemedWindow.HeaderItems>
-        <Views:InformationPanel VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Margin="0,0,20,0"
-                                dxi:WindowChrome.IsHitTestVisibleInChrome="False"/>
-    </dx:ThemedWindow.HeaderItems>-->
 
     <dx:DXDockPanel>
-
         <dxr:RibbonControl Name="NavControl" 
                            DockPanel.Dock="Top" 
                            RibbonStyle="Office2019" 
@@ -155,126 +149,19 @@
 
             </dxr:RibbonDefaultPageCategory>
         </dxr:RibbonControl>
-
-        <Popup x:Name="OrderPopup" IsOpen="{Binding IsPopupOpen}" 
-               StaysOpen="True" Placement="Mouse" 
-               AllowsTransparency="True" PopupAnimation="Fade">
-            <Border Background="White" BorderBrush="Black" BorderThickness="2" Padding="10" CornerRadius="10">
-                <StackPanel>
-
-                    <Canvas>
-                        <dxe:ButtonClose x:Name="btnClearOrder" Content="Close" 
-                                     Canvas.Right="5"
-                                     Canvas.Top="5"
-                                     BorderBrush="Black"
-                                     BorderThickness="1"
-                                     Command="{Binding CloseAddOrderFormCommand}" />
-                    </Canvas>
-
-                    <!--<Grid>
-                        <StackPanel>
-
-                            <Grid HorizontalAlignment="Center" 
-                              Margin="20 40"
-                              VerticalAlignment="Top">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-
-                                -->
-                    <!--Order Date-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 10">
-                                    <TextBlock Text="Order Date:" Width="75"/>
-                                    <TextBox Text="{Binding SelectedOrder.OrderDate}"
-                                         IsReadOnly="True"
-                                         Width="120" Margin="10 0 0 0" />
-                                </StackPanel>
-
-                                -->
-                    <!--Account-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Margin="20 10">
-                                    <TextBlock Text="Account:" Width="75"/>
-                                    <dxe:ComboBoxEdit SelectedItem="{Binding SelectedOrder.AccountID, Mode=TwoWay}" 
-                                                  ItemsSource="{Binding AccountsList, RelativeSource={RelativeSource AncestorType=dxg:GridControl}}"
-                                                  Width="120" Margin="10 0 0 0"
-                                                  DisplayMember="AccountName" 
-                                                  ValueMember="AccountID" />
-                                </StackPanel>
-
-                                -->
-                    <!--Symbol-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 10">
-                                    <TextBlock Text="Symbol:" Width="75"/>
-                                    <TextBox Text="{Binding SelectedOrder.Symbol}" 
-                                         Width="120" Margin="10 0 0 0"/>
-                                </StackPanel>
-
-                                -->
-                    <!--Price-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="20 10">
-                                    <TextBlock Text="Price:" Width="75"/>
-                                    <TextBox Text="{Binding SelectedOrder.Price}"
-                                         IsReadOnly="True"
-                                         Width="120" Margin="10 0 0 0" />
-                                </StackPanel>
-
-                                -->
-                    <!--Quantity-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 10">
-                                    <TextBlock Text="Quantity:" Width="75"/>
-                                    <dxe:SpinEdit EditValue="{Binding SelectedOrder.Quantity, Mode=TwoWay}" 
-                                              Width="120" Margin="10 0 0 0"
-                                              Value="1"
-                                              IsTextEditable="False"
-                                              MinValue="1" />
-                                </StackPanel>
-
-                                -->
-                    <!--Total-->
-                    <!--
-                                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="20 10">
-                                    <TextBlock Text="Total:" Width="75"/>
-                                    <TextBox Text="{Binding SelectedOrder.Total}"
-                                         IsReadOnly="True"
-                                         Width="120" Margin="10 0 0 0" />
-                                </StackPanel>
-
-
-                            </Grid>
-
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-
-                        </StackPanel>
-                    </Grid>-->
-                    <!--<orderviews:AddOrder DataContext="{Binding NewOrderModel}"/>-->
-                </StackPanel>
-            </Border>
-        </Popup>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
             <!--Wait Indicator-->
             <dx:LoadingDecorator Name="loadingIndicator"  
                          IsSplashScreenShown="{Binding IsLoadingScreen}"
                          OwnerLock="None">
             </dx:LoadingDecorator>
 
+            <!--Dock Layout-->
             <dxdo:DockLayoutManager x:Name="dockLayoutManager"
                                     Grid.Row="0"
                                     FloatingMode="Desktop"
@@ -286,18 +173,17 @@
                                                   DocumentGroup="{Binding ElementName=documentGroup}" />
                 </dxmvvm:Interaction.Behaviors>
                 <dxdo:LayoutGroup>
-                    <dxdo:DocumentGroup x:Name="documentGroup"/>
+                    <dxdo:DocumentGroup x:Name="documentGroup" 
+                                        ClosePageButtonShowMode="InAllTabPageHeaders"/>
                 </dxdo:LayoutGroup>
             </dxdo:DockLayoutManager>
 
+            <!--Shows Curren Time-->
             <TextBlock Grid.Row="1" Margin="0 0 5 5"
                        Text="{Binding CurrentTime.CurrentTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Bottom"/>
-
-
         </Grid>
-
     </dx:DXDockPanel>
 
 </dx:ThemedWindow>
