@@ -16,11 +16,15 @@ namespace OMS.Orders
     public partial class OpenOrdersView : UserControl
     {
         GridColumn CurrentColumn;
+        IContextMenuHelper ContextMenuHelper;
 
         public OpenOrdersView()
         {
             InitializeComponent();
+            ContextMenuHelper = AppServiceProvider.GetServiceProvider().GetRequiredService<IContextMenuHelper>(); ;
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<OrdersListModel>();
+            dataGrid.MouseRightButtonDown += ContextMenuHelper.Mouse_Right_Button_Clicked;
+            ContextMenuHelper.dataGrid = dataGrid;
         }
 
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
@@ -69,140 +73,173 @@ namespace OMS.Orders
 
         private void ShowMenu_Click(object sender, DevExpress.Xpf.Grid.GridMenuEventArgs e)
         {
-            var eItems = e.Items;
-
-            //Remove Default Sortings
-            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FilterEditor });
+            //Remove Default Events
             e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.ColumnChooser });
-            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.SearchPanel });
             e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.BestFit });
             e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.BestFitColumns });
-            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.SortAscending });
-            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.SortDescending });
-            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.ClearSorting });
-            
-            //Add New Asc Sort Options
-            var sortAscMenu = new BarSubItem 
-            {
-                Content = "Sort Ascending",
-                Glyph = DXImageHelper.GetImageSource(DXImages.SortAsc, ImageSize.Size16x16)
-            };
-            var sortAsc = new BarButtonItem
-            {
-                Content = "Selected Column",
-                Command= e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SortAscending).First().Command,
-            };
-            var sortAscAll = new BarButtonItem
-            {
-                Content = "All Columns",
-            };
-            sortAscAll.ItemClick += SortAscAllColumns;
-            sortAscMenu.Items.Add(sortAscAll);
-            sortAscMenu.Items.Add(sortAsc);
 
-            //Add New Desc Sort Options
-            var sortDescMenu = new BarSubItem {
-                Content = "Sort Descending",
-                Glyph = DXImageHelper.GetImageSource(DXImages.SortDesc, ImageSize.Size16x16)
-            };
-            var sortDesc = new BarButtonItem
-            {
-                Content = "Selected Column",
-                Command = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SortDescending).First().Command,
-            };
-            var sortDescAll = new BarButtonItem
-            {
-                Content = "All Columns",
-            };
-            sortDescAll.ItemClick += SortDescAllColumns;
-            sortDescMenu.Items.Add(sortDescAll);
-            sortDescMenu.Items.Add(sortDesc);
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FilterEditor });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.SearchPanel });
 
-            //Add Clear Sort
-            var clearSort = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.ClearSorting).First();
-           
-            //Add Left Align
-            var alignLeftMenu = new BarSubItem
-            {
-                Content = "Align Left",
-                Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalLeft, ImageSize.Size16x16)
-            };
-            var alignLeft = new BarButtonItem
-            {
-                Content = "Selected Column",
-            };
-            var alignLeftAll = new BarButtonItem
-            {
-                Content = "All Columns",
-            };
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.SortAscending });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.SortDescending });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.ClearSorting });
 
-            alignLeft.ItemClick += AlignLeft;
-            alignLeftAll.ItemClick += AlignLeftAll;
-            alignLeftMenu.Items.Add(alignLeft);
-            alignLeftMenu.Items.Add(alignLeftAll);
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.GroupBox });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.GroupColumn });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.ClearGrouping });
 
-            //Add Center Align
-            var alignCenterMenu = new BarSubItem
-            {
-                Content = "Align Center",
-                Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalCenter, ImageSize.Size16x16)
-            };
-            var alignCenter = new BarButtonItem
-            {
-                Content = "Selected Column",
-            };
-            var alignCenterAll = new BarButtonItem
-            {
-                Content = "All COlumns",
-            };
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.GroupSummaryEditor });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FullExpand });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FullCollapse });
+            e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.MenuColumnGroupInterval });
 
-            alignCenter.ItemClick += AlignCenter;
-            alignCenterAll.ItemClick += AlignCenterAll;
-            alignCenterMenu.Items.Add(alignCenter);
-            alignCenterMenu.Items.Add(alignCenterAll);
+            //Add Custom Events
+            var customBarItems = ContextMenuHelper.GetMenuItems();
 
-            //Add Right Align
-            var alignRightMenu = new BarSubItem
+            foreach (var barItem in customBarItems)
             {
-                Content = "Align Right",
-                Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalRight, ImageSize.Size16x16)
-            };
-            var alignRight = new BarButtonItem
-            {
-                Content = "Selected Column",
-            };
-            var alignRightAll = new BarButtonItem
-            {
-                Content = "All Columns",
-            };
-
-            alignRight.ItemClick += AlignRight;
-            alignRightAll.ItemClick += AlignRightAll;
-            alignRightMenu.Items.Add(alignRight);
-            alignRightMenu.Items.Add(alignRightAll);
-
-            var clearGrouping = new BarButtonItem
-            {
-                Content = "Clear Grouping",
-                Glyph = DXImageHelper.GetImageSource(DXImages.Clear, ImageSize.Size16x16),
-            };
-            clearGrouping.ItemClick += ClearGrouping_ItemClick;
-            var searchPanel = new BarButtonItem
-            {
-                Content = "Search Panel",
-                Glyph = DXImageHelper.GetImageSource(DXImages.Find, ImageSize.Size16x16),
-                Command = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SearchPanel).First().Command,
-            };
-            e.Customizations.Add(clearGrouping);
-            e.Customizations.Add(searchPanel);
-            e.Customizations.Add(sortAscMenu);
-            e.Customizations.Add(sortDescMenu);
-            e.Customizations.Add(clearSort);
-            e.Customizations.Add(new BarItemSeparator());
-            e.Customizations.Add(alignRightMenu);
-            e.Customizations.Add(alignLeftMenu);
-            e.Customizations.Add(alignCenterMenu);
+                e.Customizations.Add(barItem);
+            }
         }
+
+
+        //private void ShowMenu_Click(object sender, DevExpress.Xpf.Grid.GridMenuEventArgs e)
+        //{
+        //    var eItems = e.Items;
+
+        //    //Remove Default Sortings
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FilterEditor });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.ColumnChooser });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.SearchPanel });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.BestFit });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.BestFitColumns });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.SortAscending });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.SortDescending });
+        //    e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNamesBase.ClearSorting });
+
+        //    //Add New Asc Sort Options
+        //    var sortAscMenu = new BarSubItem 
+        //    {
+        //        Content = "Sort Ascending",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.SortAsc, ImageSize.Size16x16)
+        //    };
+        //    var sortAsc = new BarButtonItem
+        //    {
+        //        Content = "Selected Column",
+        //        Command= e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SortAscending).First().Command,
+        //    };
+        //    var sortAscAll = new BarButtonItem
+        //    {
+        //        Content = "All Columns",
+        //    };
+        //    sortAscAll.ItemClick += SortAscAllColumns;
+        //    sortAscMenu.Items.Add(sortAscAll);
+        //    sortAscMenu.Items.Add(sortAsc);
+
+        //    //Add New Desc Sort Options
+        //    var sortDescMenu = new BarSubItem {
+        //        Content = "Sort Descending",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.SortDesc, ImageSize.Size16x16)
+        //    };
+        //    var sortDesc = new BarButtonItem
+        //    {
+        //        Content = "Selected Column",
+        //        Command = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SortDescending).First().Command,
+        //    };
+        //    var sortDescAll = new BarButtonItem
+        //    {
+        //        Content = "All Columns",
+        //    };
+        //    sortDescAll.ItemClick += SortDescAllColumns;
+        //    sortDescMenu.Items.Add(sortDescAll);
+        //    sortDescMenu.Items.Add(sortDesc);
+
+        //    //Add Clear Sort
+        //    var clearSort = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.ClearSorting).First();
+
+        //    //Add Left Align
+        //    var alignLeftMenu = new BarSubItem
+        //    {
+        //        Content = "Align Left",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalLeft, ImageSize.Size16x16)
+        //    };
+        //    var alignLeft = new BarButtonItem
+        //    {
+        //        Content = "Selected Column",
+        //    };
+        //    var alignLeftAll = new BarButtonItem
+        //    {
+        //        Content = "All Columns",
+        //    };
+
+        //    alignLeft.ItemClick += AlignLeft;
+        //    alignLeftAll.ItemClick += AlignLeftAll;
+        //    alignLeftMenu.Items.Add(alignLeft);
+        //    alignLeftMenu.Items.Add(alignLeftAll);
+
+        //    //Add Center Align
+        //    var alignCenterMenu = new BarSubItem
+        //    {
+        //        Content = "Align Center",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalCenter, ImageSize.Size16x16)
+        //    };
+        //    var alignCenter = new BarButtonItem
+        //    {
+        //        Content = "Selected Column",
+        //    };
+        //    var alignCenterAll = new BarButtonItem
+        //    {
+        //        Content = "All COlumns",
+        //    };
+
+        //    alignCenter.ItemClick += AlignCenter;
+        //    alignCenterAll.ItemClick += AlignCenterAll;
+        //    alignCenterMenu.Items.Add(alignCenter);
+        //    alignCenterMenu.Items.Add(alignCenterAll);
+
+        //    //Add Right Align
+        //    var alignRightMenu = new BarSubItem
+        //    {
+        //        Content = "Align Right",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.AlignVerticalRight, ImageSize.Size16x16)
+        //    };
+        //    var alignRight = new BarButtonItem
+        //    {
+        //        Content = "Selected Column",
+        //    };
+        //    var alignRightAll = new BarButtonItem
+        //    {
+        //        Content = "All Columns",
+        //    };
+
+        //    alignRight.ItemClick += AlignRight;
+        //    alignRightAll.ItemClick += AlignRightAll;
+        //    alignRightMenu.Items.Add(alignRight);
+        //    alignRightMenu.Items.Add(alignRightAll);
+
+        //    var clearGrouping = new BarButtonItem
+        //    {
+        //        Content = "Clear Grouping",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.Clear, ImageSize.Size16x16),
+        //    };
+        //    clearGrouping.ItemClick += ClearGrouping_ItemClick;
+        //    var searchPanel = new BarButtonItem
+        //    {
+        //        Content = "Search Panel",
+        //        Glyph = DXImageHelper.GetImageSource(DXImages.Find, ImageSize.Size16x16),
+        //        Command = e.Items.Where(item => item.Name == DefaultColumnMenuItemNamesBase.SearchPanel).First().Command,
+        //    };
+        //    e.Customizations.Add(clearGrouping);
+        //    e.Customizations.Add(searchPanel);
+        //    e.Customizations.Add(sortAscMenu);
+        //    e.Customizations.Add(sortDescMenu);
+        //    e.Customizations.Add(clearSort);
+        //    e.Customizations.Add(new BarItemSeparator());
+        //    e.Customizations.Add(alignRightMenu);
+        //    e.Customizations.Add(alignLeftMenu);
+        //    e.Customizations.Add(alignCenterMenu);
+        //}
 
         private void ClearGrouping_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -289,6 +326,5 @@ namespace OMS.Orders
                 dataGrid.SortBy(column, ColumnSortOrder.Descending);
             }
         }
-
     }
 }

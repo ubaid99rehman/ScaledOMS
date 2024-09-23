@@ -20,14 +20,18 @@
             <dxg:GridControl.View>
                 <dxg:TableView Name="gridView"
                                AutoWidth="True"
-                               ShowIndicator="False" 
                                AllowEditing="False" 
+                               ShowIndicator="False" 
+                               AllowColumnFiltering="False"
                                IsGroupFooterMenuEnabled="False"
                                IsGroupRowMenuEnabled="False"
                                IsGroupPanelMenuEnabled="False"
-                               MouseDoubleClick="Show_EditForm"
+                               IsManipulationEnabled="False"
+                               IsRowCellMenuEnabled="False"
+                               IsTotalSummaryMenuEnabled="False"
                                ShowGroupPanel="False"
-                               ShowGridMenu="ShowMenu_Click"/>
+                               ShowGridMenu="ShowMenu_Click"
+                               MouseDoubleClick="Show_EditForm"/>
             </dxg:GridControl.View>
 
             <dxg:GridControl.Columns>

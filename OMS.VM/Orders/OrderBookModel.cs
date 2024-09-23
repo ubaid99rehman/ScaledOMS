@@ -13,6 +13,7 @@ namespace OMS.ViewModels
         const int MaxTradeCount = 100;
 
         IMarketOrderService MarketOrderService;
+
         private string _selectedStockSymbol;
         public string SelectedStockSymbol
         {
@@ -23,7 +24,7 @@ namespace OMS.ViewModels
                 {
                     if (SetProperty(ref _selectedStockSymbol, value, nameof(SelectedStockSymbol)))
                     {
-                        AddStockTrades();
+                        AddStockOrders();
                     }
 
                 }
@@ -54,23 +55,12 @@ namespace OMS.ViewModels
         {
             StockBuyingOrders = new ObservableCollection<OrderBook>();
             StockSellingOrders = new ObservableCollection<OrderBook>();
-            AddInitialTrades();
             MarketOrderService = marketOrderService;
             MarketOrderService.DataUpdated += OnDataUpdated;
 
         }
 
-        public void AddInitialTrades()
-        {
-           
-        }
-
-        private void OnTradeTimerTick(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void AddStockTrades()
+        private void AddStockOrders()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
             {
@@ -84,6 +74,7 @@ namespace OMS.ViewModels
                 {
                     StockBuyingOrders.Add(order);
                 }
+
                 foreach (var order in sellOrders)
                 {
                     StockSellingOrders.Add(order);
@@ -95,38 +86,38 @@ namespace OMS.ViewModels
         {
             if (symbol == SelectedStockSymbol)
             {
-                UpdateStockTrades();
+                UpdateStockOrders();
             }
         }
 
-        private void UpdateStockTrades()
+        private void UpdateStockOrders()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
             {
                 var buyOrders = MarketOrderService.GetBuyOrders(SelectedStockSymbol);
                 var sellOrders = MarketOrderService.GetSellOrders(SelectedStockSymbol);
 
-                if(buyOrders.Any())
+                if(sellOrders.Any())
                 {
                     foreach (var trade in buyOrders.Reverse())
                     {
-                        if (buyOrders.Count >= MaxTradeCount)
+                        if (StockSellingOrders.Count >= MaxTradeCount)
                         {
-                            StockBuyingOrders.RemoveAt(buyOrders.Count - 1);
+                            StockSellingOrders.RemoveAt(0);
                         }
-                        StockBuyingOrders.Insert(0, trade);
+                        StockSellingOrders.Add(trade);
                     }
                 }
     
-                if (sellOrders.Any())
+                if (buyOrders.Any())
                 {
                     foreach (var trade in sellOrders.Reverse())
                     {
-                        if (sellOrders.Count >= MaxTradeCount)
+                        if (StockBuyingOrders.Count >= MaxTradeCount)
                         {
-                            StockSellingOrders.RemoveAt(sellOrders.Count - 1);
+                            StockBuyingOrders.RemoveAt(sellOrders.Count - 1);
                         }
-                        StockSellingOrders.Insert(0, trade);
+                        StockBuyingOrders.Insert(0, trade);
                     }
                 }
             }
@@ -136,6 +127,5 @@ namespace OMS.ViewModels
         {
             MarketOrderService.DataUpdated -= OnDataUpdated;
         }
-
     }
 }

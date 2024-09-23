@@ -22,7 +22,7 @@ namespace OMS.Trade
             InitializeComponent();
             ContextMenuHelper = AppServiceProvider.GetServiceProvider().GetRequiredService<IContextMenuHelper>();
             ContextMenuHelper.dataGrid = dataGrid;
-            watchListView.ContextMenu = ContextMenuHelper.CreateContextMenu();
+            watchListView.ContextMenu = ContextMenuHelper.GetContextMenu();
         }
 
         #region Mouse Click Events

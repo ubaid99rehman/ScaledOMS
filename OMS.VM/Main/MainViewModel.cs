@@ -1,10 +1,20 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Docking.Native;
+using DevExpress.Xpf.Docking.VisualElements;
 using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace OMS.ViewModels
 {
@@ -175,7 +185,7 @@ namespace OMS.ViewModels
         } 
         #endregion
 
-        public void AddView(string view, string header)
+        public void AddView(string view, string title)
         {
             Navigating();
             if (DocumentManagerService == null)
@@ -184,11 +194,57 @@ namespace OMS.ViewModels
             }
 
             IDocument document = DocumentManagerService.CreateDocument(view, null, this);
-            document.Title = header;
+            document.Title = title;
             document.Show();
-            Title = header;
+            Title = title;
             Navigated();
+            GetOpenedDocuments();
         }
 
+        public IEnumerable<IDocument> GetOpenedDocuments()
+        {
+            var document = DocumentManagerService.Documents.FirstOrDefault();
+            return DocumentManagerService.Documents;
+             
+        }
+
+        public void SaveOpenedDocumentsState()
+        {
+            string fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
+            var documentStates = GetOpenedDocuments().Select(doc => 
+            new DocumentState { 
+                ViewType = ((DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document) doc).DocumentType,
+                Title = doc.Title.ToString() }).ToList();
+
+            var serializer = new XmlSerializer(typeof(List<DocumentState>));
+            using (var writer = new StreamWriter(fileName))
+            {
+                serializer.Serialize(writer, documentStates);
+            }
+        }
+
+        public void RestoreOpenedDocumentsState()
+        {
+            string fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
+
+            if (File.Exists(fileName))
+            {
+                var serializer = new XmlSerializer(typeof(List<DocumentState>));
+                using (var reader = new StreamReader(fileName))
+                {
+                    var savedDocuments = (List<DocumentState>)serializer.Deserialize(reader);
+                    foreach (var doc in savedDocuments)
+                    {
+                        AddView(doc.ViewType, doc.Title);
+                    }
+                }
+            }
+        }
+    }
+    public class DocumentState
+    {
+        public string Content { get; set; }
+        public string Title { get; set; }
+        public string ViewType { get; set; }
     }
 }

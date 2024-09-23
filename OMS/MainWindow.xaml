@@ -15,10 +15,13 @@
     xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:Views="clr-namespace:OMS.Main"
+    xmlns:HomeViews="clr-namespace:OMS.Home"
     xmlns:Model="clr-namespace:OMS.ViewModels;assembly=OMS.VM"
     xmlns:orderviews="clr-namespace:OMS.Orders"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
+    Closing="ThemedWindow_Closing"
+    Loaded="ThemedWindow_Loaded"
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
     Width="1600" Height="900">
@@ -167,14 +170,31 @@
                                     FloatingMode="Desktop"
                                     DockingStyle="VS2010">
                 <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="Loaded" 
-                                           Command="{Binding OnViewLoadedCommand}" />
+                    <dxmvvm:EventToCommand EventName="Loaded" />
                     <dxdo:TabbedDocumentUIService Name="documentManagerService" 
                                                   DocumentGroup="{Binding ElementName=documentGroup}" />
                 </dxmvvm:Interaction.Behaviors>
                 <dxdo:LayoutGroup>
                     <dxdo:DocumentGroup x:Name="documentGroup" 
-                                        ClosePageButtonShowMode="InAllTabPageHeaders"/>
+                            ClosePageButtonShowMode="InAllTabPageHeaders">
+
+                        <!-- Default Dashboard DocumentPanel -->
+                        <dxdo:DocumentPanel x:Name="defaultDashboard"
+                                            Caption="Dashboard"
+                                            AllowClose="False"
+                                            AllowDrag="False"
+                                            AllowDrop="False"
+                                            AllowFloat="False"
+                                            AllowHide="False"
+                                            AllowMaximize="False"
+                                            AllowMinimize="False"
+                                            AllowSelection="False"
+                                            AllowSizing="False"
+                                            IsActive="True">
+                            <HomeViews:DashboardView/>
+                        </dxdo:DocumentPanel>
+
+                    </dxdo:DocumentGroup>
                 </dxdo:LayoutGroup>
             </dxdo:DockLayoutManager>
 

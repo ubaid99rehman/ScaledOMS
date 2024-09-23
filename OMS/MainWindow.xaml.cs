@@ -6,6 +6,8 @@ using OMS.Core.Services.Cache;
 using OMS.Logging;
 using OMS.Orders;
 using OMS.ViewModels;
+using System.Configuration;
+using System.IO;
 using System.Windows;
 
 namespace OMS
@@ -14,12 +16,18 @@ namespace OMS
     {
         IBootStrapper BootStrapper;
         ICacheService CacheService;
-        
+
+        private string layoutFilePath;
+
         public MainWindow(IBootStrapper bootStrapper, ICacheService cacheService)
         {
             InitializeComponent();
+
+            layoutFilePath = ConfigurationManager.AppSettings["LayoutFilePath"];
+
             CacheService = cacheService;
             BootStrapper = bootStrapper;
+         
             
             var model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
@@ -53,6 +61,22 @@ namespace OMS
                 CacheService.Set("NewOrderWindowOpen",true);
                 AddOrder windo = new AddOrder(CacheService);
                 windo.Show();
+            }
+        }
+
+        private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.DataContext is MainViewModel model)
+            {
+                model.SaveOpenedDocumentsState();
+            }
+        }
+
+        private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext is MainViewModel model)
+            {
+                model.RestoreOpenedDocumentsState();
             }
         }
     }

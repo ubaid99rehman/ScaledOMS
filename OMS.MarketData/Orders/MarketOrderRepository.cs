@@ -17,30 +17,24 @@ namespace OMS.MarketData.Stocks
         List<string> StockSymbols;
         List<Stock> Stocks;
         IStockRepository StockRepository;
-        Dictionary<string, List<OrderBook>> tradesDictionary;
 
         public MarketOrderRepository(IStockRepository stockRepository)
         {
             StockRepository = stockRepository;
-            random = new Random();
-
-            tradesDictionary = new Dictionary<string, List<OrderBook>>();
-            Stocks = new List<Stock>();
             StockSymbols = new List<string>();
+            Stocks = new List<Stock>();
+            random = new Random();
             FetchStockData();
         }
 
         public IEnumerable<OrderBook> GetAll(string symbol)
         {
-            if (!tradesDictionary.ContainsKey(symbol))
-            {
-                AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-            }
-            return tradesDictionary[symbol];
+            return AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
         }
 
         public IEnumerable<OrderBook> GetAll()
         {
+            Dictionary<string, IEnumerable<OrderBook>> tradesDictionary = new Dictionary<string, IEnumerable<OrderBook>>();
             foreach (var symbol in StockSymbols)
             {
                 if (!tradesDictionary.ContainsKey(symbol))
@@ -54,11 +48,7 @@ namespace OMS.MarketData.Stocks
         public OrderBook GetById(int id)
         {
             Stock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
-            if (!tradesDictionary.ContainsKey(stock.Symbol))
-            {
-                AddOrders(stock);
-            }
-            return tradesDictionary[stock.Symbol].FirstOrDefault();
+            return AddOrders(stock).FirstOrDefault();
         }
 
         void FetchStockData()
@@ -71,20 +61,19 @@ namespace OMS.MarketData.Stocks
             {
                 Stocks = StockRepository.GetAll().ToList<Stock>();
             }
-            foreach (var symbol in StockSymbols)
-            {
-                AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-            }
+            //foreach (var symbol in StockSymbols)
+            //{
+            //    AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
+            //}
         }
 
-        private void AddOrders(Stock stock)
+        private IEnumerable<OrderBook> AddOrders(Stock stock)
         {
-            Random random = new Random();
-            int tradeCount = random.Next(1, 11);
+            int sellOrdersCount = random.Next(1, 5);
+            int buyOrdersCount = random.Next(1, 5);
+            List<OrderBook> orders = new List<OrderBook>();
 
-            List<OrderBook> trades = new List<OrderBook>();
-
-            for (int i = 0; i < tradeCount; i++)
+            for (int i = 0; i < sellOrdersCount; i++)
             {
                 int qty = random.Next(1, 1000);
                 OrderBook trade = new OrderBook
@@ -94,13 +83,29 @@ namespace OMS.MarketData.Stocks
                     Quantity = qty,
                     Total = qty * stock.LastPrice,
                     Timestamp = DateTime.Now,
-                    Type = (OrderType)random.Next(1, 3)
+                    Type = OrderType.Sell
                 };
                 trade.Total = trade.Price * trade.Quantity;
-                trades.Add(trade);
+                orders.Add(trade);
             }
 
-            tradesDictionary[stock.Symbol] = trades;
+            for (int i = 0; i < buyOrdersCount; i++)
+            {
+                int qty = random.Next(1, 1000);
+                OrderBook trade = new OrderBook
+                {
+                    Symbol = stock.Symbol,
+                    Price = stock.LastPrice,
+                    Quantity = qty,
+                    Total = qty * stock.LastPrice,
+                    Timestamp = DateTime.Now,
+                    Type = OrderType.Buy
+                };
+                trade.Total = trade.Price * trade.Quantity;
+                orders.Add(trade);
+            }
+
+            return  orders;
         }
     }
 }

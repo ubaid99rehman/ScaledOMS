@@ -25,71 +25,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <dxg:GridControl x:Name="gridSell"
-                     ItemsSource="{Binding StockSellingOrders}"
-                     ShowBorder="False"
-                     dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                     dx:DXSerializer.SerializationID="gridSellID">
-
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Price" Header="Price" >
-                    <dxg:GridColumn.CellStyle>
-                        <Style TargetType="{x:Type dxg:LightweightCellEditor}">
-                            <Setter Property="Foreground" Value="{StaticResource redBrush}"/>
-                        </Style>
-                    </dxg:GridColumn.CellStyle>
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Quantity" Header="Volume" Width="70">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Total" Header="Total">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-            </dxg:GridControl.Columns>
-
-            <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="False"
-                           FadeSelectionOnLostFocus="False"
-                           AllowPerPixelScrolling="True"
-                           ShowGroupPanel="False"
-                           AllowGrouping="False"
-                           AutoWidth="True"
-                           HorizontalAlignment="Right"
-                           UseLayoutRounding="True"
-                           ShowHorizontalLines="False"
-                           ShowVerticalLines="False"
-                           ShowIndicator="False"
-                           EnableSelectedRowAppearance="False"
-                           AllowSorting="False"
-                           AllowColumnFiltering="False"
-                           IsColumnMenuEnabled="False">
-                    <dxg:TableView.FormatConditions>
-                        <dxg:DataBarFormatCondition FieldName="Total" >
-                            <dxg:DataBarFormatCondition.Format>
-                                <dx:DataBarFormat Fill="#40DD336B"/>
-                            </dxg:DataBarFormatCondition.Format>
-                        </dxg:DataBarFormatCondition>
-                    </dxg:TableView.FormatConditions>
-                </dxg:TableView>
-            </dxg:GridControl.View>
-        </dxg:GridControl>
-
-        <dx:ThemedBorder BorderThickness="0,1,0,0" Grid.Row="1"/>
-
         <dxg:GridControl x:Name="gridBuy"
-                     Grid.Row="2"
-                     ItemsSource="{Binding StockBuyingOrders}"
-                     ShowBorder="False"
-                     SelectionMode="None"
-                     dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                     dx:DXSerializer.SerializationID="gridBuyID">
+                         Grid.Row="2"
+                         ItemsSource="{Binding StockBuyingOrders}"
+                         ShowBorder="False"
+                         SelectionMode="None"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
 
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Price" Header="Price">
@@ -116,18 +57,19 @@
 
             <dxg:GridControl.View>
                 <dxg:TableView AllowEditing="False"
-                           FadeSelectionOnLostFocus="False"
-                           AllowPerPixelScrolling="True"
-                           ShowGroupPanel="False"
-                           AllowGrouping="False"
-                           AutoWidth="True"
-                           HorizontalAlignment="Right"
-                           UseLayoutRounding="True"
-                           ShowColumnHeaders="False"
-                           ShowHorizontalLines="False"
-                           ShowVerticalLines="False"
-                           ShowIndicator="False"
-                           EnableSelectedRowAppearance="False">
+                               AllowScrollToFocusedRow="True"
+                               FadeSelectionOnLostFocus="False"
+                               AllowPerPixelScrolling="True"
+                               ShowGroupPanel="False"
+                               AllowGrouping="False"
+                               AutoWidth="True"
+                               HorizontalAlignment="Right"
+                               UseLayoutRounding="True"
+                               ShowColumnHeaders="False"
+                               ShowHorizontalLines="False"
+                               ShowVerticalLines="False"
+                               ShowIndicator="False"
+                               EnableSelectedRowAppearance="False">
                     <dxg:TableView.FormatConditions>
                         <dxg:DataBarFormatCondition FieldName="Total">
                             <dxg:DataBarFormatCondition.Format>
@@ -138,6 +80,64 @@
                 </dxg:TableView>
             </dxg:GridControl.View>
 
+        </dxg:GridControl>
+
+        <dx:ThemedBorder BorderThickness="0,1,0,0" Grid.Row="1"/>
+
+        <dxg:GridControl x:Name="gridSell"
+                     ItemsSource="{Binding StockSellingOrders}"
+                     ShowBorder="False"
+                     dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
+
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Price" Header="Price" >
+                    <dxg:GridColumn.CellStyle>
+                        <Style TargetType="{x:Type dxg:LightweightCellEditor}">
+                            <Setter Property="Foreground" Value="{StaticResource redBrush}"/>
+                        </Style>
+                    </dxg:GridColumn.CellStyle>
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Quantity" Header="Volume" Width="70">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Total" Header="Total">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+
+            <dxg:GridControl.View>
+                <dxg:TableView AllowEditing="False"
+                               AllowScrollToFocusedRow="True"
+                               FadeSelectionOnLostFocus="False"
+                               AllowPerPixelScrolling="True"
+                               ShowGroupPanel="False"
+                               AllowGrouping="False"
+                               AutoWidth="True"
+                               HorizontalAlignment="Right"
+                               UseLayoutRounding="True"
+                               ShowHorizontalLines="False"
+                               ShowVerticalLines="False"
+                               ShowIndicator="False"
+                               EnableSelectedRowAppearance="False"
+                               AllowSorting="False"
+                               AllowColumnFiltering="False"
+                               IsColumnMenuEnabled="False">
+                    <dxg:TableView.FormatConditions>
+                        <dxg:DataBarFormatCondition FieldName="Total" >
+                            <dxg:DataBarFormatCondition.Format>
+                                <dx:DataBarFormat Fill="#40DD336B"/>
+                            </dxg:DataBarFormatCondition.Format>
+                        </dxg:DataBarFormatCondition>
+                    </dxg:TableView.FormatConditions>
+                </dxg:TableView>
+            </dxg:GridControl.View>
         </dxg:GridControl>
     </Grid>
 </UserControl>
