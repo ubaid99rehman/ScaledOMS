@@ -5,8 +5,50 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OMS.Settings"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="800" d:DesignWidth="1000">
+        <Grid>
+            <!-- Main layout for full-screen design -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- Header row -->
+                <RowDefinition Height="*" />
+                <!-- Content row -->
+            </Grid.RowDefinitions>
+
+            <!-- Header with ComboBox and buttons -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
+                <!-- ComboBox for selecting available themes -->
+                <ComboBox x:Name="ThemeComboBox" Width="200" DisplayMemberPath="Name" SelectionChanged="ThemeComboBox_SelectionChanged" />
+
+                <!-- Button to browse for a new theme file -->
+                <Button Content="Browse Theme" Width="120" Margin="10,0,0,0" Click="BrowseTheme_Click" />
+
+                <!-- Button to create a new custom theme -->
+                <Button Content="Create New Theme" Width="150" Margin="10,0,0,0" Click="CreateNewTheme_Click" />
+
+                <!-- Button to apply the selected theme -->
+                <Button Content="Apply Theme" Width="120" Margin="10,0,0,0" Click="ApplyTheme_Click" />
+            </StackPanel>
+
+            <!-- Preview section to show how the theme will look -->
+            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10">
+                <StackPanel Margin="10">
+                  
+                    <!-- Sample text block for preview -->
+                    <TextBlock x:Name="PreviewTextBlock" Grid.Row="0" Text="Sample TextBlock Preview" FontSize="16" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+
+                    <!-- Sample button for preview -->
+                    <Button x:Name="PreviewButton" Grid.Row="1" Content="Sample Button Preview" Width="150" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+
+                    <!-- Add other UI elements for preview as needed -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBox x:Name="PreviewFontSizeBox" Text="Sample Text"  Width="150" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+
 </UserControl>

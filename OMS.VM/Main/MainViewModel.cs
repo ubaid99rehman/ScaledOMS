@@ -153,7 +153,7 @@ namespace OMS.ViewModels
         [Command]
         public void Profile()
         {
-            AddView("ProfileView", "Appearance");
+            AddView("ProfileView", "Profile");
         }
         
         [Command]
@@ -178,7 +178,6 @@ namespace OMS.ViewModels
         #endregion
 
         #region Event Handler
-
         private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
         {
             Title = (string)e.NewDocument?.Title ?? "HOME";
@@ -198,7 +197,6 @@ namespace OMS.ViewModels
             document.Show();
             Title = title;
             Navigated();
-            GetOpenedDocuments();
         }
 
         public IEnumerable<IDocument> GetOpenedDocuments()

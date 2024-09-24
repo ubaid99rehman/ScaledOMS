@@ -1,8 +1,6 @@
-﻿using OMS.Core.Enums;
-using OMS.Core.Models;
+﻿using OMS.Core.Models;
+using OMS.Enums;
 using System;
-using System.ComponentModel;
-
 
 namespace OMS.Core.Core.Models.Books
 {

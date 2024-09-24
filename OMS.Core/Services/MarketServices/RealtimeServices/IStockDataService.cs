@@ -1,7 +1,4 @@
-﻿using DevExpress.Xpf.Core;
-using OMS.Core.Enums;
-using OMS.Core.Models;
-using OMS.Core.Models.Stocks;
+﻿using OMS.Core.Models;
 using System;
 using System.Collections.ObjectModel;
 

@@ -1,9 +1,9 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Enums;
 using OMS.Core.Models;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

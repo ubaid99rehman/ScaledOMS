@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMS.Core.Enums
+namespace OMS.Enums
 {
-    
-    public enum MeasureUnit
+    public enum OrderType
     {
-        Day,
-        Week,
-        Month,
-        Year
+        Buy = 1,
+        Sell = 2
     }
 }
-    

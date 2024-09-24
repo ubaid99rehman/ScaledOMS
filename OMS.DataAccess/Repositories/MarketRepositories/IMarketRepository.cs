@@ -1,9 +1,9 @@
 ﻿using OMS.Core.Models.Stocks;
 using OMS.Core.Models;
 using System.Collections.Generic;
-using OMS.Common.Enums;
 using System.Threading.Tasks;
 using System;
+using OMS.Enums;
 
 namespace OMS.DataAccess.Repositories.MarketRepositories
 {

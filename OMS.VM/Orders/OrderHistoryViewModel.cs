@@ -1,6 +1,5 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Core.Core.Enums;
-using OMS.Core.Enums;
+using OMS.Enums;
 using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
 using System;

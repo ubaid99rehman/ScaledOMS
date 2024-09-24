@@ -1,5 +1,5 @@
-﻿using OMS.Common.Enums;
-using OMS.Core.Models.Stocks;
+﻿using OMS.Core.Models.Stocks;
+using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
 

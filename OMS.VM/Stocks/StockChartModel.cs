@@ -1,10 +1,10 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Charts;
-using OMS.Common.Enums;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
 using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

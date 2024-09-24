@@ -1,7 +1,6 @@
-﻿using OMS.Core.Enums;
-using OMS.Core.Models;
-using OMS.DataAccess.Repositories;
+﻿using OMS.Core.Models;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

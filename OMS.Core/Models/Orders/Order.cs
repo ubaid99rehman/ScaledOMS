@@ -1,4 +1,4 @@
-﻿using OMS.Core.Enums;
+﻿using OMS.Enums;
 using System;
 using System.ComponentModel;
 

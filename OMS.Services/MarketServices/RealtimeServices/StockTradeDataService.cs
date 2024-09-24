@@ -1,10 +1,10 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Common.Enums;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

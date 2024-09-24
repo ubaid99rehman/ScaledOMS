@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Charts.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -43,6 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Criteria.cs" />
+    <Compile Include="Enums\FontFamilyEnum.cs" />
+    <Compile Include="Enums\FontSizeEnum.cs" />
+    <Compile Include="Enums\FontWeightEnum.cs" />
+    <Compile Include="Enums\MeasureUnit.cs" />
+    <Compile Include="Enums\OrderStatus.cs" />
+    <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Enums\TradeTimeInterval.cs" />
     <Compile Include="Helper\DateTimeHelper.cs" />
     <Compile Include="Helper\DbHelper.cs" />

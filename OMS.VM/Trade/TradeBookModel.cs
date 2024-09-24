@@ -1,5 +1,4 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Core.Enums;
 using OMS.Core.Models;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;

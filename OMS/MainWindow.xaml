@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
@@ -13,6 +14,7 @@
     xmlns:dxmvvmi="http://schemas.devexpress.com/winfx/2008/xaml/mvvm/internal"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:Views="clr-namespace:OMS.Main"
     xmlns:HomeViews="clr-namespace:OMS.Home"
@@ -25,7 +27,37 @@
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
     Width="1600" Height="900">
-    
+
+    <dx:ThemedWindow.Resources>
+        <ControlTemplate x:Key="ThemedWindowHeaderTemplate"
+                     TargetType="{x:Type dx:ThemedWindowHeader}">
+            <Border x:Name="PART_HeaderRoot"
+                Background="{DynamicResource TitleBarBackground}">
+
+                <DockPanel x:Name="PART_HeaderDock"
+                       LastChildFill="True">
+                    <dx:ThemedWindowIcon x:Name="PART_WindowIcon"
+                                     DockPanel.Dock="Left"
+                                     Style="{DynamicResource {dxt:ThemedWindowThemeKey ResourceKey=WindowIconStyle}}" />
+                    <dx:ThemedWindowControlBoxBorder x:Name="PART_HeaderItemsAndButtons"
+                                                 DockPanel.Dock="Right"
+                                                 UseLayoutRounding="True" />
+                    <dx:ThemedWindowTitle x:Name="PART_WindowTitle"
+                                          Foreground="{DynamicResource TitleBarForeground}"
+                                          VerticalAlignment="Center"
+                                          Content="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}"
+                                          TitleAlignment="{Binding Path=TitleAlignment, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}" />
+                </DockPanel>
+            </Border>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type dx:ThemedWindowHeader}">
+            <Setter Property="Template"
+                Value="{StaticResource ThemedWindowHeaderTemplate}" />
+        </Style>
+
+    </dx:ThemedWindow.Resources>
+
     <!-- Header Items: Icon with Popup -->
     <dx:ThemedWindow.HeaderItems>
         <dx:HeaderItemControl Click="InfoIcon_Click">
@@ -136,7 +168,7 @@
                 <dxr:RibbonPage Caption="Options">
                     <dxr:RibbonPageGroup >
                         <dxb:BarButtonItem Content="Profile" 
-                           Command="{Binding PortfolioCommand}" 
+                           Command="{Binding ProfileCommand}" 
                            LargeGlyph="{dx:FontIconSource Glyph=59259}"
                            Glyph="{dx:FontIconSource Glyph=59259}"/>
                     </dxr:RibbonPageGroup>
@@ -192,6 +224,28 @@
                                             AllowSizing="False"
                                             IsActive="True">
                             <HomeViews:DashboardView/>
+                        </dxdo:DocumentPanel>
+                        <dxdo:DocumentPanel Name="TestPanel">
+                            <StackPanel>
+                                <Button Content="Change Theme" 
+                                        Background="{DynamicResource ButtonBackground}"
+                                        Foreground="{DynamicResource ButtonForeground}"
+                                        FontFamily="{DynamicResource FontFamily}"
+                                        FontSize="{DynamicResource FontSize}"
+                                        FontWeight="{DynamicResource FontWeight}" 
+                                        Click="ChangeTheme"/>
+                                <TextBlock Text="Hello, World!"
+                                           Background="{DynamicResource TextBackground}"
+                                           Foreground="{DynamicResource TextForeground}"
+                                           FontSize="{DynamicResource FontSize}"
+                                           FontFamily="{DynamicResource FontFamily}"
+                                           FontWeight="{DynamicResource FontWeight}" />
+                                <TextBox Background="{DynamicResource TextBoxBackground}"
+                                         Foreground="{DynamicResource TextBoxForeground}"
+                                         FontSize="{DynamicResource FontSize}"
+                                         FontFamily="{DynamicResource FontFamily}"
+                                         FontWeight="{DynamicResource FontWeight}"/>
+                            </StackPanel>
                         </dxdo:DocumentPanel>
 
                     </dxdo:DocumentGroup>

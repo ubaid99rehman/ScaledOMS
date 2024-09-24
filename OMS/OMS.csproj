@@ -92,19 +92,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppServiceProvider.cs" />
-    <Compile Include="BootStrapper.cs" />
-    <Compile Include="ContextMenuHelper.cs" />
-    <Compile Include="ContextMenuResource.xaml.cs">
-      <DependentUpon>ContextMenuResource.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Helpers\AppThemeHelper.cs" />
+    <Compile Include="Helpers\BootStrapper.cs" />
+    <Compile Include="Helpers\ContextMenuHelper.cs" />
     <Compile Include="Home\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home\StockMarketView.xaml.cs">
       <DependentUpon>StockMarketView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IBootStrapper.cs" />
-    <Compile Include="IContextMenuHelper.cs" />
+    <Compile Include="Helpers\IBootStrapper.cs" />
+    <Compile Include="Helpers\IContextMenuHelper.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -138,16 +136,13 @@
     <Compile Include="Stocks\StockChart.xaml.cs">
       <DependentUpon>StockChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\AppThemeHelper.cs" />
     <Compile Include="Trade\TradeBookView.xaml.cs">
       <DependentUpon>TradeBookView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Trade\TradeHistory.xaml.cs">
       <DependentUpon>TradeHistory.xaml</DependentUpon>
     </Compile>
-    <Page Include="ContextMenuResource.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Home\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -238,6 +233,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Themes\Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Page Include="Trade\TradeBookView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -286,6 +286,10 @@
     <ProjectReference Include="..\OMS.Cache\OMS.Cache.csproj">
       <Project>{F4C20452-5773-4AF7-B0B7-0C00D89CECFA}</Project>
       <Name>OMS.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
+      <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>
+      <Name>OMS.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
       <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>

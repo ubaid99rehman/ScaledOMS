@@ -1,12 +1,11 @@
 ﻿using OMS.Core.Models;
 using OMS.Helpers;
-using OMS.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using OMS.DataAccess.Repositories.AppRepositories;
-using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 
 namespace OMS.SqlData.Repositories
 {

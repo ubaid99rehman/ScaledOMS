@@ -1,5 +1,5 @@
 ﻿using DevExpress.Xpf.Charts;
-using OMS.Common.Enums;
+using OMS.Enums;
 using System;
 
 namespace OMS.Common.Helper

@@ -1,8 +1,8 @@
-﻿using OMS.Common.Enums;
-using OMS.Common.Helper;
+﻿using OMS.Common.Helper;
 using OMS.Core.Models;
 using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

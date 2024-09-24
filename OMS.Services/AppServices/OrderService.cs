@@ -1,18 +1,13 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Core.Core.Models.User;
-using OMS.Core.Enums;
 using OMS.Core.Models;
-using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.Cache;
-using OMS.DataAccess.Repositories;
 using OMS.DataAccess.Repositories.AppRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Security.Policy;
-using System.Xml.Serialization;
 
 namespace OMS.Services.AppServices
 {

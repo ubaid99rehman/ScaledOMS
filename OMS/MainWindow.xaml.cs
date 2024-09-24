@@ -1,13 +1,11 @@
 ﻿using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using Microsoft.Extensions.DependencyInjection;
-using OMS.Cache;
 using OMS.Core.Services.Cache;
 using OMS.Logging;
 using OMS.Orders;
 using OMS.ViewModels;
 using System.Configuration;
-using System.IO;
 using System.Windows;
 
 namespace OMS
@@ -16,6 +14,7 @@ namespace OMS
     {
         IBootStrapper BootStrapper;
         ICacheService CacheService;
+        private string theme = "Dark";
 
         private string layoutFilePath;
 
@@ -78,6 +77,10 @@ namespace OMS
             {
                 model.RestoreOpenedDocumentsState();
             }
+        }
+
+        private void ChangeTheme(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

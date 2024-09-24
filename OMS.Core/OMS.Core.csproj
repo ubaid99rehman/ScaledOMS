@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Core.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,10 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\Criteria.cs" />
-    <Compile Include="Enums\MeasureUnit.cs" />
-    <Compile Include="Enums\OrderStatus.cs" />
-    <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\AppTime.cs" />
     <Compile Include="Models\BaseModel.cs" />
@@ -57,6 +54,7 @@
     <Compile Include="Models\Stocks\Stock.cs" />
     <Compile Include="Models\Stocks\StockDetail.cs" />
     <Compile Include="Models\Stocks\StockTradingData.cs" />
+    <Compile Include="Models\Themes\ThemeModel.cs" />
     <Compile Include="Models\Trade\Trade.cs" />
     <Compile Include="Models\User\SessionInfo.cs" />
     <Compile Include="Models\User\User.cs" />

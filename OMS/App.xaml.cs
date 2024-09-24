@@ -1,6 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 using Microsoft.Extensions.DependencyInjection;
-
+using OMS.Helpers;
 using System.Windows;
 
 namespace OMS
@@ -9,10 +9,10 @@ namespace OMS
     {
         public App()
         {
-            CompatibilitySettings.AllowThemePreload = true;
             CompatibilitySettings.UseLightweightThemes = true;
-            ApplicationThemeHelper.ApplicationThemeName = Theme.Office2013DarkGrayFullName;
-            ApplicationThemeHelper.Preload(PreloadCategories.Charts,
+            CompatibilitySettings.AllowThemePreload = true;
+            ApplicationThemeHelper.Preload(PreloadCategories.Core,
+                PreloadCategories.Charts,
                 PreloadCategories.Controls,
                 PreloadCategories.Docking,
                 PreloadCategories.Grid,
@@ -22,6 +22,11 @@ namespace OMS
         
         protected override void OnStartup(StartupEventArgs e)
         {
+            var theme = AppThemeHelper.GetAppliedTheme();
+            if(theme != null)
+            {
+                AppThemeHelper.ChangeTheme(theme);
+            }
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);

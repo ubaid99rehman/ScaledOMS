@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OMS.Core.Core.Enums
+namespace OMS.Enums
 {
-    public enum Criteria
+    public enum OrderStatus
     {
-        Account,
-        Company,
-        Stock,
-        User,
-        None
+        New = 1,
+        Fulfilled = 2,
+        Cancelled = 3
     }
 }

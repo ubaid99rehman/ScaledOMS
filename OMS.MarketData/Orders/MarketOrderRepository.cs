@@ -1,11 +1,8 @@
-﻿using OMS.Core.Enums;
-using OMS.Core.Models;
-using OMS.Core.Services.MarketServices;
-using OMS.DataAccess.Repositories;
+﻿using OMS.Core.Models;
 using OMS.DataAccess.Repositories.MarketRepositories;
+using OMS.Enums;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace OMS.MarketData.Stocks
