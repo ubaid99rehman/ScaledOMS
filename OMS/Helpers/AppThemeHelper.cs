@@ -68,7 +68,7 @@ namespace OMS.Helpers
 
             // Set fonts
             resourceDictionary["FontFamily"] = new FontFamily(ThemeModel.FontFamily.ToString());
-            resourceDictionary["FontWeight"] = GetFontWeight(ThemeModel.FontWeight);
+            resourceDictionary["FontWeight"] = ThemeModel.FontWeight;
             resourceDictionary["FontSize"] = GetFontSize(ThemeModel.FontSize);
 
             return resourceDictionary;
@@ -96,8 +96,8 @@ namespace OMS.Helpers
 
             // Set fonts
             resourceDictionary["PreviewFontFamily"] = new FontFamily(ThemeModel.FontFamily.ToString());
-            resourceDictionary["PreviewFontWeight"] = AppThemeHelper.GetFontWeight(ThemeModel.FontWeight);
-            resourceDictionary["PreviewFontSize"] = AppThemeHelper.GetFontSize(ThemeModel.FontSize);
+            resourceDictionary["PreviewFontWeight"] = ThemeModel.FontWeight;
+            resourceDictionary["PreviewFontSize"] = GetFontSize(ThemeModel.FontSize);
 
             return resourceDictionary;
         }

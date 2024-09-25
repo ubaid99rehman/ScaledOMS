@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using OMS.Logging;
 using System.Xml.Serialization;
+using System.Windows;
 
 namespace OMS.Services
 {
@@ -30,6 +31,8 @@ namespace OMS.Services
 
         public ThemeModel GetAppliedTheme()
         {
+            var fontWeightConverter = new FontWeightConverter();
+            var fontWeight = fontWeightConverter.ConvertFromString(ConfigurationManager.AppSettings["FontFamily"].ToString() ?? "Normal");
             return new ThemeModel
             {
                 ThemeName = ConfigurationManager.AppSettings["ThemeName"],
@@ -42,7 +45,7 @@ namespace OMS.Services
                 TitleBarBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarBackground"])),
                 TitleBarForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarForeground"])),
                 FontFamily = (FontFamilyEnum)Enum.Parse(typeof(FontFamilyEnum), ConfigurationManager.AppSettings["FontFamily"]),
-                FontWeight = (FontWeightEnum)Enum.Parse(typeof(FontWeightEnum), ConfigurationManager.AppSettings["FontWeight"]),
+                FontWeight = (FontWeight)fontWeight,
                 FontSize = (FontSizeEnum)Enum.Parse(typeof(FontSizeEnum), ConfigurationManager.AppSettings["FontSize"])
             };
         }
@@ -125,10 +128,12 @@ namespace OMS.Services
             var titleBarBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TitleBarBackground")?.Value);
             var titleBarForeground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TitleBarForeground")?.Value);
             var fontFamily = (FontFamilyEnum)Enum.Parse(typeof(FontFamilyEnum), xmlDoc.Root.Element("FontFamily")?.Value ?? "Calibri");
-            var fontWeight = (FontWeightEnum)Enum.Parse(typeof(FontWeightEnum), xmlDoc.Root.Element("FontWeight")?.Value ?? "Normal");
+            var fontWeightConverter = new FontWeightConverter();
+            var fontWeight = (FontWeight)fontWeightConverter.ConvertFromString(xmlDoc.Root.Element("FontWeight")?.Value ?? "Normal");
+
             var fontSize = (FontSizeEnum)Enum.Parse(typeof(FontSizeEnum), xmlDoc.Root.Element("FontSize")?.Value ?? "Normal");
 
-            var model = new ThemeModel(themeName, textBackground, textForeground, textBoxBackground, textBoxForeground, buttonBackground, buttonForeground, titleBarBackground, titleBarForeground, fontFamily, fontWeight, fontSize);
+            var model = new ThemeModel(fontWeight, themeName, textBackground, textForeground, textBoxBackground, textBoxForeground, buttonBackground, buttonForeground, titleBarBackground, titleBarForeground, fontFamily, fontSize );
             return model;
         }
 
