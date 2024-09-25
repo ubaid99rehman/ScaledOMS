@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="OMS.Settings.AppearanceView"
+﻿<UserControl xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  xmlns:my="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"  x:Class="OMS.Settings.AppearanceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,48 +7,179 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
         <Grid>
-            <!-- Main layout for full-screen design -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!-- Header row -->
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <!-- Content row -->
             </Grid.RowDefinitions>
 
             <!-- Header with ComboBox and buttons -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
-                <!-- ComboBox for selecting available themes -->
-                <ComboBox x:Name="ThemeComboBox" Width="200" DisplayMemberPath="Name" SelectionChanged="ThemeComboBox_SelectionChanged" />
-
-                <!-- Button to browse for a new theme file -->
-                <Button Content="Browse Theme" Width="120" Margin="10,0,0,0" Click="BrowseTheme_Click" />
-
-                <!-- Button to create a new custom theme -->
-                <Button Content="Create New Theme" Width="150" Margin="10,0,0,0" Click="CreateNewTheme_Click" />
-
-                <!-- Button to apply the selected theme -->
-                <Button Content="Apply Theme" Width="120" Margin="10,0,0,0" Click="ApplyTheme_Click" />
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <ComboBox x:Name="ThemeComboBox" Width="150" 
+                              ItemsSource="{Binding Themes}" 
+                              SelectedItem="{Binding ThemeName}"/>
+                
+                <Button Content="Apply Theme" 
+                            Width="150" Margin="10,0,0,0" 
+                            Click="ApplyTheme_Click" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20 10 10 10">
+                    <TextBlock Text="Current Applied Theme : " FontWeight="Bold" />
+                    <TextBlock Text="{Binding AppliedThemeName}"/>
+                </StackPanel>
             </StackPanel>
 
-            <!-- Preview section to show how the theme will look -->
-            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="10">
-                <StackPanel Margin="10">
-                  
-                    <!-- Sample text block for preview -->
-                    <TextBlock x:Name="PreviewTextBlock" Grid.Row="0" Text="Sample TextBlock Preview" FontSize="16" 
-                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
-
-                    <!-- Sample button for preview -->
-                    <Button x:Name="PreviewButton" Grid.Row="1" Content="Sample Button Preview" Width="150" 
-                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
-
-                    <!-- Add other UI elements for preview as needed -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Name="PreviewFontSizeBox" Text="Sample Text"  Width="150" HorizontalAlignment="Center" />
+            <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--New Theme Form-->
+            <GroupBox Header="Theme" Margin="50 20 0 20">
+                <StackPanel>
+                    <TextBlock Text="Create New Theme" FontWeight="Bold" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontSize="16" Margin="0,0,0,20" />
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="Theme Name:" />
+                        <TextBox Text="{Binding SelectedTheme.ThemeName}" Width="150"/>
                     </StackPanel>
+                    <!--TextBox-->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="TextBox Background:"/>
+                        <dxe:PopupColorEdit Name="TextBoxBackground" EditValue="{Binding TextBoxBackground, Mode=TwoWay}"  Width="150" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="TextBox Foreground:"/>
+                        <dxe:PopupColorEdit Name="TextBoxForeground" EditValue="{Binding TextBoxForeground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    
+                    <!--Text-->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="Text Background:"/>
+                        <dxe:PopupColorEdit Name="TextBackground" EditValue="{Binding TextBackground, Mode=TwoWay}" ColorChanged="TextBackground_ColorChanged" Width="150" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="Text Foreground:"/>
+                        <dxe:PopupColorEdit Name="TextForeground" EditValue="{Binding TextForeground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    
+                    <!--Button-->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Left" Content="Button Background:"/>
+                        <dxe:PopupColorEdit Name="ButtonBackground" HorizontalAlignment="Left" EditValue="{Binding ButtonBackground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="Button Foreground:"/>
+                        <dxe:PopupColorEdit Name="ButtonForeground" EditValue="{Binding ButtonForeground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    
+                    <!--Title Bar-->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Left" Content="TitleBar Background:"/>
+                        <dxe:PopupColorEdit Name="TitleBarBackground" HorizontalAlignment="Left" EditValue="{Binding TitleBarBackground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="TitleBar Foreground:"/>
+                        <dxe:PopupColorEdit Name="TitleBarForeground" EditValue="{Binding TitleBarForeground, Mode=TwoWay}" Width="150" />
+                    </StackPanel>
+                    
+                    <!--Font-->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Left" Content="Font Family:"/>
+                        <ComboBox Name="FontFamily" HorizontalAlignment="Left" 
+                                  ItemsSource="{Binding FontFamilyOptions}" SelectedItem="{Binding SelectedTheme.FontFamily}" Width="150"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Left" Content="Font Size:"/>
+                        <ComboBox Name="FontSize" HorizontalAlignment="Left" 
+                                  ItemsSource="{Binding FontSizeOptions}" SelectedItem="{Binding SelectedTheme.FontSize}" Width="150"/>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Left" Content="Font Weight:"/>
+                        <ComboBox Name="FontWeight" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding FontWeightOptions}" SelectedItem="{Binding SelectedTheme.FontWeight}" Width="150"/>
+                    </StackPanel>
+                    
+                    <!-- Save Button-->
+                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                        <Button Content="Add Theme" Width="100" Margin="10,0,0,0" 
+                                HorizontalAlignment="Center"
+                                Click="Add_Theme_Click"/>
+                    </StackPanel>
+            </StackPanel>
+            </GroupBox>
+            
+            <!--Section to show how the theme will look -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <GroupBox Header="Preview Theme" Margin="20">
+                    <StackPanel Margin="10" Background="{DynamicResource ScreenBackground}" >
+                        <TextBlock x:Name="PreviewTitleBar" Text="Window Title Bar Preview" Margin="10"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Padding="10"
+                                   Background="{Binding SelectedTheme.TitleBarBackground}"
+                                   Foreground="{Binding SelectedTheme.TitleBarForeground}"
+                                   TextAlignment="Center" />
+                        <TextBlock x:Name="PreviewThemeTextBlock" Text="Sample TextBlock Preview" Margin="10"
+                                   FontSize="{Binding SelectedTheme.FormattedFontSize}" 
+                                   FontFamily="{Binding SelectedTheme.FontFamily}"
+                                   FontWeight="{Binding SelectedTheme.FormattedFontWeight}"
+                                   Background="{Binding SelectedTheme.TextBackground}"
+                                   Foreground="{Binding SelectedTheme.TextForeground}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                        <TextBox x:Name="PreviewThemeFontSizeBox" Text="Sample Text"  
+                                 Width="150" HorizontalAlignment="Center"
+                                 FontSize="{Binding SelectedTheme.FormattedFontSize}" 
+                                 FontFamily="{Binding SelectedTheme.FontFamily}"
+                                 FontWeight="{Binding SelectedTheme.FormattedFontWeight}"
+                                 Background="{Binding SelectedTheme.TextBoxBackground}"
+                                 Foreground="{Binding SelectedTheme.TextBoxForeground}"
+                                 />
+                        <Button x:Name="PreviewhemeButton" Margin="10" Width="150"
+                                Content="Sample Button Preview"  
+                                Background="{Binding SelectedTheme.ButtonBackground}"
+                                Foreground="{Binding SelectedTheme.ButtonForeground}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Current Applied Theme" Margin="20">
+                    <StackPanel Margin="10" Background="{DynamicResource ScreenBackground}" >
+                        <TextBlock x:Name="CurrentThemeTitleBar" Text="Window Title Bar Preview" Margin="10"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Padding="10"
+                                   Background="{DynamicResource TitleBarBackground}"
+                                   Foreground="{DynamicResource TitleBarForeground}"
+                                   TextAlignment="Center" />
+                        <TextBlock x:Name="CurrentThemeTextBlock" Text="Sample TextBlock Preview" Margin="10"
+                                   FontSize="{DynamicResource FontSize}" 
+                                   FontFamily="{DynamicResource FontFamily}"
+                                   FontWeight="{DynamicResource FontWeight}"
+                                   Background="{DynamicResource TextBackground}"
+                                   Foreground="{DynamicResource TextForeground}"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                        <TextBox x:Name="CurrentThemePreviewFontSizeBox" 
+                                 FontSize="{DynamicResource FontSize}" 
+                                 FontFamily="{DynamicResource FontFamily}"
+                                 FontWeight="{DynamicResource FontWeight}"
+                                 Background="{DynamicResource TextBoxBackground}"
+                                 Foreground="{DynamicResource TextBoxForeground}"
+                                 Text="Sample Text"  Width="150" HorizontalAlignment="Center" />
+                        <Button x:Name="CurrentThemePreviewButton" Margin="10" Width="150"
+                                Content="Sample Button Preview"  
+                                Background="{DynamicResource ButtonBackground}"
+                                Foreground="{DynamicResource ButtonForeground}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
-            </Border>
+                </GroupBox>
+            </StackPanel>
         </Grid>
-
-
+    </Grid>
 </UserControl>

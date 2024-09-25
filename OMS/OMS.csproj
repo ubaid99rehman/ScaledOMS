@@ -91,7 +91,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AppServiceProvider.cs" />
+    <Compile Include="Helpers\AppServiceProvider.cs" />
     <Compile Include="Helpers\AppThemeHelper.cs" />
     <Compile Include="Helpers\BootStrapper.cs" />
     <Compile Include="Helpers\ContextMenuHelper.cs" />
@@ -136,7 +136,6 @@
     <Compile Include="Stocks\StockChart.xaml.cs">
       <DependentUpon>StockChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Themes\AppThemeHelper.cs" />
     <Compile Include="Trade\TradeBookView.xaml.cs">
       <DependentUpon>TradeBookView.xaml</DependentUpon>
     </Compile>
@@ -233,11 +232,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Resource Include="Themes\Theme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Page Include="Trade\TradeBookView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -274,7 +268,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

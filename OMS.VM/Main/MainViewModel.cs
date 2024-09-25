@@ -14,16 +14,20 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OMS.ViewModels
 {
     public partial class MainViewModel : ViewModelBase
     {
+        private string fileName;
+        private bool screenLoaded;
+
         [ServiceProperty(Key = "documentManagerService")]
         public virtual IDocumentManagerService DocumentManagerService
-        { 
-            get{ return GetService<IDocumentManagerService>(); } 
+        {
+            get { return GetService<IDocumentManagerService>(); }
         }
 
         public IAppTimerService AppTimerService { get; }
@@ -36,7 +40,7 @@ namespace OMS.ViewModels
         }
 
         #region Bindable Props
-        public AppTime CurrentTime 
+        public AppTime CurrentTime
         {
             get { return AppTimerService.GetCurrentDateTime(); }
         }
@@ -67,20 +71,22 @@ namespace OMS.ViewModels
             {
                 SetProperty(ref _isLoadingScreen, value, nameof(IsLoadingScreen));
             }
-        } 
+        }
         #endregion
 
         #region Constructor
-        public MainViewModel(IAppTimerService timerService, 
+        public MainViewModel(IAppTimerService timerService,
             IOrderService orderService, IAccountService accountService,
             IStockDataService stockDataService)
         {
+            fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
+            screenLoaded = false;
             AppTimerService = timerService;
             AppTimerService.StartSession();
             Title = "OMS";
             IsPopupOpen = false;
-            NewOrderModel = new AddOrderModel(orderService,stockDataService,accountService);
-        } 
+            NewOrderModel = new AddOrderModel(orderService, stockDataService, accountService);
+        }
         #endregion
 
         #region Loading Decorator Methods
@@ -155,13 +161,13 @@ namespace OMS.ViewModels
         {
             AddView("ProfileView", "Profile");
         }
-        
+
         [Command]
         public void Appearance()
         {
             AddView("AppearanceView", "Appearance");
         }
-        
+
         [Command]
         public void OnViewLoaded()
         {
@@ -181,7 +187,7 @@ namespace OMS.ViewModels
         private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
         {
             Title = (string)e.NewDocument?.Title ?? "HOME";
-        } 
+        }
         #endregion
 
         public void AddView(string view, string title)
@@ -197,27 +203,29 @@ namespace OMS.ViewModels
             document.Show();
             Title = title;
             Navigated();
+            if(screenLoaded)
+            {
+                SaveOpenedDocumentsState();
+            }
         }
 
         public IEnumerable<IDocument> GetOpenedDocuments()
         {
-            var document = DocumentManagerService.Documents.FirstOrDefault();
             return DocumentManagerService.Documents;
-             
         }
 
         public void SaveOpenedDocumentsState()
         {
-            string fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
-            var documentStates = GetOpenedDocuments().Select(doc => 
-            new DocumentState { 
-                ViewType = ((DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document) doc).DocumentType,
-                Title = doc.Title.ToString() }).ToList();
-
+            var documentStates = GetOpenedDocuments().Select(doc =>
+            new DocumentState
+            {
+                ViewType = ((DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document)doc).DocumentType,
+                Title = doc.Title.ToString()
+            }).ToList();
             var serializer = new XmlSerializer(typeof(List<DocumentState>));
             using (var writer = new StreamWriter(fileName))
             {
-                serializer.Serialize(writer, documentStates);
+               serializer.Serialize(writer, documentStates);
             }
         }
 
@@ -228,16 +236,22 @@ namespace OMS.ViewModels
             if (File.Exists(fileName))
             {
                 var serializer = new XmlSerializer(typeof(List<DocumentState>));
+                List<DocumentState> documentStates = new List<DocumentState>();
                 using (var reader = new StreamReader(fileName))
                 {
-                    var savedDocuments = (List<DocumentState>)serializer.Deserialize(reader);
-                    foreach (var doc in savedDocuments)
+                    documentStates = (List<DocumentState>)serializer.Deserialize(reader);
+                }
+                if(documentStates != null && documentStates.Count >=1)
+                {
+                    foreach (var doc in documentStates)
                     {
                         AddView(doc.ViewType, doc.Title);
                     }
                 }
             }
+            screenLoaded = true;
         }
+
     }
     public class DocumentState
     {
@@ -246,3 +260,4 @@ namespace OMS.ViewModels
         public string ViewType { get; set; }
     }
 }
+    

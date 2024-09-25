@@ -1,4 +1,5 @@
 ﻿using OMS.Enums;
+using System.Windows;
 using System.Windows.Media;
 
 namespace OMS.Core.Models.Themes
@@ -17,6 +18,8 @@ namespace OMS.Core.Models.Themes
         private FontFamilyEnum _fontFamily;
         private FontWeightEnum _fontWeight;
         private FontSizeEnum _fontSize;
+
+        public FontWeight formattedFont;
 
         public ThemeModel()
         {
@@ -59,6 +62,7 @@ namespace OMS.Core.Models.Themes
             FontFamily = fontFamily;
             FontWeight = fontWeight;
             FontSize = fontSize;
+            formattedFont = FontWeights.UltraBold;
         }
 
         public string ThemeName
@@ -140,6 +144,51 @@ namespace OMS.Core.Models.Themes
         {
             get => _fontSize;
             set => SetProperty(ref _fontSize, value, nameof(FontSize));
+        }
+
+        public double FormattedFontSize
+        {
+            get
+            {
+                switch (FontSize)
+                {
+                    case FontSizeEnum.Normal:
+                        return 12;
+                    case FontSizeEnum.Small:
+                        return 8.0;
+                    case FontSizeEnum.Large:
+                        return 16.0;
+                    case FontSizeEnum.ExtraLarge:
+                        return 20.0;
+                    default:
+                        return 12.0;
+                };
+            }
+        }
+
+        public FontWeight FormattedFontWeight
+        {
+            get
+            {
+                switch (FontWeight)
+                {
+                    case FontWeightEnum.Black: return FontWeights.Black;
+                    case FontWeightEnum.Bold: return FontWeights.Bold;
+                    case FontWeightEnum.ExtraBlack: return FontWeights.ExtraBlack;
+                    case FontWeightEnum.ExtraLight: return FontWeights.ExtraLight;
+                    case FontWeightEnum.ExtraBold: return FontWeights.ExtraBold;
+                    case FontWeightEnum.Heavy: return FontWeights.Heavy;
+                    case FontWeightEnum.Light: return FontWeights.Light;
+                    case FontWeightEnum.Medium: return FontWeights.Medium;
+                    case FontWeightEnum.Normal: return FontWeights.Normal;
+                    case FontWeightEnum.Regular: return FontWeights.Regular;
+                    case FontWeightEnum.SemiBold: return FontWeights.SemiBold;
+                    case FontWeightEnum.UltraBold: return FontWeights.UltraBold;
+                    case FontWeightEnum.UltraBlack: return FontWeights.UltraBlack;
+                    case FontWeightEnum.UltraLight: return FontWeights.UltraLight;
+                    default: return FontWeights.Normal;
+                };
+            }
         }
     }
 

@@ -33,7 +33,9 @@
   <ItemGroup>
     <Reference Include="DevExpress.Mvvm.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.Core.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +52,7 @@
     <Compile Include="AppServices\OrderService.cs" />
     <Compile Include="AppServices\RealtimeServices\SessionInfoService.cs" />
     <Compile Include="AppServices\UserService.cs" />
+    <Compile Include="AppServices\AppThemeService.cs" />
     <Compile Include="MarketServices\RealtimeServices\MarketOrderService.cs" />
     <Compile Include="MarketServices\RealtimeServices\MarketTradeService.cs" />
     <Compile Include="MarketServices\RealtimeServices\StockDataService.cs" />
@@ -69,6 +72,10 @@
     <ProjectReference Include="..\OMS.DataAccess\OMS.DataAccess.csproj">
       <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
       <Name>OMS.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Logging\OMS.Logging.csproj">
+      <Project>{3EB2D030-F27E-4B38-952F-29229F345068}</Project>
+      <Name>OMS.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

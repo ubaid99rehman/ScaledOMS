@@ -1,5 +1,9 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.Extensions.DependencyInjection;
 using OMS.Core.Models.Themes;
+using OMS.Core.Services.AppServices;
+using OMS.Helpers;
+using OMS.Services;
+using OMS.VM.Settings;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,8 +20,7 @@ namespace OMS.Settings
         public AppearanceView()
         {
             InitializeComponent();
-            themeDirectory = System.Configuration.ConfigurationManager.AppSettings["ThemeDirectory"];
-            LoadThemes();
+            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AppThemeModel>();
         }
 
         private void LoadThemes()
@@ -50,71 +53,53 @@ namespace OMS.Settings
 
         private void ApplyTheme(ThemeModel theme)
         {
-            //PreviewTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.Foreground));
-            //PreviewButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(theme.BarColor));
-            //PreviewFontSizeBox.Text = theme.FontSize.ToString();
-        }
-        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ThemeComboBox.SelectedItem is ThemeModel selectedTheme)
-            {
-                ApplyTheme(selectedTheme);
-            }
-        }
 
-        private void BrowseTheme_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "XML Files (*.xml)|*.xml";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                var theme = LoadTheme(openFileDialog.FileName);
-                themes.Add(theme);
-                ThemeComboBox.Items.Refresh(); 
-            }
         }
-
+        
         private void CreateNewTheme_Click(object sender, RoutedEventArgs e)
         {
-            //var newTheme = new ThemeModel
-            //{
-            //    Name = "UserTheme", // Get user input
-            //    Foreground = "Black", // Get user input
-            //    Background = "White", // Get user input
-            //    FontSize = 14, // Get user input
-            //    BarColor = "Gray", // Get user input
-            //    WindowColor = "LightGray" // Get user input
-            //};
-
-            //SaveTheme(newTheme);
-            //LoadThemes(); 
+           
         }
 
         private void SaveTheme(ThemeModel theme)
         {
-            //string filePath = System.IO.Path.Combine(themeDirectory, $"{theme.Name}.xml");
-            //XDocument doc = new XDocument(
-            //    new XElement("Theme",
-            //        new XElement("Name", theme.Name),
-            //        new XElement("Foreground", theme.Foreground),
-            //        new XElement("Background", theme.Background),
-            //        new XElement("FontSize", theme.FontSize),
-            //        new XElement("BarColor", theme.BarColor),
-            //        new XElement("WindowColor", theme.WindowColor)
-            //    ));
 
-            //doc.Save(filePath);
         }
 
         private void ApplyTheme_Click(object sender, RoutedEventArgs e)
         {
-            //if (ThemeComboBox.SelectedItem is ThemeModel selectedTheme)
-            //{
-            //    Application.Current.Resources["Foreground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(selectedTheme.Foreground));
-            //    Application.Current.Resources["Background"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(selectedTheme.Background));
-            //    Application.Current.Resources["BarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(selectedTheme.BarColor));
-            //    Application.Current.Resources["WindowColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(selectedTheme.WindowColor));
-            //}
+            if(DataContext is AppThemeModel model)
+            {
+                var theme = model.GetSelectedTheme();
+                AppThemeHelper.ChangeTheme(theme);
+                model.SaveAppliedTheme();
+            }
+        }
+
+        private void TextBackground_ColorChanged(object sender, RoutedEventArgs e)
+        {
+            var color = TextBackground.Color;
+            var themeColor = ((AppThemeModel)DataContext).SelectedTheme.TextBackground;
+            if (color != null)
+            {
+                ((AppThemeModel)DataContext).SelectedTheme.TextBackground = new System.Windows.Media.SolidColorBrush(color);
+            }
+        }
+
+        private void Add_Theme_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is AppThemeModel model)
+            {
+                bool isAdded = model.SaveTheme(out string message);
+                if(isAdded)
+                {
+                    MessageBox.Show(message,"Theme Added",MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Error while Adding theme. "+message,"Error",MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

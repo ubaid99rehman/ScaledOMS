@@ -1,5 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 using Microsoft.Extensions.DependencyInjection;
+using OMS.Core.Services.AppServices;
 using OMS.Helpers;
 using System.Windows;
 
@@ -22,13 +23,18 @@ namespace OMS
         
         protected override void OnStartup(StartupEventArgs e)
         {
-            var theme = AppThemeHelper.GetAppliedTheme();
-            if(theme != null)
+            //Applying Theme
+            var themeService = AppServiceProvider.GetServiceProvider().GetRequiredService<IAppThemeService>();
+            var theme = themeService.GetAppliedTheme();
+            if (theme != null)
             {
                 AppThemeHelper.ChangeTheme(theme);
             }
+
+            //Displaying Window
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();
+
             base.OnStartup(e);
         }
     }

@@ -225,29 +225,6 @@
                                             IsActive="True">
                             <HomeViews:DashboardView/>
                         </dxdo:DocumentPanel>
-                        <dxdo:DocumentPanel Name="TestPanel">
-                            <StackPanel>
-                                <Button Content="Change Theme" 
-                                        Background="{DynamicResource ButtonBackground}"
-                                        Foreground="{DynamicResource ButtonForeground}"
-                                        FontFamily="{DynamicResource FontFamily}"
-                                        FontSize="{DynamicResource FontSize}"
-                                        FontWeight="{DynamicResource FontWeight}" 
-                                        Click="ChangeTheme"/>
-                                <TextBlock Text="Hello, World!"
-                                           Background="{DynamicResource TextBackground}"
-                                           Foreground="{DynamicResource TextForeground}"
-                                           FontSize="{DynamicResource FontSize}"
-                                           FontFamily="{DynamicResource FontFamily}"
-                                           FontWeight="{DynamicResource FontWeight}" />
-                                <TextBox Background="{DynamicResource TextBoxBackground}"
-                                         Foreground="{DynamicResource TextBoxForeground}"
-                                         FontSize="{DynamicResource FontSize}"
-                                         FontFamily="{DynamicResource FontFamily}"
-                                         FontWeight="{DynamicResource FontWeight}"/>
-                            </StackPanel>
-                        </dxdo:DocumentPanel>
-
                     </dxdo:DocumentGroup>
                 </dxdo:LayoutGroup>
             </dxdo:DockLayoutManager>

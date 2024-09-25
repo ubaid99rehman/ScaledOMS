@@ -14,6 +14,8 @@ using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.DataAccess.Repositories.AppRepositories;
 using OMS.Services.MarketServices.RealtimeServices;
 using OMS.VM.Trades;
+using OMS.Services;
+using OMS.VM.Settings;
 
 namespace OMS
 {
@@ -61,7 +63,7 @@ namespace OMS
             services.AddSingleton<IAppTimerService, AppTimerService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IAccountService, AccountService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddTransient<IAuthService, AuthService>();
             
             //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
@@ -69,26 +71,26 @@ namespace OMS
             services.AddSingleton<IMarketTradeService, MarketTradeService>();
             services.AddSingleton<IMarketOrderService, MarketOrderService>();
             services.AddSingleton<IBootStrapper, BootStrapper>();
+            services.AddSingleton<IAppThemeService, AppThemeService>();
             #endregion
 
             #region ViewModels
-            //Loading
+            //App
+            services.AddSingleton<AppThemeModel>();
             services.AddSingleton<LoadingViewModel>();
+            services.AddSingleton<InformationPanelViewModel>();
+            services.AddSingleton<MainViewModel>();
 
             //Orders
             services.AddSingleton<AddOrderModel>();
             services.AddTransient<OrderBookModel>();
             services.AddTransient<OrderModel>();
             services.AddSingleton<OrdersListModel>();
-            services.AddSingleton<OrderHistoryViewModel>();
-
-            //Main
-            services.AddSingleton<MainViewModel>();
-            services.AddSingleton<InformationPanelViewModel>();
+            services.AddTransient<OrderHistoryViewModel>();
 
             //Home
             services.AddTransient<StockMarketModel>();
-            services.AddSingleton<DashboardViewModel>();
+            services.AddTransient<DashboardViewModel>();
 
             //Trade
             services.AddSingleton<TradeViewModel>();
