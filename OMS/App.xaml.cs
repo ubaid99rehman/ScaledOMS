@@ -31,6 +31,7 @@ namespace OMS
                 AppThemeHelper.ChangeTheme(theme);
             }
 
+            ThemeManager.ApplicationThemeName = Theme.DeepBlueFullName;
             //Displaying Window
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();

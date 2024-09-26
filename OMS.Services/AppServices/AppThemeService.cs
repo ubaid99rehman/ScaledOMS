@@ -7,9 +7,7 @@ using System.IO;
 using System.Windows.Media;
 using OMS.Enums;
 using System;
-using System.Linq;
 using OMS.Logging;
-using System.Xml.Serialization;
 using System.Windows;
 
 namespace OMS.Services
@@ -28,25 +26,27 @@ namespace OMS.Services
             ThemeNames = new List<string>();
             LoadThemes();
         }
-
+          
         public ThemeModel GetAppliedTheme()
         {
             var fontWeightConverter = new FontWeightConverter();
-            var fontWeight = fontWeightConverter.ConvertFromString(ConfigurationManager.AppSettings["FontFamily"].ToString() ?? "Normal");
+            var fontWeight = ConfigurationManager.AppSettings["FontWeight"].ToString() ?? "Normal";
             return new ThemeModel
             {
                 ThemeName = ConfigurationManager.AppSettings["ThemeName"],
+                ScreenBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["ScreenBackground"])),
+                TitleBarBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarBackground"])),
+                TitleBarForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarForeground"])),
                 TextBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TextBackground"])),
                 TextForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TextForeground"])),
                 TextBoxBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TextBoxBackground"])),
                 TextBoxForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TextBoxForeground"])),
                 ButtonBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["ButtonBackground"])),
                 ButtonForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["ButtonForeground"])),
-                TitleBarBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarBackground"])),
-                TitleBarForeground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ConfigurationManager.AppSettings["TitleBarForeground"])),
+                ButtonBorderThickness =Double.Parse(ConfigurationManager.AppSettings["ButtonBorderThickness"]),
                 FontFamily = (FontFamilyEnum)Enum.Parse(typeof(FontFamilyEnum), ConfigurationManager.AppSettings["FontFamily"]),
-                FontWeight = (FontWeight)fontWeight,
-                FontSize = (FontSizeEnum)Enum.Parse(typeof(FontSizeEnum), ConfigurationManager.AppSettings["FontSize"])
+                FontSize = (FontSizeEnum)Enum.Parse(typeof(FontSizeEnum), ConfigurationManager.AppSettings["FontSize"]),
+                FontWeight = (FontWeight)fontWeightConverter.ConvertFromString(fontWeight)
             };
         }
 
@@ -54,6 +54,7 @@ namespace OMS.Services
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.Settings["ThemeName"].Value = theme.ThemeName;
+            config.AppSettings.Settings["ScreenBackground"].Value = theme.ScreenBackground.Color.ToString();
             config.AppSettings.Settings["TextBackground"].Value = theme.TextBackground.Color.ToString();
             config.AppSettings.Settings["TextForeground"].Value = theme.TextForeground.Color.ToString();
             config.AppSettings.Settings["TextBoxBackground"].Value = theme.TextBoxBackground.Color.ToString();
@@ -65,6 +66,7 @@ namespace OMS.Services
             config.AppSettings.Settings["FontFamily"].Value = theme.FontFamily.ToString();
             config.AppSettings.Settings["FontWeight"].Value = theme.FontWeight.ToString();
             config.AppSettings.Settings["FontSize"].Value = theme.FontSize.ToString();
+            config.AppSettings.Settings["ButtonBorderThickness"].Value = theme.ButtonBorderThickness.ToString();
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
@@ -90,17 +92,19 @@ namespace OMS.Services
                     new XDeclaration("1.0", "utf-8", "yes"),
                     new XElement("Theme",
                         new XElement("ThemeName", model.ThemeName),
+                        new XElement("ScreenBackground", model.ScreenBackground),
+                        new XElement("TitleBarBackground", model.TitleBarBackground),
+                        new XElement("TitleBarForeground", model.TitleBarForeground),
+                        new XElement("FontFamily", model.FontFamily.ToString()),
+                        new XElement("FontWeight", model.FontWeight.ToString()),
+                        new XElement("FontSize", model.FontSize.ToString()),
                         new XElement("TextBackground", model.TextBackground),
                         new XElement("TextForeground", model.TextForeground),
                         new XElement("TextBoxBackground", model.TextBoxBackground),
                         new XElement("TextBoxForeground", model.TextBoxForeground),
                         new XElement("ButtonBackground", model.ButtonBackground),
                         new XElement("ButtonForeground", model.ButtonForeground),
-                        new XElement("TitleBarBackground", model.TitleBarBackground),
-                        new XElement("TitleBarForeground", model.TitleBarForeground),
-                        new XElement("FontFamily", model.FontFamily.ToString()),
-                        new XElement("FontWeight", model.FontWeight.ToString()),
-                        new XElement("FontSize", model.FontSize.ToString())
+                        new XElement("ButtonBorderThickness", model.ButtonBorderThickness.ToString())
                     )
                 );
 
@@ -119,6 +123,7 @@ namespace OMS.Services
             var xmlDoc = XDocument.Load(themeFilePath);
 
             var themeName = xmlDoc.Root.Element("ThemeName")?.Value;
+            var screenBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("ScreenBackground")?.Value);
             var textBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TextBackground")?.Value);
             var textForeground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TextForeground")?.Value);
             var textBoxBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TextBoxBackground")?.Value);
@@ -130,10 +135,9 @@ namespace OMS.Services
             var fontFamily = (FontFamilyEnum)Enum.Parse(typeof(FontFamilyEnum), xmlDoc.Root.Element("FontFamily")?.Value ?? "Calibri");
             var fontWeightConverter = new FontWeightConverter();
             var fontWeight = (FontWeight)fontWeightConverter.ConvertFromString(xmlDoc.Root.Element("FontWeight")?.Value ?? "Normal");
-
             var fontSize = (FontSizeEnum)Enum.Parse(typeof(FontSizeEnum), xmlDoc.Root.Element("FontSize")?.Value ?? "Normal");
-
-            var model = new ThemeModel(fontWeight, themeName, textBackground, textForeground, textBoxBackground, textBoxForeground, buttonBackground, buttonForeground, titleBarBackground, titleBarForeground, fontFamily, fontSize );
+            var buttonBorderThickness = Double.Parse(xmlDoc.Root.Element("ButtonBorderThickness")?.Value ?? "1.0");
+            var model = new ThemeModel(fontWeight, themeName, screenBackground, textBackground, textForeground, textBoxBackground, textBoxForeground, buttonBackground, buttonForeground, titleBarBackground, titleBarForeground, fontFamily, fontSize, buttonBorderThickness);
             return model;
         }
 

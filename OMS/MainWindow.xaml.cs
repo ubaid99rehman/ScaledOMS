@@ -1,4 +1,5 @@
-﻿using DevExpress.Xpf.Core;
+﻿using DevExpress.Mvvm;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using Microsoft.Extensions.DependencyInjection;
 using OMS.Core.Services.Cache;
@@ -26,8 +27,8 @@ namespace OMS
 
             CacheService = cacheService;
             BootStrapper = bootStrapper;
-         
-            
+
+
             var model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
             this.DataContext = model;
@@ -45,11 +46,11 @@ namespace OMS
 
         private void NewOrder_Click(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            if(CacheService.ContainsKey("NewOrderWindowOpen"))
+            if (CacheService.ContainsKey("NewOrderWindowOpen"))
             {
                 bool isOpened = CacheService.Get<bool>("NewOrderWindowOpen");
-        
-                if(!isOpened)
+
+                if (!isOpened)
                 {
                     AddOrder windo = new AddOrder(CacheService);
                     windo.Show();
@@ -57,7 +58,7 @@ namespace OMS
             }
             else
             {
-                CacheService.Set("NewOrderWindowOpen",true);
+                CacheService.Set("NewOrderWindowOpen", true);
                 AddOrder windo = new AddOrder(CacheService);
                 windo.Show();
             }
@@ -73,7 +74,7 @@ namespace OMS
 
         private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if(this.DataContext is MainViewModel model)
+            if (this.DataContext is MainViewModel model)
             {
                 model.RestoreOpenedDocumentsState();
             }

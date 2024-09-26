@@ -50,9 +50,14 @@ namespace OMS.Helpers
         {
             var resourceDictionary = new ResourceDictionary();
 
+            //Screen
+            resourceDictionary["ScreenBackground"] = ThemeModel.ScreenBackground;
+            resourceDictionary["ScreenBackgroundColor"] = ThemeModel.ScreenBackground.Color;
+
             //Text
             resourceDictionary["TextBackground"] = ThemeModel.TextBackground;
             resourceDictionary["TextForeground"] = ThemeModel.TextForeground;
+            resourceDictionary["TextForegroundColor"] = ThemeModel.TextForeground.Color;
 
             //TextBox
             resourceDictionary["TextBoxBackground"] = ThemeModel.TextBoxBackground;
@@ -61,7 +66,12 @@ namespace OMS.Helpers
             //Button
             resourceDictionary["ButtonBackground"] = ThemeModel.ButtonBackground;
             resourceDictionary["ButtonForeground"] = ThemeModel.ButtonForeground;
-            
+            //ThicknessConverter convertor = new ThicknessConverter();
+            //    convertor.ConvertFrom( ThemeModel.ButtonBorderThickness);
+
+            resourceDictionary["ButtonBorderThickness"] = new Thickness(ThemeModel.ButtonBorderThickness);
+
+
             //Title
             resourceDictionary["TitleBarBackground"] = ThemeModel.TitleBarBackground;
             resourceDictionary["TitleBarForeground"] = ThemeModel.TitleBarForeground;
@@ -74,47 +84,9 @@ namespace OMS.Helpers
             return resourceDictionary;
         }
 
-        private static ResourceDictionary GeneratePreviewResourceDictionary(ThemeModel ThemeModel)
-        {
-            var resourceDictionary = new ResourceDictionary();
-
-            //Text
-            resourceDictionary["PreviewTextBackground"] = ThemeModel.TextBackground;
-            resourceDictionary["PreviewTextForeground"] = ThemeModel.TextForeground;
-
-            //TextBox
-            resourceDictionary["PreviewTextBoxBackground"] = ThemeModel.TextBoxBackground;
-            resourceDictionary["PreviewTextBoxForeground"] = ThemeModel.TextBoxForeground;
-
-            //Button
-            resourceDictionary["PreviewButtonBackground"] = ThemeModel.ButtonBackground;
-            resourceDictionary["PreviewButtonForeground"] = ThemeModel.ButtonForeground;
-
-            //Title
-            resourceDictionary["PreviewTitleBarBackground"] = ThemeModel.TitleBarBackground;
-            resourceDictionary["PreviewTitleBarForeground"] = ThemeModel.TitleBarForeground;
-
-            // Set fonts
-            resourceDictionary["PreviewFontFamily"] = new FontFamily(ThemeModel.FontFamily.ToString());
-            resourceDictionary["PreviewFontWeight"] = ThemeModel.FontWeight;
-            resourceDictionary["PreviewFontSize"] = GetFontSize(ThemeModel.FontSize);
-
-            return resourceDictionary;
-        }
-
         public static void ChangeTheme(ThemeModel theme)
         {
             var dictioanry = GenerateResourceDictionary(theme);
-            if (dictioanry != null)
-            {
-                App.Current.Resources.MergedDictionaries.Clear();
-                App.Current.Resources.MergedDictionaries.Add(dictioanry);
-            }
-        }
-
-        public static void ChangePreviewTheme(ThemeModel theme)
-        {
-            var dictioanry = GeneratePreviewResourceDictionary(theme);
             if (dictioanry != null)
             {
                 App.Current.Resources.MergedDictionaries.Clear();

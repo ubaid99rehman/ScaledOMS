@@ -8,6 +8,7 @@ using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace OMS.VM.Settings
@@ -63,7 +64,7 @@ namespace OMS.VM.Settings
         private Color _buttonBackground;
         public Color ButtonBackground
         {
-            get => _textBoxBackground;
+            get => _buttonBackground;
             set
             {
                 SetProperty(ref _buttonBackground, value, nameof(ButtonBackground));
@@ -74,7 +75,7 @@ namespace OMS.VM.Settings
         private Color _buttonForeground;
         public Color ButtonForeground
         {
-            get => _textBoxBackground;
+            get => _buttonForeground;
             set
             {
                 SetProperty(ref _buttonForeground, value, nameof(ButtonForeground));
@@ -153,7 +154,8 @@ namespace OMS.VM.Settings
 
         public ObservableCollection<FontFamilyEnum> FontFamilyOptions { get; set; }
         public ObservableCollection<FontSizeEnum> FontSizeOptions { get; set; }
-        public ObservableCollection<FontWeightEnum> FontWeightOptions { get; set; }
+        public ObservableCollection<FontWeight> FontWeightOptions { get; set; }
+        public ObservableCollection<double> ButtonBorderThicknessOptions { get; set; }
 
         public AppThemeModel(IAppThemeService appThemeService)
         {
@@ -180,23 +182,31 @@ namespace OMS.VM.Settings
                 FontSizeEnum.Large,
                 FontSizeEnum.ExtraLarge
             };
-            FontWeightOptions = new ObservableCollection<FontWeightEnum>
+            FontWeightOptions = new ObservableCollection<FontWeight>
             {
-                FontWeightEnum.Black,
-                FontWeightEnum.Bold,
-                FontWeightEnum.ExtraBlack,
-                FontWeightEnum.ExtraBold,
-                FontWeightEnum.ExtraLight,
-                FontWeightEnum.Heavy,
-                FontWeightEnum.Light,
-                FontWeightEnum.Medium,
-                FontWeightEnum.Normal,
-                FontWeightEnum.Regular,
-                FontWeightEnum.SemiBold,
-                FontWeightEnum.Thin,
-                FontWeightEnum.UltraBlack,
-                FontWeightEnum.UltraBold,
-                FontWeightEnum.UltraLight,
+                FontWeights.Black,
+                FontWeights.Bold,
+                FontWeights.ExtraBlack,
+                FontWeights.ExtraBold,
+                FontWeights.ExtraLight,
+                FontWeights.Heavy,
+                FontWeights.Light,
+                FontWeights.Medium,
+                FontWeights.Normal,
+                FontWeights.Regular,
+                FontWeights.SemiBold,
+                FontWeights.Thin,
+                FontWeights.UltraBlack,
+                FontWeights.UltraBold,
+                FontWeights.UltraLight,
+            };
+            ButtonBorderThicknessOptions = new ObservableCollection<double>()
+            {
+                1.0,
+                2.0,
+                3.0,
+                4.0,
+                5.0,
             };
             InitTheme();
         }
@@ -204,6 +214,7 @@ namespace OMS.VM.Settings
         public void SaveAppliedTheme()
         {
             _appThemeService.SaveAppliedTheme(GetSelectedTheme());
+            AppliedThemeName = _appThemeService.GetAppliedTheme().ThemeName;
         }
 
         private void LoadThemes()

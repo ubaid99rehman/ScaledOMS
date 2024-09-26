@@ -1,4 +1,5 @@
 ﻿using OMS.Enums;
+using System;
 using System.Windows;
 using System.Windows.Media;
 
@@ -7,6 +8,7 @@ namespace OMS.Core.Models.Themes
     public class ThemeModel : BaseModel
     {
         private string _themeName;
+        private SolidColorBrush _screenbackground;
         private SolidColorBrush _textBackground;
         private SolidColorBrush _textForeground;
         private SolidColorBrush _textBoxBackground;
@@ -18,8 +20,9 @@ namespace OMS.Core.Models.Themes
         private FontFamilyEnum _fontFamily;
         private FontWeight _fontWeight;
         private FontSizeEnum _fontSize;
-
-        public FontWeight formattedFont;
+        private double _formattedFontSize;
+        private double _buttonBorderThickness;
+        private string _fontFamilyName;
 
         public ThemeModel()
         {
@@ -34,11 +37,13 @@ namespace OMS.Core.Models.Themes
             FontFamily = FontFamilyEnum.Calibri;
             FontWeight = FontWeights.Normal;
             FontSize = FontSizeEnum.Normal;
+            ButtonBorderThickness = 1;
         }
 
         public ThemeModel(
             FontWeight fontWeight,
             string themeName = "Default Theme",
+            SolidColorBrush screenBackground = null,
             SolidColorBrush textBackground = null,
             SolidColorBrush textForeground = null,
             SolidColorBrush textBoxBackground = null,
@@ -48,9 +53,11 @@ namespace OMS.Core.Models.Themes
             SolidColorBrush titleBarBackground = null,
             SolidColorBrush titleBarForeground = null,
             FontFamilyEnum fontFamily = FontFamilyEnum.Calibri,
-            FontSizeEnum fontSize = FontSizeEnum.Normal)
+            FontSizeEnum fontSize = FontSizeEnum.Normal,
+            double buttonBorderThickness = 1)
         {
             ThemeName = themeName;
+            ScreenBackground = screenBackground ?? new SolidColorBrush(Colors.White);
             TextBackground = textBackground ?? new SolidColorBrush(Colors.Black);
             TextForeground = textForeground ?? new SolidColorBrush(Colors.White);
             TextBoxBackground = textBoxBackground ?? new SolidColorBrush(Colors.Black);
@@ -62,7 +69,7 @@ namespace OMS.Core.Models.Themes
             FontFamily = fontFamily;
             FontWeight = fontWeight;
             FontSize = fontSize;
-            formattedFont = FontWeights.UltraBold;
+            ButtonBorderThickness = buttonBorderThickness;
         }
 
         public string ThemeName
@@ -72,6 +79,12 @@ namespace OMS.Core.Models.Themes
             {
                 SetProperty(ref _themeName, value, nameof(ThemeName));
             }
+        }
+
+        public SolidColorBrush ScreenBackground
+        {
+            get => _screenbackground;
+            set => SetProperty(ref _screenbackground, value, nameof(ScreenBackground));
         }
 
         public SolidColorBrush TextBackground
@@ -137,35 +150,59 @@ namespace OMS.Core.Models.Themes
         public FontFamilyEnum FontFamily
         {
             get => _fontFamily;
-            set => SetProperty(ref _fontFamily, value, nameof(FontFamily));
+            set 
+            {
+                SetProperty(ref _fontFamily, value, nameof(FontFamily));
+                FontFamilyName = value.ToString();
+            }
         }
 
         public FontSizeEnum FontSize
         {
             get => _fontSize;
-            set => SetProperty(ref _fontSize, value, nameof(FontSize));
+            set 
+            { 
+                SetProperty(ref _fontSize, value, nameof(FontSize));
+                FormattedFontSize = UpdateFormatSize(value);
+            }
+        }
+
+        private double UpdateFormatSize(FontSizeEnum value)
+        {
+            switch (FontSize)
+            {
+                case FontSizeEnum.Normal:
+                    return 12;
+                case FontSizeEnum.Small:
+                    return 8.0;
+                case FontSizeEnum.Large:
+                    return 16.0;
+                case FontSizeEnum.ExtraLarge:
+                    return 20.0;
+                default:
+                    return 12.0;
+            };
         }
 
         public double FormattedFontSize
         {
-            get
-            {
-                switch (FontSize)
-                {
-                    case FontSizeEnum.Normal:
-                        return 12;
-                    case FontSizeEnum.Small:
-                        return 8.0;
-                    case FontSizeEnum.Large:
-                        return 16.0;
-                    case FontSizeEnum.ExtraLarge:
-                        return 20.0;
-                    default:
-                        return 12.0;
-                };
-            }
+            get => _formattedFontSize;
+            set { SetProperty(ref _formattedFontSize, value, nameof(FormattedFontSize)); }
         }
 
+        public string FontFamilyName
+        {
+            get => _fontFamilyName;
+            set
+            {
+                SetProperty(ref _fontFamilyName, value, nameof(FontFamilyName));
+            }
+        }
+        
+        public double ButtonBorderThickness
+        { 
+            get => _buttonBorderThickness;
+            set { SetProperty(ref _buttonBorderThickness, value, nameof(ButtonBorderThickness)); }
+        }
     }
-
 }

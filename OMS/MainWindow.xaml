@@ -26,9 +26,11 @@
     Loaded="ThemedWindow_Loaded"
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
+    Background="{DynamicResource ScreenBackground}"
     Width="1600" Height="900">
 
     <dx:ThemedWindow.Resources>
+        <!--Theme Header-->
         <ControlTemplate x:Key="ThemedWindowHeaderTemplate"
                      TargetType="{x:Type dx:ThemedWindowHeader}">
             <Border x:Name="PART_HeaderRoot"
@@ -50,12 +52,43 @@
                 </DockPanel>
             </Border>
         </ControlTemplate>
-
         <Style TargetType="{x:Type dx:ThemedWindowHeader}">
             <Setter Property="Template"
                 Value="{StaticResource ThemedWindowHeaderTemplate}" />
         </Style>
 
+        <!--Ribbon-->
+        <Style TargetType="{x:Type dxr:RibbonControl}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        <Style TargetType="{x:Type dxr:RibbonPageCategory}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        <Style TargetType="{x:Type dxr:RibbonPageGroup}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        <Style TargetType="{x:Type dxr:RibbonPage}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        
+        <!--Document-->
+        <Style TargetType="{x:Type dxdo:DocumentPanel}">
+            <Setter Property="TabBackgroundColor" Value="{DynamicResource Tit}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        <Style TargetType="{x:Type dxdo:DocumentGroup}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
+        <Style TargetType="{x:Type dxdo:LayoutGroup}">
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+        </Style>
     </dx:ThemedWindow.Resources>
 
     <!-- Header Items: Icon with Popup -->
@@ -189,7 +222,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
+
             <!--Wait Indicator-->
             <dx:LoadingDecorator Name="loadingIndicator"  
                          IsSplashScreenShown="{Binding IsLoadingScreen}"
@@ -199,6 +232,7 @@
             <!--Dock Layout-->
             <dxdo:DockLayoutManager x:Name="dockLayoutManager"
                                     Grid.Row="0"
+                                    Background="{DynamicResource ScreenBackground}"
                                     FloatingMode="Desktop"
                                     DockingStyle="VS2010">
                 <dxmvvm:Interaction.Behaviors>

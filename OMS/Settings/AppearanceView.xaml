@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:OMS.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
-        <Grid>
+        <Grid Background="{DynamicResource ScreenBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -75,7 +75,12 @@
                         <Label Content="Button Foreground:"/>
                         <dxe:PopupColorEdit Name="ButtonForeground" EditValue="{Binding ButtonForeground, Mode=TwoWay}" Width="150" />
                     </StackPanel>
-                    
+                    <StackPanel HorizontalAlignment="Center">
+                        <Label Content="Button Border Thickness:"/>
+                        <ComboBox Name="ButtonBorderThickness" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding ButtonBorderThicknessOptions}" SelectedItem="{Binding SelectedTheme.ButtonBorderThickness, Mode=TwoWay}" Width="150"/>
+                    </StackPanel>
+
                     <!--Title Bar-->
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="TitleBar Background:"/>
@@ -90,17 +95,17 @@
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Family:"/>
                         <ComboBox Name="FontFamily" HorizontalAlignment="Left" 
-                                  ItemsSource="{Binding FontFamilyOptions}" SelectedItem="{Binding SelectedTheme.FontFamily}" Width="150"/>
+                                  ItemsSource="{Binding FontFamilyOptions}" SelectedItem="{Binding SelectedTheme.FontFamily, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Size:"/>
                         <ComboBox Name="FontSize" HorizontalAlignment="Left" 
-                                  ItemsSource="{Binding FontSizeOptions}" SelectedItem="{Binding SelectedTheme.FontSize}" Width="150"/>
+                                  ItemsSource="{Binding FontSizeOptions}" SelectedItem="{Binding SelectedTheme.FontSize, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Weight:"/>
                         <ComboBox Name="FontWeight" HorizontalAlignment="Left"
-                                  ItemsSource="{Binding FontWeightOptions}" SelectedItem="{Binding SelectedTheme.FontWeight}" Width="150"/>
+                                  ItemsSource="{Binding FontWeightOptions}" SelectedItem="{Binding SelectedTheme.FontWeight, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     
                     <!-- Save Button-->
@@ -126,8 +131,8 @@
                                    TextAlignment="Center" />
                         <TextBlock x:Name="PreviewThemeTextBlock" Text="Sample TextBlock Preview" Margin="10"
                                    FontSize="{Binding SelectedTheme.FormattedFontSize}" 
-                                   FontFamily="{Binding SelectedTheme.FontFamily}"
-                                   FontWeight="{Binding SelectedTheme.FormattedFontWeight}"
+                                   FontFamily="{Binding SelectedTheme.FontFamilyName}"
+                                   FontWeight="{Binding SelectedTheme.FontWeight}"
                                    Background="{Binding SelectedTheme.TextBackground}"
                                    Foreground="{Binding SelectedTheme.TextForeground}"
                                    VerticalAlignment="Center"
@@ -135,15 +140,17 @@
                         <TextBox x:Name="PreviewThemeFontSizeBox" Text="Sample Text"  
                                  Width="150" HorizontalAlignment="Center"
                                  FontSize="{Binding SelectedTheme.FormattedFontSize}" 
-                                 FontFamily="{Binding SelectedTheme.FontFamily}"
-                                 FontWeight="{Binding SelectedTheme.FormattedFontWeight}"
+                                 FontFamily="{Binding SelectedTheme.FontFamilyName}"
+                                 FontWeight="{Binding SelectedTheme.FontWeight}"
                                  Background="{Binding SelectedTheme.TextBoxBackground}"
                                  Foreground="{Binding SelectedTheme.TextBoxForeground}"
-                                 />
+                                 BorderBrush="{Binding SelectedTheme.TextBoxForeground}"/>
                         <Button x:Name="PreviewhemeButton" Margin="10" Width="150"
                                 Content="Sample Button Preview"  
                                 Background="{Binding SelectedTheme.ButtonBackground}"
                                 Foreground="{Binding SelectedTheme.ButtonForeground}"
+                                BorderBrush="{Binding SelectedTheme.ButtonForeground}"
+                                BorderThickness="{Binding SelectedTheme.ButtonBorderThickness}"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </StackPanel>
                 </GroupBox>
@@ -176,6 +183,8 @@
                                 Content="Sample Button Preview"  
                                 Background="{DynamicResource ButtonBackground}"
                                 Foreground="{DynamicResource ButtonForeground}"
+                                BorderThickness="{DynamicResource ButtonBorderThickness}"
+                                BorderBrush="{DynamicResource ButtonForeground}"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
                 </GroupBox>
