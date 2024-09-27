@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OMS.Core.Services.AppServices;
 using OMS.Helpers;
 using System.Windows;
+using System.Windows.Media;
 
 namespace OMS
 {
@@ -19,7 +20,7 @@ namespace OMS
                 PreloadCategories.Grid,
                 PreloadCategories.LayoutControl,
                 PreloadCategories.Ribbon);
-        }
+        }   
         
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -31,7 +32,6 @@ namespace OMS
                 AppThemeHelper.ChangeTheme(theme);
             }
 
-            ThemeManager.ApplicationThemeName = Theme.DeepBlueFullName;
             //Displaying Window
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();

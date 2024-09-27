@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
 
-    <Grid Background="White">
+    <Grid>
 
         <!--Row Definitions-->
         <Grid.RowDefinitions>
@@ -29,7 +29,7 @@
         <GroupBox Header="Stock Details" 
                   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                   Margin="10">
-            <Grid>
+           <Grid Style="{StaticResource CustomGridStyle}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
@@ -37,19 +37,28 @@
 
                 <!--Stock Selection Combo-->
                 <dxe:ComboBoxEdit Name="listBox" 
-                      Grid.Column="0" Margin="0 10 0 10" 
-                      HorizontalAlignment="Center" 
-                      MinWidth="150" MaxWidth="200"
-                      MinHeight="20" MaxHeight="30" 
-                      ItemsSource="{Binding StockSymbols}"
-                      SelectedItem="{Binding SelectedStockSymbol}"
-                      IncrementalFiltering="True"
-                      AutoComplete="True"
-                      IsCaseSensitiveFilter="True"
-                      AllowItemHighlighting="False"
-                      ImmediatePopup="True"
-                      ClearSelectionOnBackspace="True"
-                      AssignNullValueOnClearingEditText="True"/>
+                                  Grid.Column="0" Margin="0 10 0 10" 
+                                  HorizontalAlignment="Center" 
+                                  MinWidth="150" MaxWidth="200"
+                                  MinHeight="20" MaxHeight="30" 
+                                  ItemsSource="{Binding StockSymbols}"
+                                  SelectedItem="{Binding SelectedStockSymbol}"
+                                  IncrementalFiltering="True"
+                                  AutoComplete="True"
+                                  IsCaseSensitiveFilter="True"
+                                  AllowItemHighlighting="False"
+                                  ImmediatePopup="True"
+                                  ClearSelectionOnBackspace="True"
+                                  ItemTemplate="{DynamicResource ComboboxEditItemTemplate}"
+                                  AssignNullValueOnClearingEditText="True">
+                    <dxe:ComboBoxEdit.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="BorderBrush" Value="{DynamicResource ScreenBackground}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+                            <Setter Property="Background" Value="{DynamicResource ScreenBackground}" />
+                        </Style>
+                    </dxe:ComboBoxEdit.ItemContainerStyle>
+                </dxe:ComboBoxEdit>
 
                 <!--Stock Price Details-->
                 <stockviews:StckDetailView Grid.Column="1" 
@@ -117,60 +126,27 @@
                     <Button x:Name="btnAddOrder" Content="ADD ORDER" 
                             Width="120" 
                             Margin="10, 0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
+                            Style="{DynamicResource AddButtonStyle}"
                             Click="btnAddOrder_Click">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightSkyBlue"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
                     </Button>
 
                     <Button x:Name="btnUpdateOrder" Content="UPDATE ORDER" 
                             Width="120"
                             Margin="10, 0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
+                            Style="{DynamicResource UpdateButtonStyle}"
                             Click="btnUpdateOrder_Click" >
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LawnGreen"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
                     </Button>
 
                     <Button x:Name="btnCancelOrder" Content="CANCEL ORDER" 
                             Width="120" 
                             Margin="10,0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
+                            Style="{DynamicResource CancelButtonStyle}"
                             Click="btnCancelOrder_Click" >
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="Red"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
                     </Button>
 
                     <Button x:Name="btnClearOrder" Content="Clear Fields" 
                             Width="120" 
                             Margin="10, 0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
                             Command="{Binding ClearOrderCommand}" />
 
                 </StackPanel>
@@ -308,13 +284,13 @@
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"  Margin="10">
 
-            <dxg:GridControl ItemsSource="{Binding Orders}" 
+            <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
 
                 <dxg:GridControl.View>
                     <dxg:TableView TotalSummaryPosition="Bottom" AllowEditing="False" 
-                               ShowCriteriaInAutoFilterRow="False" ShowIndicator="False" 
-                               ShowSearchPanelMode="Always" AutoWidth="True"/>
+                                   ShowCriteriaInAutoFilterRow="False" ShowIndicator="False" 
+                                   ShowSearchPanelMode="Always" AutoWidth="True"/>
                 </dxg:GridControl.View>
 
                 <dxg:GridControl.Columns>

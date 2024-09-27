@@ -7,7 +7,7 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -18,30 +18,28 @@
 
         <!-- Connection Status -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Connection Status: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="Connection Status: " FontWeight="Bold" />
             <TextBlock Text="{Binding SessionInfo.ConnectionStatus}" Foreground="Red"/>
         </StackPanel>
 
         <!-- Login Time -->
         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Login Time: " Foreground="Black" FontWeight="Bold"/>
-
-            <TextBlock Text="{Binding SessionInfo.LoginTime, StringFormat='MMMM dd, yyyy H:mm:ss'}" Foreground="Red"/>
+            <TextBlock Text="Login Time: " FontWeight="Bold"/>
+            <TextBlock Text="{Binding SessionInfo.LoginTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"
+                       Foreground="Red"/>
         </StackPanel>
 
         <!-- Session Duration -->
         <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Session Duration: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="Session Duration: " FontWeight="Bold"/>
             <TextBlock Text="{Binding SessionInfo.SessionTime}" Foreground="Red"/>
         </StackPanel>
 
         <!-- Internet Connection Status -->
         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="10, 0">
-            <TextBlock Text="Ping: " Foreground="Black" FontWeight="Bold"/>
+            <TextBlock Text="Ping: " FontWeight="Bold"/>
             <TextBlock Text="{Binding SessionInfo.Ping}" Foreground="Red"/>
         </StackPanel>
 
     </Grid>
-
-
 </UserControl>

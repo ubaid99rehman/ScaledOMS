@@ -10,14 +10,14 @@
              xmlns:orderview="clr-namespace:OMS.Orders"
              xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking">
 
-    <Grid Background="White">
+   <Grid Style="{StaticResource CustomGridStyle}">
         <!-- Main Content Layout -->
-        <dxdo:DockLayoutManager>
+        <dxdo:DockLayoutManager >
             <dxdo:LayoutGroup Orientation="Vertical">
-                <!-- LayoutGroup for Main Content -->
                 <dxdo:LayoutGroup Orientation="Horizontal">
                     <!-- Market Overview Grid -->
-                    <dxdo:LayoutPanel Caption="Market Overview" ItemWidth="*">
+                    <dxdo:LayoutPanel Caption="Market Overview" 
+                                      ItemWidth="*">
                         <dxg:GridControl AutoGenerateColumns="AddNew" 
                                          Margin="10" ItemsSource="{Binding MarketOverviewData}">
                             <dxg:GridControl.Columns>
@@ -31,7 +31,7 @@
 
                     <!-- Stock Holdings Chart with Radio Buttons -->
                     <dxdo:LayoutPanel Caption="Stock Holdings (Top 5 Stocks)" ItemWidth="2*">
-                        <Grid>
+                       <Grid Style="{StaticResource CustomGridStyle}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
@@ -65,11 +65,9 @@
                     </dxdo:LayoutPanel>
                 </dxdo:LayoutGroup>
 
-                <!-- Order Management and User Activities -->
                 <dxdo:LayoutGroup Orientation="Horizontal" ItemHeight="400">
                     <!-- Portfolio Overview Grid -->
                     <dxdo:LayoutPanel Caption="Portfolio Overview" ItemWidth="2*">
-                        
                         <dxg:GridControl AutoGenerateColumns="AddNew" Margin="10" 
                                          ItemsSource="{Binding PortfolioOverviewData}">
                             
@@ -93,15 +91,6 @@
                     <!-- Order Management Grid -->
                     <dxdo:LayoutPanel Caption="Order Management" ItemWidth="2*">
                         <orderview:OpenOrdersView/>
-                        <!--<dxg:GridControl AutoGenerateColumns="AddNew" Margin="10" ItemsSource="{Binding OrderManagementData}">
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
-                                <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
-                                <dxg:GridColumn FieldName="OrderType" Header="Order Type" />
-                                <dxg:GridColumn FieldName="Quantity" Header="Quantity" />
-                                <dxg:GridColumn FieldName="Status" Header="Status" />
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>-->
                     </dxdo:LayoutPanel>
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>

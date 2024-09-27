@@ -14,7 +14,7 @@
         <!-- Top Section with Account Overview -->
         <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
             <GroupBox Header="Account Overview" Margin="0,0,0,10">
-                <Grid>
+               <Grid Style="{StaticResource CustomGridStyle}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -85,7 +85,7 @@
 
             <!-- Top 5 Stock Holdings Tab -->
             <TabItem Header="Top 5 Stock Holdings" VerticalAlignment="Stretch">
-                <Grid Margin="10" VerticalAlignment="Stretch">
+                <Grid Style="{DynamicResource CustomGridStyle}" Margin="10" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>

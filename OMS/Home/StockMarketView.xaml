@@ -32,7 +32,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
         <dxdo:DockLayoutManager ViewStyle="Light"
                                 BorderThickness="0,0,0,1"
                                 FloatingMode="Window"
@@ -49,7 +49,7 @@
                         <!--Header-->
                         <dxdo:LayoutGroup Orientation="Horizontal" ItemHeight="50">
                             <dxdo:DocumentPanel>
-                                <Grid>
+                               <Grid Style="{StaticResource CustomGridStyle}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200"/>
                                         <ColumnDefinition Width="*"/>
@@ -133,7 +133,7 @@
 
                     <!--Orders and Trades Grids-->
                     <dxdo:DocumentPanel ItemWidth="2.2*">
-                        <Grid>
+                       <Grid Style="{StaticResource CustomGridStyle}">
 
                             <!--Column Definitions-->
                             <Grid.ColumnDefinitions>

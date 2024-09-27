@@ -11,15 +11,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
-    <DockPanel>
+    <DockPanel >
         <!--Chart Toolbar Grid-->
-        <Grid DockPanel.Dock="Top">
+        <Grid Style="{StaticResource CustomGridStyle}" 
+              DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        
+
             <dxb:BarManager Grid.Column="0" 
                             Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarManager}}" 
                             dxc:ChartControlBase.Chart="{Binding ElementName=Chart}">
@@ -34,13 +34,13 @@
                                            Content="Export To CSV" 
                                            ItemClick="ExportToCSV" 
                                            CloseSubMenuOnClick="True">
-                            <dxb:BarButtonItem.SuperTip>
-                                <dx:SuperTip>
-                                    <dx:SuperTipHeaderItem Content="Export to CSV" />
-                                    <dx:SuperTipItem Content="Export Chart to CSV File." />
-                                </dx:SuperTip>
-                            </dxb:BarButtonItem.SuperTip>
-                        </dxb:BarButtonItem>
+                                <dxb:BarButtonItem.SuperTip>
+                                    <dx:SuperTip>
+                                        <dx:SuperTipHeaderItem Content="Export to CSV" />
+                                        <dx:SuperTipItem Content="Export Chart to CSV File." />
+                                    </dx:SuperTip>
+                                </dxb:BarButtonItem.SuperTip>
+                            </dxb:BarButtonItem>
                             <dxb:BarItemSeparator/>
                             <dxb:BarButtonItem x:Name="ExportToPdfItem" 
                                            GlyphSize="Small"
@@ -48,17 +48,18 @@
                                            Content="Export To PDF" 
                                            ItemClick="ExportToPDF" 
                                            CloseSubMenuOnClick="True">
-                            <dxb:BarButtonItem.SuperTip>
-                                <dx:SuperTip>
-                                    <dx:SuperTipHeaderItem Content="Export to PDF"/>
-                                    <dx:SuperTipItem Content="Export Chart to Single Page PDF File." />
-                                </dx:SuperTip>
-                            </dxb:BarButtonItem.SuperTip>
-                        </dxb:BarButtonItem>
+                                <dxb:BarButtonItem.SuperTip>
+                                    <dx:SuperTip>
+                                        <dx:SuperTipHeaderItem Content="Export to PDF"/>
+                                        <dx:SuperTipItem Content="Export Chart to Single Page PDF File." />
+                                    </dx:SuperTip>
+                                </dxb:BarButtonItem.SuperTip>
+                            </dxb:BarButtonItem>
                         </dxb:BarSubItem>
                         <dxb:BarItemSeparator/>
                         <dxb:BarSubItem x:Name="VolumeToggleItem"
-                                        GlyphSize="Small" Glyph="{dx:DXImage SvgImages/Spreadsheet/ChartAxesGroup.svg}">
+                                        GlyphSize="Small" 
+                                        Glyph="{dx:DXImage SvgImages/Spreadsheet/ChartAxesGroup.svg}">
                             <dxb:BarSubItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="Volume Chart Axis"/>
@@ -93,14 +94,13 @@
                                 </dxb:BarButtonItem.SuperTip>
                             </dxb:BarButtonItem>
                         </dxb:BarSubItem>
-                </dxb:Bar>
+                    </dxb:Bar>
                 </dxb:BarManager.Bars>
             </dxb:BarManager>
-
         </Grid>
 
         <!--Charts Grid-->
-        <Grid>
+        <Grid Style="{StaticResource CustomGridStyle}">
             <dxc:ChartControl x:Name="Chart"
                               DataSource="{Binding StockTradingData}"
                               AutoLayout="False"
@@ -117,7 +117,7 @@
                 </dxc:ChartControl.CrosshairOptions>
 
                 <dxc:XYDiagram2D Name="ChartDiagram"
-                    EnableAxisXNavigation="True"
+                                 EnableAxisXNavigation="True"
                                  DependentAxesYRange="True"
                                  Margin="0,-20,-1,-25"
                                  BorderThickness="0,1,0,0">
@@ -155,7 +155,7 @@
                         </dxc:Pane>
                     </dxc:XYDiagram2D.Panes>
 
-                    <!--Stock Chart Axis--> 
+                    <!--Stock Chart Axis-->
                     <dxc:XYDiagram2D.AxisX>
                         <dxc:AxisX2D StickToEdge="True" GridLinesVisible="True">
                             <dxc:AxisX2D.DateTimeScaleOptions>
@@ -203,7 +203,7 @@
                             </dxc:AxisY2D.ConstantLinesInFront>
                         </dxc:AxisY2D>
                     </dxc:XYDiagram2D.AxisY>
-                    
+
                     <!--Volume Chart Axis-->
                     <dxc:XYDiagram2D.SecondaryAxesY>
                         <dxc:SecondaryAxisY2D x:Name="volumeAxis"
@@ -229,7 +229,7 @@
                                        CrosshairLabelPattern="O{OV:f2}&#x09;H{HV:f2}&#x09;L{LV:f2}&#x09;C{CV:f2}&#x09;">
 
                     </dxc:StockSeries2D>
-                    
+
                     <!--Volume Chart-->
                     <dxc:BarSideBySideSeries2D ArgumentScaleType="DateTime"
                                                Pane="{Binding ElementName=volumePane}"
@@ -247,5 +247,4 @@
             </dxc:ChartControl>
         </Grid>
     </DockPanel>
-
 </UserControl>

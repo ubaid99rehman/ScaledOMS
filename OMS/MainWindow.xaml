@@ -29,84 +29,21 @@
     Background="{DynamicResource ScreenBackground}"
     Width="1600" Height="900">
 
-    <dx:ThemedWindow.Resources>
-        <!--Theme Header-->
-        <ControlTemplate x:Key="ThemedWindowHeaderTemplate"
-                     TargetType="{x:Type dx:ThemedWindowHeader}">
-            <Border x:Name="PART_HeaderRoot"
-                Background="{DynamicResource TitleBarBackground}">
-
-                <DockPanel x:Name="PART_HeaderDock"
-                       LastChildFill="True">
-                    <dx:ThemedWindowIcon x:Name="PART_WindowIcon"
-                                     DockPanel.Dock="Left"
-                                     Style="{DynamicResource {dxt:ThemedWindowThemeKey ResourceKey=WindowIconStyle}}" />
-                    <dx:ThemedWindowControlBoxBorder x:Name="PART_HeaderItemsAndButtons"
-                                                 DockPanel.Dock="Right"
-                                                 UseLayoutRounding="True" />
-                    <dx:ThemedWindowTitle x:Name="PART_WindowTitle"
-                                          Foreground="{DynamicResource TitleBarForeground}"
-                                          VerticalAlignment="Center"
-                                          Content="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}"
-                                          TitleAlignment="{Binding Path=TitleAlignment, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}" />
-                </DockPanel>
-            </Border>
-        </ControlTemplate>
-        <Style TargetType="{x:Type dx:ThemedWindowHeader}">
-            <Setter Property="Template"
-                Value="{StaticResource ThemedWindowHeaderTemplate}" />
-        </Style>
-
-        <!--Ribbon-->
-        <Style TargetType="{x:Type dxr:RibbonControl}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        <Style TargetType="{x:Type dxr:RibbonPageCategory}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        <Style TargetType="{x:Type dxr:RibbonPageGroup}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        <Style TargetType="{x:Type dxr:RibbonPage}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        
-        <!--Document-->
-        <Style TargetType="{x:Type dxdo:DocumentPanel}">
-            <Setter Property="TabBackgroundColor" Value="{DynamicResource Tit}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        <Style TargetType="{x:Type dxdo:DocumentGroup}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-        <Style TargetType="{x:Type dxdo:LayoutGroup}">
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-            <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
-        </Style>
-    </dx:ThemedWindow.Resources>
-
     <!-- Header Items: Icon with Popup -->
     <dx:ThemedWindow.HeaderItems>
         <dx:HeaderItemControl Click="InfoIcon_Click">
-            <Grid>
-                <!-- Button with an Icon -->
+            <!-- Button with an Icon -->
+           <Grid Style="{StaticResource CustomGridStyle}">
                 <dx:SimpleButton Background="Transparent"
                                  Foreground="Black"
                                  ToolTip="Shows Connection Information"
                                  GlyphHeight="20"
                                  GlyphWidth="20"
                                  Glyph="{dx:FontIconSource ColorName=White, Glyph=59935}"/>
-
                 <!-- Popup Definition -->
                 <Popup x:Name="InfoPopup"
                        StaysOpen="False"
-                       Margin="0 10 0 0"
+                       Margin="0 40 0 0"
                        Placement="Bottom">
                     <Border BorderThickness="1" Background="White">
                         <!-- Information Panel Content -->
@@ -118,7 +55,7 @@
             </Grid>
         </dx:HeaderItemControl>
     </dx:ThemedWindow.HeaderItems>
-
+            
     <dx:DXDockPanel>
         <dxr:RibbonControl Name="NavControl" 
                            DockPanel.Dock="Top" 
@@ -217,7 +154,7 @@
 
             </dxr:RibbonDefaultPageCategory>
         </dxr:RibbonControl>
-        <Grid>
+       <Grid Style="{StaticResource CustomGridStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -270,5 +207,4 @@
                        VerticalAlignment="Bottom"/>
         </Grid>
     </dx:DXDockPanel>
-
 </dx:ThemedWindow>

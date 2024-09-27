@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DevExpress.Xpf.Docking;
+using Microsoft.Extensions.DependencyInjection;
 using OMS.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,7 @@ namespace OMS.Home
 
         private void UnitsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-
+            LayoutPanel panel = new LayoutPanel();
         }
 
         private void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)

@@ -8,9 +8,9 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d" 
              xmlns:orderviews="clr-namespace:OMS.Orders"
-             
              d:DesignHeight="800" d:DesignWidth="1000">
-    <Grid>
+    
+   <Grid Style="{StaticResource CustomGridStyle}">
         <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
                          PreviewMouseRightButtonDown="Mouse_Right_Button_Clicked"
@@ -63,9 +63,10 @@
         <Popup x:Name="OrderPopup" IsOpen="{Binding IsPopupOpen}" 
                StaysOpen="True" Placement="Mouse" 
                AllowsTransparency="True" PopupAnimation="Fade">
-            <Border Background="White" BorderBrush="Black" BorderThickness="2" Padding="10" CornerRadius="10">
+            <Border Background="{DynamicResource ScreenBackground}" 
+                    BorderBrush="{DynamicResource TextForeground}"
+                    BorderThickness="2" Padding="10" CornerRadius="10">
                 <StackPanel>
-
                     <Canvas>
                         <dxe:ButtonClose x:Name="btnClearOrder" Content="Close" 
                                          Canvas.Right="5"

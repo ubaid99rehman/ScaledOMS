@@ -17,7 +17,7 @@
         Topmost="True"
         WindowStyle="None">
 
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

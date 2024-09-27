@@ -6,6 +6,6 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
 
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
     </Grid>
 </UserControl>

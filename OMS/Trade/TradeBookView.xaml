@@ -15,7 +15,7 @@
             <SolidColorBrush x:Key="redBrush" Color="#FFDD336B"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
         <dxg:GridControl Name="dataGrid"
                          ItemsSource="{Binding StockTrades}"
                          ShowBorder="False"

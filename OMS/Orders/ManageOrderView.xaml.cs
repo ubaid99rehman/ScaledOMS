@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm.POCO;
+using DevExpress.Xpf.Grid;
 using Microsoft.Extensions.DependencyInjection;
 using OMS.ViewModels;
 using System.Windows;

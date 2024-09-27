@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:OMS.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+   <Grid Style="{StaticResource CustomGridStyle}">
             
     </Grid>
 </UserControl>
