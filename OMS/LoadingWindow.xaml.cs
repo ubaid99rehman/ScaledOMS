@@ -1,54 +1,83 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OMS.Logging;
 using OMS.ViewModels;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace OMS
 {
     public partial class LoadingWindow : Window
     {
-        public LoadingWindow()
+        IBootStrapper BootStrapper;
+
+        #region Constructor
+        public LoadingWindow(IBootStrapper bootStrapper)
         {
             InitializeComponent();
+            BootStrapper = bootStrapper;
+            //Adding Datacontext
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingViewModel>();
+            ((LoadingViewModel)this.DataContext).AuthenticationCompleted += LoadingWindow_AuthenticationCompleted;
         }
+        #endregion
 
-        private async void Login_Click(object sender, RoutedEventArgs e)
+        #region Methods
+        private void LoadingWindow_AuthenticationCompleted()
         {
-            // Show loading panel
-            LoginPanel.Visibility = Visibility.Collapsed;
-            LoadingPanel.Visibility = Visibility.Visible;
-
-            bool isAuthenticated = false;
-
             if (this.DataContext is LoadingViewModel viewModel)
             {
-                viewModel.Username = txtUsername.Text;
-                viewModel.Password = txtPassword.Password.ToString();
-
-                isAuthenticated = await Task.Run(() => viewModel.Login());
-
-                if (isAuthenticated)
+                if (viewModel.IsAuthenticated)
                 {
-                    // Login success
-                    var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
-                    mainWindow.Show();
-                    this.Close();
+                    LoadServices(); 
+                    NavigateMainWindow();
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(viewModel.AuthMessage))
-                    {
-                        viewModel.AuthMessage = "Invalid User or Password!";
-                    }
-
-                    MessageBox.Show(viewModel.AuthMessage, "Failed Login Attempt", MessageBoxButton.OK);
-
-                    LoginPanel.Visibility = Visibility.Visible;
-                    LoadingPanel.Visibility = Visibility.Collapsed;
+                    MessageBox.Show(viewModel.AuthMessage, "Login Failure", MessageBoxButton.OK);
+                    ShowLogin();
                 }
             }
         }
 
+        private void ShowPrgressBar()
+        {
+            LoginPanel.Visibility = Visibility.Collapsed;
+            LoadingPanel.Visibility = Visibility.Visible;
+        }
+
+        private void ShowLogin()
+        {
+            LoginPanel.Visibility = Visibility.Visible;
+            LoadingPanel.Visibility = Visibility.Collapsed;
+        } 
+
+        private void LoadServices()
+        {
+            PART_Status.Text = "Loading Services....";
+            LogHelper.LogInfo("Loading Services Data....");
+            BootStrapper.LoadServices();
+            LogHelper.LogInfo("Services Data Loaded.");
+        }
+
+        private void NavigateMainWindow()
+        {
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
+            this.Visibility = Visibility.Hidden;
+            mainWindow.Show();
+            this.Close();
+        }
+        #endregion
+
+        #region Event Handlers
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            ShowPrgressBar();
+            if (this.DataContext is LoadingViewModel viewModel)
+            {
+                viewModel.Username = txtUsername.Text;
+                viewModel.Password = txtPassword.Password.ToString();
+                viewModel.Login().GetAwaiter();
+            }
+        } 
+        #endregion
     }
 }

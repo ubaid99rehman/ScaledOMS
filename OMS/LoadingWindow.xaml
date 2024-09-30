@@ -10,12 +10,21 @@
         xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
         xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
         xmlns:Views="clr-namespace:OMS.Loading"
-        Height="400"
-        Width="550"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
-        Topmost="True"
+        Height="400" Width="550"
+        MinHeight="400" MinWidth="550"
+        MaxHeight="400" MaxWidth="550" mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" Topmost="True"
+        Background="{DynamicResource ScreenBackground}" Foreground="{DynamicResource TextForeground}"
         WindowStyle="None">
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="DeepSkyBlue"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+    </Window.Resources>
 
    <Grid Style="{StaticResource CustomGridStyle}">
         <Grid.RowDefinitions>
@@ -24,24 +33,21 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical">
-
             <dx:DXImage x:Name="PART_Logo" Source="/Images/VS_Logo.png" 
                         Width="150" Height="150" Stretch="Fill"
                         HorizontalAlignment="Center" Margin="0 20"/>
-
             <TextBlock x:Name="PART_Title" 
                        Text="Order Management System" 
                        HorizontalAlignment="Center"
                        FontWeight="Bold"
-                       FontSize="36" FontFamily="Nirmala UI" >
+                       FontSize="36" FontFamily="Calibri" >
                 <TextBlock.Effect>
                     <dx:FadeTransitionEffect/>
                 </TextBlock.Effect>
             </TextBlock>
-
         </StackPanel>
 
-        <Grid Background="White"
+        <Grid Style="{StaticResource CustomGridStyle}"
               Name="LoginPanel"
               Margin="0,20,0,0"
               Visibility="Visible"
@@ -92,14 +98,14 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Content="LOG IN" 
-                    Width="75" Height="25"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Background="DeepSkyBlue"
+                    Width="100" Height="25"
+                    FontWeight="Normal"
+                    FontSize="10"
+                    FontFamily="Arial"
                     Click="Login_Click"/>
         </Grid>
 
-        <Grid Background="White"
+        <Grid Style="{StaticResource CustomGridStyle}"
               Name="LoadingPanel"
               Grid.Row="1"
               Visibility="Collapsed">
@@ -110,39 +116,25 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-
             <TextBlock x:Name="PART_Status"  
                        Grid.Column="0"
                        Margin="10 0 0 0"
-                       Text="Loading ..."
+                       Text="Validating User...."
                        Width="100"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontSize="16"
-                       Foreground="Black"/>
-
-            <StackPanel Orientation="Vertical" 
+                       FontSize="12"/>
+       
+            <StackPanel Orientation="Horizontal" 
                         Grid.Column="1"
-                        VerticalAlignment="Center" Width="300" >
-
-                <dxe:ProgressBarEdit>
+                        Grid.ColumnSpan="2"
+                        VerticalAlignment="Center">
+                <dxe:ProgressBarEdit Width="400" Background="Red">
                     <dxe:ProgressBarEdit.StyleSettings>
                         <dxe:ProgressBarMarqueeStyleSettings/>
                     </dxe:ProgressBarEdit.StyleSettings>
                 </dxe:ProgressBarEdit>
-
             </StackPanel>
-
-            <TextBlock x:Name="PART_Copyright"  
-                       Grid.Column="2"
-                       Margin="0 0 10 0"
-                       Foreground="Black"
-                       Width="100"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Text="{Binding Copyright}" />
-
-
         </Grid>
     </Grid>
 

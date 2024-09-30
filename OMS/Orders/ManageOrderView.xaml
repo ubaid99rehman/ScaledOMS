@@ -49,7 +49,6 @@
                                   AllowItemHighlighting="False"
                                   ImmediatePopup="True"
                                   ClearSelectionOnBackspace="True"
-                                  ItemTemplate="{DynamicResource ComboboxEditItemTemplate}"
                                   AssignNullValueOnClearingEditText="True">
                     <dxe:ComboBoxEdit.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace OMS.Core.Models
 {
-    public class AppTime : INotifyPropertyChanged
+    public class AppTime : BaseModel
     {
         private DateTime _currentTime;
         public DateTime CurrentTime
@@ -23,14 +22,6 @@ namespace OMS.Core.Models
         {
             CurrentTime = DateTime.Now;
         }
-
-        #region INotifyPropertyChanged Implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 
 }

@@ -11,36 +11,22 @@ namespace OMS.ViewModels
 {
     public class LoadingViewModel : ViewModelBase
     {
-        public event Action AuthenticationCompleted;
-
         private IAuthService AuthService;
 
+        public event Action AuthenticationCompleted;
         public void AuthenticationComplete()
         {
             AuthenticationCompleted?.Invoke();   
         }
 
-        public INavigationService NavigationService 
-        { 
-            get 
-            { 
-                return this.GetService<INavigationService>(); 
-            }
-        }
+        #region Props
 
         private bool _isAuthenticated;
         public bool IsAuthenticated
         {
-            get { return _isAuthenticated;}
+            get { return _isAuthenticated; }
             set { SetProperty(ref _isAuthenticated, value, nameof(IsAuthenticated)); }
-                
-        }
 
-        private string _loadingMessage;
-        public string LoadingMessage
-        {
-            get { return _loadingMessage; }
-            set { SetProperty(ref _loadingMessage, value, nameof(LoadingMessage));   }
         }
 
         private string _authMessage;
@@ -48,26 +34,6 @@ namespace OMS.ViewModels
         {
             get { return _authMessage; }
             set { SetProperty(ref _authMessage, value, nameof(AuthMessage)); }
-        }
-
-        private bool _loadedServices = false;
-        public bool LoadedServices
-        {
-            get => _loadedServices;
-            set
-            {
-                if (_loadedServices != value)
-                {
-                    _loadedServices = value;
-                }
-            }
-        }
-
-        private string currentView;
-        public string CurrentView
-        {
-            get { return this.currentView; }
-            set { SetProperty(ref currentView, value, nameof(CurrentView)); }
         }
 
         private string _username;
@@ -90,64 +56,57 @@ namespace OMS.ViewModels
             }
         }
 
-        public LoadingViewModel(IAuthService authService) 
+        #endregion
+
+        #region Constructor
+        public LoadingViewModel(IAuthService authService)
         {
             IsAuthenticated = false;
             AuthService = authService;
         }
+        #endregion
 
-        public void OnViewLoaded()
+        #region Methods
+        public async Task Login()
         {
-            CurrentView = "LoginView";
-            NavigationService.Navigate("LoginView", this, null, null, false);
-        }
-
-        public async Task<bool> Login() 
-        {
-            await Task.Delay(2000);
+            await Task.Delay(3000);
+            //Check Null/Empty User or Password
             if (string.IsNullOrWhiteSpace(Username))
             {
                 AuthMessage = "Username Field Cannot be Empty!";
                 IsAuthenticated = false;
                 AuthenticationComplete();
-                return false;
             }
-            
             if (string.IsNullOrWhiteSpace(Password))
             {
                 AuthMessage = "Password Field Cannot be Empty!";
                 IsAuthenticated = false;
                 AuthenticationComplete();
-                return false;
             }
-            return Authenticate();
+            Authenticate();
         }
 
-        public bool Authenticate() 
+        public void Authenticate()
         {
-            LogHelper.LogInfo("Authenticating User: "+Username);
+            LogHelper.LogInfo("Authenticating User: " + Username);
             var user = AuthService.Authenticate(new UserCredentials { Username = this.Username, Password = this.Password });
-            if(user != null)
+            
+            if (user != null)
             {
-                IsAuthenticated=true;
+                IsAuthenticated = true;
                 AuthMessage = "Authenticated!";
-                LogHelper.LogInfo("Authentication For User: "+Username+" Passed.");
-                return true;
+                AuthenticationComplete();
+                LogHelper.LogInfo("User: " + Username + " Authenticated.");
             }
-            LogHelper.LogInfo("Authentication For User: " + Username + " Failed.");
-            return false;
-        }
-
-        public async Task LoadServices()
-        {
-            await Task.Run(() =>
+            else
             {
-                
-                // Simulate some delay
-                Thread.Sleep(1000);
-                LoadedServices = true;
-            });
-        }
+                IsAuthenticated = false;
+                AuthMessage = "User or Password Not Matched!";
+                AuthenticationComplete();
+                LogHelper.LogInfo("User: " + Username + " is not Authenticated.");
+            }
+        } 
+        #endregion
 
     }
 }

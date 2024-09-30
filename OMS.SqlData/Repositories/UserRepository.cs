@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using OMS.Helpers;
+using OMS.Core.Models;
 
 namespace OMS.SqlData.Repositories
 {
@@ -108,6 +109,22 @@ namespace OMS.SqlData.Repositories
                 }
             }
             return user;
+        }
+
+        public bool UpdateUser(User user)
+        {
+            bool isUpdated = false;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("UPDATE Users SET Email = @email, " +
+                    "Password = @Password", connection);
+                command.Parameters.AddWithValue("@email", user.Email);
+                command.Parameters.AddWithValue("@Password", user.Password);
+                connection.Open();
+                command.ExecuteNonQuery();
+                isUpdated = true;
+            }
+            return isUpdated;
         }
     }
 }

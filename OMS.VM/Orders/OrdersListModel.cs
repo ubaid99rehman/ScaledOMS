@@ -15,13 +15,14 @@ namespace OMS.ViewModels
         IStockDataService StockDataService;
         IAccountService AccountService;
 
-        private int _quantity;
-        public int OrderUpdatedQuantity
+        private decimal _quantity;
+        public decimal OrderUpdatedQuantity
         {
             get { return _quantity; }
             set
             {
                 SetProperty(ref _quantity, value, nameof(OrderUpdatedQuantity));
+                OrderUpdatedTotal = OrderUpdatedQuantity* StockCurrentPrice;
             }
         }
 
@@ -53,13 +54,6 @@ namespace OMS.ViewModels
             {
                 SetProperty(ref _total, value, nameof(OrderUpdatedTotal));
             }
-        }
-
-        private bool _isPopupOpen;
-        public bool IsPopupOpen
-        {
-            get => _isPopupOpen;
-            set => SetProperty(ref _isPopupOpen, value, nameof(IsPopupOpen));
         }
 
         private ObservableCollection<int> _accounts;
@@ -102,8 +96,6 @@ namespace OMS.ViewModels
             OrderService = _orderService;
             AccountService = _accountService;
             StockDataService = _stockDataService;
-
-            _isPopupOpen = false;
             SelectedOrder = new Order();
             _orders = new ObservableCollection<Order>();
             _accounts = new ObservableCollection<int>();
@@ -113,12 +105,18 @@ namespace OMS.ViewModels
 
         }
 
+        private void UpdateOrderTotal()
+        {
+            OrderUpdatedTotal = OrderUpdatedQuantity * StockCurrentPrice;
+            SelectedOrder.Total = OrderUpdatedTotal;
+        }
+
         private void UpdateCurrentOrder()
         {
             OrderUpdatedAccount = (int)SelectedOrder.AccountID;
             OrderUpdatedQuantity = (int)SelectedOrder.Quantity;
             OrderUpdatedTotal = (decimal)SelectedOrder.Total;
-            StockCurrentPrice = StockDataService.GetStock(SelectedOrder.Symbol).LastPrice;
+            StockCurrentPrice = (decimal)SelectedOrder.Price;
         }
 
         private void InitData()
@@ -126,18 +124,6 @@ namespace OMS.ViewModels
             AccountsList = AccountService.GetAccountsList();
             UpdateData();
             SelectedOrder = Orders.FirstOrDefault();
-        }
-
-        [Command]
-        public void ShowEditForm()
-        {
-            IsPopupOpen = true;
-        }
-
-        [Command]
-        public void CloseEditForm()
-        {
-            IsPopupOpen = false;
         }
 
         public void CancelOrder(out bool isCancelled, out string message)
@@ -172,6 +158,11 @@ namespace OMS.ViewModels
         {
             isUpdated = false;
             message = "Cannot Update Order!";
+            SelectedOrder.AccountID = OrderUpdatedAccount;
+            SelectedOrder.Price = StockCurrentPrice;
+            SelectedOrder.Quantity = (int)OrderUpdatedQuantity;
+            SelectedOrder.Total = OrderUpdatedTotal;
+
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
                 if (SelectedOrder.Status == OrderStatus.Cancelled)

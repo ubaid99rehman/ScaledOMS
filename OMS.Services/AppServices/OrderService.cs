@@ -47,7 +47,7 @@ namespace OMS.Services.AppServices
             bool result = OrderRepository.Update(entity);
             if(result)
             {
-                GetAll();
+                FetchOrders();
                 DataUpdated?.Invoke();
             }
             return result;
@@ -106,7 +106,7 @@ namespace OMS.Services.AppServices
             bool result = OrderRepository.Update(selectedOrder);
             if (result)
             {
-                GetAll();
+                FetchOrders();
                 DataUpdated?.Invoke();
                 message = "Cancelled";
             }
@@ -117,10 +117,16 @@ namespace OMS.Services.AppServices
             bool result = OrderRepository.Add(entity);
             if (result)
             {
-                GetAll();
+                FetchOrders();
                 DataUpdated?.Invoke();
             }
             return result;
+        }
+
+        private void FetchOrders()
+        {
+            ObservableCollection<Order> Orders = OrderRepository.GetAll().ToObservableCollection<Order>();
+            CacheService.Set("Orders", Orders);
         }
 
     }

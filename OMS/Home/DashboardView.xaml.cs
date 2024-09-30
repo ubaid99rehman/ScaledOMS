@@ -16,12 +16,14 @@ namespace OMS.Home
 
         private void UnitsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            LayoutPanel panel = new LayoutPanel();
+            //volumeSeries.Visible = false;
+            //unitsSeries.Visible = true;
         }
 
         private void VolumeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-
+            //volumeSeries.Visible = true;
+            //unitsSeries.Visible = false;
         }
     }
 }

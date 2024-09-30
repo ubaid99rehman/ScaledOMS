@@ -3,12 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using OMS.Core.Services.AppServices;
 using OMS.Helpers;
 using System.Windows;
-using System.Windows.Media;
 
 namespace OMS
 {
     public partial class App : Application
     {
+        #region Constructor
         public App()
         {
             CompatibilitySettings.UseLightweightThemes = true;
@@ -20,9 +20,18 @@ namespace OMS
                 PreloadCategories.Grid,
                 PreloadCategories.LayoutControl,
                 PreloadCategories.Ribbon);
-        }   
-        
+        }    
+        #endregion
+
         protected override void OnStartup(StartupEventArgs e)
+        {
+            ApplyTheme();
+            LoadMainWindow();
+            base.OnStartup(e);
+        }
+
+        #region Methods
+        private void ApplyTheme()
         {
             //Applying Theme
             var themeService = AppServiceProvider.GetServiceProvider().GetRequiredService<IAppThemeService>();
@@ -31,14 +40,13 @@ namespace OMS
             {
                 AppThemeHelper.ChangeTheme(theme);
             }
-
-            //Displaying Window
-            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
-            mainWindow.Show();
-
-            base.OnStartup(e);
         }
+
+        private void LoadMainWindow()
+        {
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
+            mainWindow.Show();
+        } 
+        #endregion
     }
-
-
 }

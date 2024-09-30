@@ -19,5 +19,6 @@ namespace OMS.DataAccess.Repositories.AppRepositories
     public interface IUserRepository : IAppReadRepository<User>
     {
         bool AuthenticateUser(string username, string password, out string message, out int isDisabled, out int userID);
+        bool UpdateUser(User user);
     }
 }

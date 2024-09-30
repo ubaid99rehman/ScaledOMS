@@ -2,22 +2,21 @@
 using OMS.Core.Core.Models.User;
 using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
+using OMS.Core.Services.Cache;
 using OMS.DataAccess.Repositories.AppRepositories;
-using OMS.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OMS.Services.AppServices
 {
     public class AuthService : IAuthService
     {
 
-        public AuthService(IUserRepository userRepository)
+        ICacheService CacheService;
+
+        public AuthService(IUserRepository userRepository, ICacheService cache)
         {
             _userRespository = userRepository;
+            CacheService = cache;
         }
 
 
@@ -40,7 +39,12 @@ namespace OMS.Services.AppServices
 
         public User Authenticate(UserCredentials credentials)
         {
-            return  UserAuth(credentials.Username,credentials.Password, out string MessageBoxHelper, out int userID);
+            var user = UserAuth(credentials.Username, credentials.Password, out string MessageBoxHelper, out int userID);
+            if (user is User && user != null)
+            {
+                CacheService.Set("CurrentUser", user);
+            }
+            return user;
         }
     }
 }

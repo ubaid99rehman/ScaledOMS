@@ -2,42 +2,35 @@
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using Microsoft.Extensions.DependencyInjection;
-using OMS.Core.Services.Cache;
-using OMS.Logging;
-using OMS.Orders;
 using OMS.ViewModels;
-using System.Configuration;
+using System;
 using System.Windows;
 
 namespace OMS
 {
     public partial class MainWindow : ThemedWindow
     {
-        IBootStrapper BootStrapper;
-        ICacheService CacheService;
-        private string theme = "Dark";
+        #region Props
+        bool isOrderOpen;
+        bool isUserWindowOpen;
 
-        private string layoutFilePath;
-
-        public MainWindow(IBootStrapper bootStrapper, ICacheService cacheService)
+        #endregion
+        
+        #region Constructor
+        public MainWindow()
         {
             InitializeComponent();
+            isOrderOpen = false;
+            isUserWindowOpen = false;
 
-            layoutFilePath = ConfigurationManager.AppSettings["LayoutFilePath"];
-
-            CacheService = cacheService;
-            BootStrapper = bootStrapper;
-
-
+            //Datacontext
             var model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
             this.DataContext = model;
-
-            LogHelper.LogInfo("Loading Services Data....");
-            BootStrapper.LoadServices();
-            LogHelper.LogInfo("Services Data Loaded");
         }
+        #endregion
 
+        #region Buton Click Events
         private void InfoIcon_Click(object sender, RoutedEventArgs e)
         {
             InfoPopup.IsOpen = !InfoPopup.IsOpen;
@@ -46,24 +39,33 @@ namespace OMS
 
         private void NewOrder_Click(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            if (CacheService.ContainsKey("NewOrderWindowOpen"))
+            if (!isOrderOpen)
             {
-                bool isOpened = CacheService.Get<bool>("NewOrderWindowOpen");
-
-                if (!isOpened)
-                {
-                    AddOrder windo = new AddOrder(CacheService);
-                    windo.Show();
-                }
-            }
-            else
-            {
-                CacheService.Set("NewOrderWindowOpen", true);
-                AddOrder windo = new AddOrder(CacheService);
+                AddOrder windo = new AddOrder();
+                windo.Closed += OrderWindow_Closed;
+                var Owner = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>(); ;
+                windo.Owner = Owner;
                 windo.Show();
+
+                isOrderOpen = true;
             }
         }
 
+        private void UserUpdate_Click(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            if (!isUserWindowOpen)
+            {
+                ProfileView windo = new ProfileView();
+                windo.Closed += UserWindow_Closed;
+                var Owner = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>(); ;
+                windo.Owner = Owner;
+                windo.Show();
+                isUserWindowOpen = true;
+            }
+        } 
+        #endregion
+
+        #region Main Window (App) Events
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (this.DataContext is MainViewModel model)
@@ -78,10 +80,19 @@ namespace OMS
             {
                 model.RestoreOpenedDocumentsState();
             }
+        } 
+        #endregion
+
+        #region Child Window Closed Events
+        private void OrderWindow_Closed(object sender, System.EventArgs e)
+        {
+            isOrderOpen = false;
         }
 
-        private void ChangeTheme(object sender, RoutedEventArgs e)
+        private void UserWindow_Closed(object sender, EventArgs e)
         {
-        }
+            isUserWindowOpen = false;
+        } 
+        #endregion
     }
 }

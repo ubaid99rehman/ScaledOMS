@@ -64,6 +64,7 @@ namespace OMS
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUserService, UserService>();
             
             //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
@@ -94,6 +95,9 @@ namespace OMS
 
             //Trade
             services.AddSingleton<TradeViewModel>();
+
+            //User
+            services.AddSingleton<ProfileModel>();
             #endregion
 
             #region Views

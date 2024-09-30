@@ -38,15 +38,15 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <RadioButton Content="Volume" Margin="10" IsChecked="True" Checked="VolumeRadioButton_Checked"/>
-                                <RadioButton Content="Units" Margin="10" Checked="UnitsRadioButton_Checked"/>
+                                <RadioButton x:Name="VolumeRadioBtn" Content="Volume" Margin="10" IsChecked="True" Checked="VolumeRadioButton_Checked"/>
+                                <RadioButton x:Name="UnitsRadioBtn" Content="Units" Margin="10" Checked="UnitsRadioButton_Checked"/>
                             </StackPanel>
 
                             <dxc:ChartControl Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="stockHoldingsChart">
                                 <dxc:XYDiagram2D x:Name="xyDiagram2D">
                                     <dxc:XYDiagram2D.Series>
-                                        <dxc:BarSideBySideSeries2D x:Name="volumeSeries" DisplayName="Stock Holdings by Value" DataSource="{Binding StockHoldingsData}" ArgumentDataMember="Symbol" ValueDataMember="Volume"/>
-                                        <dxc:BarSideBySideSeries2D x:Name="unitsSeries" DisplayName="Stock Holdings by Volume" DataSource="{Binding StockHoldingsData}" ArgumentDataMember="Symbol" ValueDataMember="Units"/>
+                                        <dxc:BarSideBySideSeries2D x:Name="volumeSeries" Visible="True" DisplayName="Stock Holdings by Value" DataSource="{Binding StockHoldingsData}" ArgumentDataMember="Symbol" ValueDataMember="Volume"/>
+                                        <dxc:BarSideBySideSeries2D x:Name="unitsSeries" Visible="False" DisplayName="Stock Holdings by Volume" DataSource="{Binding StockHoldingsData}" ArgumentDataMember="Symbol" ValueDataMember="Units"/>
                                     </dxc:XYDiagram2D.Series>
                                 </dxc:XYDiagram2D>
                             </dxc:ChartControl>

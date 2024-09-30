@@ -1,27 +1,29 @@
-﻿<Window x:Class="OMS.Orders.AddOrder"
+﻿<dx:ThemedWindow x:Class="OMS.AddOrder"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         mc:Ignorable="d" 
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow"
         Topmost="True"
         Height="300" Width="600"
+        MinHeight="250" MinWidth="550"
+        Background="{DynamicResource ScreenBackground}"
         Foreground="{DynamicResource TextForeground}">
    <Grid Style="{StaticResource CustomGridStyle}">
         <StackPanel>
-            <Canvas>
+            <!--<Canvas>
                 <dxe:ButtonClose x:Name="btnClearOrder" Content="Close" 
                                  Canvas.Right="5"
                                  Canvas.Top="5"
-                                 BorderBrush="Black"
                                  Click="BtnClose_Click"
                                  BorderThickness="1"/>
-            </Canvas>
+            </Canvas>-->
             <Grid HorizontalAlignment="Center" 
                       Margin="20 40"
                       VerticalAlignment="Top">
@@ -101,21 +103,10 @@
                 <Button x:Name="btnAddOrder" Content="ADD ORDER" 
                             Width="120" 
                             Margin="10, 0"
-                            BorderBrush="Black"
-                            BorderThickness="1"
                             Click="btnAddOrder_Click">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightSkyBlue"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
                 </Button>
             </StackPanel>
 
         </StackPanel>
     </Grid>
-</Window>
+</dx:ThemedWindow>

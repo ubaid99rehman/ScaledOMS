@@ -11,6 +11,7 @@ namespace OMS.Core.Core.Models.User
         public int UserID;
         public string UserName;
         public string Email;
+        private string _password;
         bool UserStatus;
 
         public User() { }
@@ -22,5 +23,11 @@ namespace OMS.Core.Core.Models.User
             Email = email;
             UserStatus = userStatus;
         }
+        public string Password
+        {
+            get => _password;
+            set => _password = value;
+        }
+
     }
 }

@@ -26,7 +26,8 @@ namespace OMS.ViewModels
             new StockHolding { Symbol = "AAPL", Volume = 150000, Units = 500 },
             new StockHolding { Symbol = "MSFT", Volume = 120000, Units = 400 },
             new StockHolding { Symbol = "GOOGL", Volume = 100000, Units = 350 },
-            new StockHolding { Symbol = "AMZN", Volume = 80000, Units = 300 }
+            new StockHolding { Symbol = "AMZN", Volume = 80000, Units = 280 },
+            new StockHolding { Symbol = "NVDA", Volume = 80000, Units = 300 }
         };
             MonthlyOrderData = new ObservableCollection<MonthlyOrderData>
         {

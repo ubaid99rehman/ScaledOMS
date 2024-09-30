@@ -26,7 +26,9 @@
     Loaded="ThemedWindow_Loaded"
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
     Icon="/Images/VS_Logo.png"
+    Topmost="True"
     Background="{DynamicResource ScreenBackground}"
+    Foreground="{DynamicResource TextForeground}"
     Width="1600" Height="900">
 
     <!-- Header Items: Icon with Popup -->
@@ -34,7 +36,7 @@
         <dx:HeaderItemControl Click="InfoIcon_Click">
             <!-- Button with an Icon -->
            <Grid Style="{StaticResource CustomGridStyle}">
-                <dx:SimpleButton Background="Transparent"
+                <dx:SimpleButton Background="{DynamicResource ScreenBackground}"
                                  Foreground="Black"
                                  ToolTip="Shows Connection Information"
                                  GlyphHeight="20"
@@ -138,7 +140,7 @@
                 <dxr:RibbonPage Caption="Options">
                     <dxr:RibbonPageGroup >
                         <dxb:BarButtonItem Content="Profile" 
-                           Command="{Binding ProfileCommand}" 
+                           ItemClick="UserUpdate_Click"
                            LargeGlyph="{dx:FontIconSource Glyph=59259}"
                            Glyph="{dx:FontIconSource Glyph=59259}"/>
                     </dxr:RibbonPageGroup>
@@ -154,7 +156,7 @@
 
             </dxr:RibbonDefaultPageCategory>
         </dxr:RibbonControl>
-       <Grid Style="{StaticResource CustomGridStyle}">
+        <Grid Style="{StaticResource CustomGridStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>

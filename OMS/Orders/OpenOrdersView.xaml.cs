@@ -1,13 +1,10 @@
-﻿using DevExpress.ClipboardSource.SpreadsheetML;
-using DevExpress.Data;
-using DevExpress.Images;
-using DevExpress.Utils.Design;
+﻿using DevExpress.Data;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
 using Microsoft.Extensions.DependencyInjection;
 using OMS.ViewModels;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,8 +32,6 @@ namespace OMS.Orders
             if (this.DataContext is OrdersListModel model)
             {
                 model.CancelOrder(out bool isCancelled,out string message);
-
-                model.CloseEditForm();
                 if(isCancelled)
                 {
                     ThemedMessageBox.Show("Order Cancelled Successfully!", "Order Cancelled", MessageBoxButton.OK);
@@ -55,7 +50,6 @@ namespace OMS.Orders
                 model.UpdateOrder(out bool isUpdated, out string message);
                 if(isUpdated)
                 {
-                    model.CloseEditForm();
                     MessageBox.Show("Order Updated Successfully!", "Order Updated", MessageBoxButton.OK);
                 }
                 else
@@ -72,14 +66,17 @@ namespace OMS.Orders
             //{
             //    model.ShowEditForm();
             //}
-
             if (!isEditOpen)
             {
                 if (DataContext is OrdersListModel model)
                 {
-                    EditOrder editOrder = new EditOrder(model.SelectedOrder);
+                    EditOrder editOrder = new EditOrder();
+                    editOrder.DataContext = this.DataContext;
                     editOrder.Closed += EditOrder_Closed;
+                    var Owner= AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>(); ;
+                    editOrder.Owner = Owner;
                     editOrder.Show();
+                    isEditOpen = true;
                 }
             }
         }
@@ -124,8 +121,6 @@ namespace OMS.Orders
         #region Mouse Click Events
         private void Mouse_Right_Button_Clicked(object sender, MouseButtonEventArgs e)
         {
-            
-            
             //var hitInfo = ((TableView)dataGrid.View).CalcHitInfo(Mouse.GetPosition(dataGrid));
             //if (hitInfo != null)
             //{

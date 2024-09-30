@@ -70,6 +70,7 @@
     <Compile Include="Portfolio\AccountPortfolioViewModel .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\AppThemeModel.cs" />
+    <Compile Include="Settings\ProfileModel.cs" />
     <Compile Include="Stocks\StockChartModel.cs" />
     <Compile Include="Stocks\StockDetailViewModel.cs" />
     <Compile Include="Trade\TradeBookModel.cs" />

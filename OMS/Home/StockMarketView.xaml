@@ -37,15 +37,11 @@
                                 BorderThickness="0,0,0,1"
                                 FloatingMode="Window"
                                 FloatingDocumentContainer="DocumentHost">
-
             <dxdo:LayoutGroup Orientation="Vertical">
-
                 <!--Content-->
                 <dxdo:LayoutGroup Orientation="Horizontal" >
-
                     <!--Header, Chart and Order Tabs-->
                     <dxdo:LayoutGroup ItemWidth="5*" Orientation="Vertical">
-
                         <!--Header-->
                         <dxdo:LayoutGroup Orientation="Horizontal" ItemHeight="50">
                             <dxdo:DocumentPanel>
@@ -79,15 +75,14 @@
                                 </Grid>
                             </dxdo:DocumentPanel>
                         </dxdo:LayoutGroup>
-
                         <!--Trading Chart-->
                         <dxdo:DocumentGroup ItemHeight="3*"
-                                        ShowDropDownButton="False"
-                                        ShowControlBox="False"
-                                        FontWeight="Bold"
-                                        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-                                        xmlns:dxct="http://schemas.devexpress.com/winfx/2008/xaml/charts/themekeys"
-                                        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts">
+                                            ShowDropDownButton="False"
+                                            ShowControlBox="False"
+                                            FontWeight="Bold"
+                                            xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                                            xmlns:dxct="http://schemas.devexpress.com/winfx/2008/xaml/charts/themekeys"
+                                            xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts">
 
                             <dxdo:DocumentPanel Caption="TRADING CHART"
                                             AllowClose="False"
@@ -99,38 +94,30 @@
                             </dxdo:DocumentPanel>
 
                         </dxdo:DocumentGroup>
-
                         <!--Order/Trade Hisory Tabs-->
                         <dxdo:DocumentGroup ItemHeight="1*" 
                                             ShowDropDownButton="False"
                                             ShowControlBox="False"
                                             FontWeight="Bold"
                                             Margin="0,-1,0,0">
-
+                            
                             <dxdo:DocumentPanel Caption="OPEN ORDERS"
-                                            TabCaptionHorizontalAlignment="Center"
-                                            AllowClose="False"
-                                            FontWeight="Regular">
+                                                AllowClose="False">
                                 <orderviews:OpenOrdersView DataContext="{Binding OpenOrdersModel}"/>
                             </dxdo:DocumentPanel>
 
                             <dxdo:DocumentPanel Caption="ORDER HISTORY"
-                                            AllowClose="False"
-                                            FontWeight="Regular">
+                                                AllowClose="False">
                                 <orderviews:OrderHistoryView DataContext="{Binding OrderHistoryModel}"/>
                             </dxdo:DocumentPanel>
 
                             <dxdo:DocumentPanel Caption="TRADE HISTORY"
-                                            AllowClose="False"
-                                            FontWeight="Regular">
+                                                AllowClose="False">
                                 <tradeviews:TradeHistory DataContext="{Binding TradeHistoryModel}"/>
                             </dxdo:DocumentPanel>
 
                         </dxdo:DocumentGroup>
-
-
                     </dxdo:LayoutGroup>
-
                     <!--Orders and Trades Grids-->
                     <dxdo:DocumentPanel ItemWidth="2.2*">
                        <Grid Style="{StaticResource CustomGridStyle}">
@@ -175,12 +162,8 @@
                                                   Grid.Column="2"/>
                         </Grid>
                     </dxdo:DocumentPanel>
-
                 </dxdo:LayoutGroup>
-
             </dxdo:LayoutGroup>
-
-
         </dxdo:DockLayoutManager>
     </Grid>
 

@@ -1,19 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DevExpress.Xpf.Core;
+using Microsoft.Extensions.DependencyInjection;
 using OMS.Cache;
 using OMS.Core.Services.Cache;
 using OMS.ViewModels;
 using System.Windows;
 
-namespace OMS.Orders
+namespace OMS
 {
-    public partial class AddOrder : Window
+    public partial class AddOrder : ThemedWindow
     {
-        ICacheService CacheService;
-
-        public AddOrder(ICacheService cacheService)
+        public AddOrder()
         {
             InitializeComponent();
-            CacheService = cacheService;
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AddOrderModel>();
         }
 
@@ -25,7 +23,6 @@ namespace OMS.Orders
                 if(isAdded)
                 {
                     MessageBox.Show("Order Added Successfully", "Order Added", MessageBoxButton.OK);
-                    CacheService.Set("NewOrderWindowOpen",false);
                     this.Close();
 
                 }
@@ -38,7 +35,6 @@ namespace OMS.Orders
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-            CacheService.Set("NewOrderWindowOpen", false);
             this.Close();   
         }
     }

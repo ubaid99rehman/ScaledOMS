@@ -2,54 +2,39 @@
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
-using DevExpress.Xpf.Docking.VisualElements;
 using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
+using OMS.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OMS.ViewModels
 {
     public partial class MainViewModel : ViewModelBase
     {
+        //Layout File
         private string fileName;
-        private bool screenLoaded;
-
+        //Landing Page Displayed 
+        private bool landingPageLoaded;
+        //DateTime Service
+        private IAppTimerService AppTimerService;
+        //Navigation Service
         [ServiceProperty(Key = "documentManagerService")]
         public virtual IDocumentManagerService DocumentManagerService
         {
             get { return GetService<IDocumentManagerService>(); }
         }
 
-        public IAppTimerService AppTimerService { get; }
-
-        private AddOrderModel _orderModel;
-        public AddOrderModel NewOrderModel
-        {
-            get { return _orderModel; }
-            set { SetProperty(ref _orderModel, value, nameof(NewOrderModel)); }
-        }
-
-        #region Bindable Props
+        #region Props
         public AppTime CurrentTime
         {
             get { return AppTimerService.GetCurrentDateTime(); }
-        }
-
-        private bool _isPopupOpen;
-        public bool IsPopupOpen
-        {
-            get => _isPopupOpen;
-            set => SetProperty(ref _isPopupOpen, value, nameof(IsPopupOpen));
         }
 
         private string _title;
@@ -72,6 +57,13 @@ namespace OMS.ViewModels
                 SetProperty(ref _isLoadingScreen, value, nameof(IsLoadingScreen));
             }
         }
+
+        private AddOrderModel _orderModel;
+        public AddOrderModel NewOrderModel
+        {
+            get { return _orderModel; }
+            set { SetProperty(ref _orderModel, value, nameof(NewOrderModel)); }
+        }
         #endregion
 
         #region Constructor
@@ -80,16 +72,16 @@ namespace OMS.ViewModels
             IStockDataService stockDataService)
         {
             fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
-            screenLoaded = false;
+            landingPageLoaded = false;
             AppTimerService = timerService;
             AppTimerService.StartSession();
             Title = "OMS";
-            IsPopupOpen = false;
+            DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
             NewOrderModel = new AddOrderModel(orderService, stockDataService, accountService);
         }
         #endregion
 
-        #region Loading Decorator Methods
+        #region Loading Decorator
         private void Navigating()
         {
             IsLoadingScreen = true;
@@ -109,39 +101,15 @@ namespace OMS.ViewModels
         }
 
         [Command]
-        public void Portfolio()
-        {
-            AddView("AccountPortfolioView", "Portfolio");
-        }
-
-        [Command]
         public void StockMarket()
         {
             AddView("StockMarketView", "Market Watch");
         }
 
         [Command]
-        public void NewOrder()
+        public void Portfolio()
         {
-            ShowAddOrderForm();
-        }
-
-        [Command]
-        public void ShowAddOrderForm()
-        {
-            IsPopupOpen = true;
-        }
-
-        [Command]
-        public void CloseAddOrderForm()
-        {
-            IsPopupOpen = false;
-        }
-
-        [Command]
-        public void OpenOrders()
-        {
-            AddView("NewOrder", "Manage Orders");
+            AddView("AccountPortfolioView", "Portfolio");
         }
 
         [Command]
@@ -173,12 +141,12 @@ namespace OMS.ViewModels
         {
             if (DocumentManagerService != null)
             {
-                DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
                 Dashboard();
             }
             else
             {
-                throw new InvalidOperationException("DocumentManagerService is not available.");
+                var exception = new InvalidOperationException("DocumentManagerService is not available.");
+                LogHelper.LogError(exception.Message, exception);
             }
         }
         #endregion
@@ -190,25 +158,7 @@ namespace OMS.ViewModels
         }
         #endregion
 
-        public void AddView(string view, string title)
-        {
-            Navigating();
-            if (DocumentManagerService == null)
-            {
-                throw new InvalidOperationException("DocumentManagerService is not available.");
-            }
-
-            IDocument document = DocumentManagerService.CreateDocument(view, null, this);
-            document.Title = title;
-            document.Show();
-            Title = title;
-            Navigated();
-            if(screenLoaded)
-            {
-                SaveOpenedDocumentsState();
-            }
-        }
-
+        #region Pagess Layout Method
         public IEnumerable<IDocument> GetOpenedDocuments()
         {
             return DocumentManagerService.Documents;
@@ -225,7 +175,7 @@ namespace OMS.ViewModels
             var serializer = new XmlSerializer(typeof(List<DocumentState>));
             using (var writer = new StreamWriter(fileName))
             {
-               serializer.Serialize(writer, documentStates);
+                serializer.Serialize(writer, documentStates);
             }
         }
 
@@ -241,7 +191,7 @@ namespace OMS.ViewModels
                 {
                     documentStates = (List<DocumentState>)serializer.Deserialize(reader);
                 }
-                if(documentStates != null && documentStates.Count >=1)
+                if (documentStates != null && documentStates.Count >= 1)
                 {
                     foreach (var doc in documentStates)
                     {
@@ -249,9 +199,30 @@ namespace OMS.ViewModels
                     }
                 }
             }
-            screenLoaded = true;
-        }
+            landingPageLoaded = true;
+        } 
+        #endregion
 
+        //Render New Page/View
+        public void AddView(string view, string title)
+        {
+            Navigating();
+            if (DocumentManagerService == null)
+            {
+                var exception = new InvalidOperationException("DocumentManagerService is not available.");
+                LogHelper.LogError(exception.Message, exception);
+            }
+
+            IDocument document = DocumentManagerService.CreateDocument(view, null, this);
+            document.Title = title;
+            document.Show();
+            Title = title;
+            Navigated();
+            if(landingPageLoaded)
+            {
+                SaveOpenedDocumentsState();
+            }
+        }
     }
     public class DocumentState
     {

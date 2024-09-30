@@ -1,4 +1,5 @@
-﻿using OMS.Core.Models.Themes;
+﻿using DevExpress.Xpf.Printing.Native;
+using OMS.Core.Models.Themes;
 using OMS.Enums;
 using System.Windows;
 using System.Windows.Media;
@@ -66,14 +67,13 @@ namespace OMS.Helpers
             //Button
             resourceDictionary["ButtonBackground"] = ThemeModel.ButtonBackground;
             resourceDictionary["ButtonForeground"] = ThemeModel.ButtonForeground;
-            //ThicknessConverter convertor = new ThicknessConverter();
-            //    convertor.ConvertFrom( ThemeModel.ButtonBorderThickness);
 
             resourceDictionary["ButtonBorderThickness"] = new Thickness(ThemeModel.ButtonBorderThickness);
 
 
             //Title
             resourceDictionary["TitleBarBackground"] = ThemeModel.TitleBarBackground;
+            resourceDictionary["TitleBarBackgroundColor"] = ThemeModel.TitleBarBackground.Color;
             resourceDictionary["TitleBarForeground"] = ThemeModel.TitleBarForeground;
 
             // Set fonts

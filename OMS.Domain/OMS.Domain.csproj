@@ -41,22 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Account\Account.cs" />
-    <Compile Include="Models\App\AppTime.cs" />
-    <Compile Include="Models\App\ThemeModel.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Books\BookBase.cs" />
-    <Compile Include="Models\Books\OrderBook.cs" />
-    <Compile Include="Models\Books\TradeBook.cs" />
-    <Compile Include="Models\Orders\Order.cs" />
-    <Compile Include="Models\Stocks\IStock.cs" />
-    <Compile Include="Models\Stocks\Stock.cs" />
-    <Compile Include="Models\Stocks\StockDetail.cs" />
-    <Compile Include="Models\Stocks\StockTradingData.cs" />
-    <Compile Include="Models\Trade\Trade.cs" />
-    <Compile Include="Models\User\SessionInfo.cs" />
-    <Compile Include="Models\User\User.cs" />
-    <Compile Include="Models\User\UserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

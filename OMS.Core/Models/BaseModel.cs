@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-
 namespace OMS.Core.Models
 {
     public abstract class BaseModel : INotifyPropertyChanged
