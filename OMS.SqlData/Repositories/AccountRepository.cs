@@ -10,15 +10,16 @@ namespace OMS.SqlData.Repositories
     public class AccountRepository : IAccountRepository
     {
         private readonly string _connectionString;
-
+        //Constructor
         public AccountRepository()
         {
             _connectionString = DbHelper.Connection;
         }
 
-        public IEnumerable<Account> GetAll()
+        //Public Data Access Methods Implementation
+        public IEnumerable<IAccount> GetAll()
         {
-            var accounts = new List<Account>();
+            var accounts = new List<IAccount>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -40,10 +41,9 @@ namespace OMS.SqlData.Repositories
             }
             return accounts;
         }
-
-        public Account GetById(int id)
+        public IAccount GetById(int id)
         {
-            Account account = null;
+            IAccount account = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -66,6 +66,6 @@ namespace OMS.SqlData.Repositories
             }
             return account;
         }
-
-       }
+       
+    }
 }

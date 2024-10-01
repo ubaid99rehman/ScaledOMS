@@ -6,38 +6,23 @@ namespace OMS.Common.Helper
 {
     public static class DateTimeHelper
     {
-        public static DateTime GetStartTime(TradeTimeInterval period, int multiplier)
-        {
-            switch (period)
-            {
-                case TradeTimeInterval.Minute: return DateTime.Now.AddMinutes(-multiplier);   
-                case TradeTimeInterval.Hour: return DateTime.Now.AddHours(-multiplier);       
-                case TradeTimeInterval.Day: return DateTime.Now.AddDays(-multiplier);         
-                case TradeTimeInterval.Month: return DateTime.Now.AddMonths(-multiplier);      
-                case TradeTimeInterval.Year: return DateTime.Now.AddYears(-multiplier);       
-                default: return DateTime.Now;
-            }
-        }
-
+        //Generate Start Date For Given Time Period
         public static DateTime GetStartTime(TradeTimeInterval interval, int multiplier, DateTime fromTime)
         {
+            if(fromTime == null)
+            {
+                fromTime = DateTime.Now;
+            }
             switch (interval)
             {
-                case TradeTimeInterval.Minute:
-                    return fromTime.AddMinutes(-multiplier);
-                case TradeTimeInterval.Hour:
-                    return fromTime.AddHours(-multiplier);
-                case TradeTimeInterval.Day:
-                    return fromTime.AddDays(-multiplier);
-                case TradeTimeInterval.Month:
-                    return fromTime.AddMonths(-multiplier);
-                case TradeTimeInterval.Year:
-                    return fromTime.AddYears(-multiplier);
-                default:
-                    throw new ArgumentException("Unsupported interval");
+                case TradeTimeInterval.Minute: return fromTime.AddMinutes(-multiplier);
+                case TradeTimeInterval.Hour: return fromTime.AddHours(-multiplier);
+                case TradeTimeInterval.Day: return fromTime.AddDays(-multiplier);
+                case TradeTimeInterval.Month: return fromTime.AddMonths(-multiplier);
+                case TradeTimeInterval.Year: return fromTime.AddYears(-multiplier);
+                default: throw new ArgumentException("Unsupported interval");
             }
         }
-
         public static TimeSpan GetTimeSpanForInterval(TradeTimeInterval interval)
         {
             switch (interval)
@@ -50,13 +35,11 @@ namespace OMS.Common.Helper
                 default: return TimeSpan.FromMinutes(1);
             }
         }
-
-        public static TimeSpan ConvertInterval(ChartIntervalItem interval, int intervalsCount)
+        public static TimeSpan GetTimeSpan(ChartIntervalItem interval, int intervalsCount)
         {
-            return GetInterval(interval.MeasureUnit, interval.MeasureUnitMultiplier * intervalsCount);
+            return GetTimeSpan(interval.MeasureUnit, interval.MeasureUnitMultiplier * intervalsCount);
         }
-
-        public static TimeSpan GetInterval(DateTimeMeasureUnit measureUnit, int multiplier)
+        public static TimeSpan GetTimeSpan(DateTimeMeasureUnit measureUnit, int multiplier)
         {
             switch (measureUnit)
             {

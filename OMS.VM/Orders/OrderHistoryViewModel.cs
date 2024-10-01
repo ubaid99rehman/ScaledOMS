@@ -1,13 +1,7 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Enums;
-using OMS.Core.Models;
 using OMS.Core.Services.AppServices;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OMS.Core.Models.Orders;
 
 namespace OMS.ViewModels
 {
@@ -15,11 +9,10 @@ namespace OMS.ViewModels
     {
         IOrderService OrderService;
 
-
-        private ObservableCollection<Order> orders;
-        public ObservableCollection<Order> Orders
+        private ObservableCollection<IOrder> orders;
+        public ObservableCollection<IOrder> Orders
         {
-            get => orders ?? (orders = new ObservableCollection<Order>());
+            get => orders ?? (orders = new ObservableCollection<IOrder>());
             set
             {
                 SetProperty(ref orders, value, nameof(Orders));
@@ -34,8 +27,7 @@ namespace OMS.ViewModels
 
         private void LoadOrders()
         {
-            orders = OrderService.GetAll();
+            Orders = OrderService.GetAll();
         }
-
     }
 }

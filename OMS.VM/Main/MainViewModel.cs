@@ -3,6 +3,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
 using OMS.Core.Models;
+using OMS.Core.Models.App;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
@@ -32,7 +33,7 @@ namespace OMS.ViewModels
         }
 
         #region Props
-        public AppTime CurrentTime
+        public IAppTime CurrentTime
         {
             get { return AppTimerService.GetCurrentDateTime(); }
         }
@@ -76,7 +77,6 @@ namespace OMS.ViewModels
             AppTimerService = timerService;
             AppTimerService.StartSession();
             Title = "OMS";
-            DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
             NewOrderModel = new AddOrderModel(orderService, stockDataService, accountService);
         }
         #endregion
@@ -200,6 +200,7 @@ namespace OMS.ViewModels
                 }
             }
             landingPageLoaded = true;
+            DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
         } 
         #endregion
 

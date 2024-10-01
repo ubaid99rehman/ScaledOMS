@@ -54,7 +54,7 @@ namespace OMS.ViewModels
                 StockTrades.Clear();
                 foreach (var trade in trades)
                 {
-                    StockTrades.Add(trade);
+                    StockTrades.Add((TradeBook)trade);
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace OMS.ViewModels
                         {
                             StockTrades.RemoveAt(StockTrades.Count - 1);
                         }
-                        StockTrades.Insert(0, trade);
+                        StockTrades.Insert(0, (TradeBook)trade);
                     }
                 }
             }

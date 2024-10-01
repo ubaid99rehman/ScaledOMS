@@ -8,7 +8,7 @@ namespace OMS.ViewModels
     {
         ISessionInfoServce SessionInfoServce { get;}
         
-        public SessionInfo SessionInfo
+        public ISessionInfo SessionInfo
         {
             get { return SessionInfoServce.GetSessionInfo(); }
         }

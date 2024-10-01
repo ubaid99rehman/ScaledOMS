@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm.Native;
+using OMS.Core.Core.Models.Books;
 using OMS.Core.Models;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
@@ -15,18 +16,14 @@ namespace OMS.Services.MarketServices.RealtimeServices
     {
         const int Tick = 2000;
         private readonly string cacheKeyPrefix = "MarketTrades_";
-        
         public event Action<string> DataUpdated;
-
+        readonly DispatcherTimer updateTimer;
         IMarketTradeRepository marketTradeRepository;
         IStockDataService StockDataService;
         ICacheService CacheService;
 
-        readonly DispatcherTimer updateTimer;
-
-        public MarketTradeService(IMarketTradeRepository marketTradeRepository,
-            ICacheService cacheService,
-            IStockDataService stockDataService)
+        //Constructor
+        public MarketTradeService(IMarketTradeRepository marketTradeRepository, ICacheService cacheService, IStockDataService stockDataService)
         {
             StockDataService = stockDataService;
             this.marketTradeRepository = marketTradeRepository;
@@ -36,25 +33,24 @@ namespace OMS.Services.MarketServices.RealtimeServices
             InitTimer();
         }
 
-        public ObservableCollection<TradeBook> GetAllBySymbol(string symbol)
+        //Public Access Methods Implementation
+        public ObservableCollection<BookBase> GetAllBySymbol(string symbol)
         {
             StartSession();
             var cacheKey = cacheKeyPrefix + symbol;
             if (CacheService.ContainsKey(cacheKey))
             {
-                return CacheService.Get<ObservableCollection<TradeBook>>(cacheKey);
+                return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
             }
 
             var trades = marketTradeRepository.GetAll(symbol).ToObservableCollection();
             CacheService.Set(cacheKey, trades);
             return trades;
         }
-
-        public TradeBook GetById(int key)
+        public BookBase GetById(int key)
         {
             return marketTradeRepository.GetById(key);
         }
-
         public void Refresh(object sender, EventArgs e)
         {
             foreach (var symbol in GetTrackedSymbols())
@@ -63,23 +59,21 @@ namespace OMS.Services.MarketServices.RealtimeServices
                 DataUpdated?.Invoke(symbol); 
             }
         }
-
         public void StartSession()
         {
             updateTimer.Start();
         }
-
-        public ObservableCollection<TradeBook> GetAll()
+        public ObservableCollection<BookBase> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        void InitTimer()
+        #region Private Methods
+        private void InitTimer()
         {
             updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
             updateTimer.Tick += new EventHandler(Refresh);
         }
-        
         private void UpdateTradeRecords(string symbol)
         {
             var cacheKey = cacheKeyPrefix + symbol;
@@ -88,10 +82,10 @@ namespace OMS.Services.MarketServices.RealtimeServices
             var tradeCollection = latestTrades.ToObservableCollection();
             CacheService.Set(cacheKey, tradeCollection);
         }
-
         private IEnumerable<string> GetTrackedSymbols()
         {
             return CacheService.Get<ObservableCollection<string>>("StockSymbols") ?? StockDataService.GetStockSymbols();
-        }
+        } 
+        #endregion
     }
 }

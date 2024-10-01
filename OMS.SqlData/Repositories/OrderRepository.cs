@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using OMS.DataAccess.Repositories.AppRepositories;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Enums;
+using OMS.Core.Models.Orders;
 
 namespace OMS.SqlData.Repositories
 {
@@ -13,16 +14,17 @@ namespace OMS.SqlData.Repositories
     {
         private readonly string _connectionString;
         IStockRepository _stockDataService;
-
+        //Constructor
         public OrderRepository(IStockRepository stockDataService)
         {
             _connectionString = DbHelper.Connection;
             _stockDataService = stockDataService;
         }
 
-        public IEnumerable<Order> GetAll()
+        //Public Data Access Methods Implementation
+        public IEnumerable<IOrder> GetAll()
         {
-            var orders = new List<Order>();
+            var orders = new List<IOrder>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -52,10 +54,9 @@ namespace OMS.SqlData.Repositories
             }
             return orders;
         }
-
-        public Order GetById(int orderID)
+        public IOrder GetById(int orderID)
         {
-            Order order = null;
+            IOrder order = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -85,8 +86,7 @@ namespace OMS.SqlData.Repositories
             }
             return order;
         }
-
-        public bool Add(Order order)
+        public bool Add(IOrder order)
         {
             int StockID = _stockDataService.GetBySymbol(order.Symbol).ID;
             bool isAdded = false;
@@ -116,8 +116,7 @@ namespace OMS.SqlData.Repositories
             }
             return isAdded; 
         }
-
-        public bool Update(Order order)
+        public bool Update(IOrder order)
         {
             bool isUpdated = false;
             using (var connection = new SqlConnection(_connectionString))
@@ -136,19 +135,18 @@ namespace OMS.SqlData.Repositories
             }
             return isUpdated;
         }
-
-        public bool Delete(Order order)
+        public bool Delete(IOrder order)
         {
             bool isDeleted = false;
             using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("UPDATE ORDERS SET STATUS = @OrderStaus WHERE OrderID = @OrderID", connection);
-                command.Parameters.AddWithValue("@OrderID", order.ID);
+                command.Parameters.AddWithValue("@OrderID", order.OrderID);
                 command.Parameters.AddWithValue("@OrderStaus", order.Status);
                 connection.Open();
                 command.ExecuteNonQuery();
 
-                if(GetById((int)order.ID) == null)
+                if(GetById((int)order.OrderID) == null)
                 {
                     isDeleted = true;
                 }

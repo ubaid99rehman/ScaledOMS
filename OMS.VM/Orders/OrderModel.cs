@@ -1,6 +1,8 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.Native;
 using OMS.Core.Models;
+using OMS.Core.Models.Orders;
+using OMS.Core.Models.Stocks;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
@@ -33,15 +35,15 @@ namespace OMS.ViewModels
             }
         }
 
-        private ObservableCollection<Order> _orders;
-        public ObservableCollection<Order> Orders
+        private ObservableCollection<IOrder> _orders;
+        public ObservableCollection<IOrder> Orders
         {
             get { return _orders; }
             set { SetProperty(ref _orders, value, nameof(Orders)); }
         }
 
-        private ObservableCollection<Order> _stockOrders;
-        public ObservableCollection<Order> StockOrders
+        private ObservableCollection<IOrder> _stockOrders;
+        public ObservableCollection<IOrder> StockOrders
         {
             get { return _stockOrders; }
             set { SetProperty(ref _stockOrders, value, nameof(StockOrders)); }
@@ -66,15 +68,15 @@ namespace OMS.ViewModels
             }
         }
 
-        private Order _selectedOrder;
-        public Order SelectedOrder
+        private IOrder _selectedOrder;
+        public IOrder SelectedOrder
         {
             get => _selectedOrder;
             set
             {
                 if (SetProperty(ref _selectedOrder, value, nameof(SelectedOrder)))
                 {
-                    if (value is Order order && order.Total >= 1 && !string.IsNullOrEmpty(order.Symbol))
+                    if (value is IOrder order && order.Total >= 1 && !string.IsNullOrEmpty(order.Symbol))
                     {
                         if (order.OrderID >= 1 && order.Quantity >= 1)
                         {
@@ -93,15 +95,15 @@ namespace OMS.ViewModels
             }
         }
 
-        private Order _lastOrder;
-        public Order LastOrder
+        private IOrder _lastOrder;
+        public IOrder LastOrder
         {
             get => _lastOrder;
             set => SetProperty(ref _lastOrder, value, nameof(LastOrder));
         }
 
-        private Stock _selectedStock;
-        public Stock SelectedStock
+        private IStock _selectedStock;
+        public IStock SelectedStock
         {
             get { return _selectedStock; }
             set
@@ -207,7 +209,7 @@ namespace OMS.ViewModels
             
             #region Initialized Collections
             Accounts = new ObservableCollection<int>();
-            Orders = new ObservableCollection<Order>();
+            Orders = new ObservableCollection<IOrder>();
             StockSymbols = new ObservableCollection<string>();
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
@@ -310,7 +312,7 @@ namespace OMS.ViewModels
             ClearFields();
         }
 
-        public bool isValidOrder(Order SelectedOrder)
+        public bool isValidOrder(IOrder SelectedOrder)
         {
             if (
                SelectedOrder != null &&

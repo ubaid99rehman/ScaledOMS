@@ -9,18 +9,20 @@ namespace OMS
 {
     public partial class AddOrder : ThemedWindow
     {
+        //Constructor
         public AddOrder()
         {
             InitializeComponent();
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AddOrderModel>();
         }
 
+        #region Button CLick Events
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
-            if(this.DataContext is AddOrderModel model)
+            if (this.DataContext is AddOrderModel model)
             {
                 bool isAdded = model.AddOrder();
-                if(isAdded)
+                if (isAdded)
                 {
                     MessageBox.Show("Order Added Successfully", "Order Added", MessageBoxButton.OK);
                     this.Close();
@@ -32,10 +34,10 @@ namespace OMS
                 }
             }
         }
-
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();   
-        }
+            this.Close();
+        } 
+        #endregion
     }
 }

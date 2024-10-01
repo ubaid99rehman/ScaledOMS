@@ -10,10 +10,9 @@ namespace OMS
 {
     public partial class MainWindow : ThemedWindow
     {
-        #region Props
+        #region Child Winodw Open Props
         bool isOrderOpen;
         bool isUserWindowOpen;
-
         #endregion
         
         #region Constructor
@@ -22,21 +21,20 @@ namespace OMS
             InitializeComponent();
             isOrderOpen = false;
             isUserWindowOpen = false;
-
             //Datacontext
             var model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
+            //Binding Navigation Service
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
             this.DataContext = model;
         }
         #endregion
 
-        #region Buton Click Events
+        #region Child Window Open Click Events
         private void InfoIcon_Click(object sender, RoutedEventArgs e)
         {
             InfoPopup.IsOpen = !InfoPopup.IsOpen;
 
         }
-
         private void NewOrder_Click(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             if (!isOrderOpen)
@@ -50,7 +48,6 @@ namespace OMS
                 isOrderOpen = true;
             }
         }
-
         private void UserUpdate_Click(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             if (!isUserWindowOpen)
@@ -65,7 +62,7 @@ namespace OMS
         } 
         #endregion
 
-        #region Main Window (App) Events
+        #region Main Window Open/Close Events
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (this.DataContext is MainViewModel model)
@@ -73,7 +70,6 @@ namespace OMS
                 model.SaveOpenedDocumentsState();
             }
         }
-
         private void ThemedWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is MainViewModel model)
@@ -88,7 +84,6 @@ namespace OMS
         {
             isOrderOpen = false;
         }
-
         private void UserWindow_Closed(object sender, EventArgs e)
         {
             isUserWindowOpen = false;

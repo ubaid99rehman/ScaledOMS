@@ -6,6 +6,7 @@ namespace OMS.Orders
 {
     public partial class OrderHistoryView : UserControl
     {
+        //Constructor
         public OrderHistoryView()
         {
             InitializeComponent();

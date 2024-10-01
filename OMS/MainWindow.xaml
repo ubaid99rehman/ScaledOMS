@@ -25,7 +25,7 @@
     Closing="ThemedWindow_Closing"
     Loaded="ThemedWindow_Loaded"
     Title="{Binding Title}" MinHeight="600" MinWidth="1200"
-    Icon="/Images/VS_Logo.png"
+    Icon="Resources/Images/VS_Logo.png"
     Topmost="True"
     Background="{DynamicResource ScreenBackground}"
     Foreground="{DynamicResource TextForeground}"
@@ -175,7 +175,6 @@
                                     FloatingMode="Desktop"
                                     DockingStyle="VS2010">
                 <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="Loaded" />
                     <dxdo:TabbedDocumentUIService Name="documentManagerService" 
                                                   DocumentGroup="{Binding ElementName=documentGroup}" />
                 </dxmvvm:Interaction.Behaviors>

@@ -1,4 +1,6 @@
-﻿using OMS.Core.Models;
+﻿using OMS.Core.Core.Models.Books;
+using OMS.Core.Models;
+using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Enums;
 using System;
@@ -10,26 +12,24 @@ namespace OMS.MarketData.Stocks
     public class MarketOrderRepository : IMarketOrderRepository
     {
         Random random;
-
         List<string> StockSymbols;
-        List<Stock> Stocks;
+        List<IStock> Stocks;
         IStockRepository StockRepository;
-
+        //Constructor
         public MarketOrderRepository(IStockRepository stockRepository)
         {
             StockRepository = stockRepository;
             StockSymbols = new List<string>();
-            Stocks = new List<Stock>();
+            Stocks = new List<IStock>();
             random = new Random();
             FetchStockData();
         }
-
-        public IEnumerable<OrderBook> GetAll(string symbol)
+        //Public Data Access Methods
+        public IEnumerable<BookBase> GetAll(string symbol)
         {
             return AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
         }
-
-        public IEnumerable<OrderBook> GetAll()
+        public IEnumerable<BookBase> GetAll()
         {
             Dictionary<string, IEnumerable<OrderBook>> tradesDictionary = new Dictionary<string, IEnumerable<OrderBook>>();
             foreach (var symbol in StockSymbols)
@@ -41,13 +41,12 @@ namespace OMS.MarketData.Stocks
             }
             return tradesDictionary.Values.SelectMany(t => t);
         }
-
-        public OrderBook GetById(int id)
+        public BookBase GetById(int id)
         {
-            Stock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
+            IStock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
             return AddOrders(stock).FirstOrDefault();
         }
-
+        //Private Data Loading Methods
         void FetchStockData()
         {
             if (StockSymbols == null || StockSymbols.Count < 1)
@@ -56,19 +55,14 @@ namespace OMS.MarketData.Stocks
             }
             if (Stocks == null || Stocks.Count < 1)
             {
-                Stocks = StockRepository.GetAll().ToList<Stock>();
+                Stocks = StockRepository.GetAll().ToList<IStock>();
             }
-            //foreach (var symbol in StockSymbols)
-            //{
-            //    AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-            //}
         }
-
-        private IEnumerable<OrderBook> AddOrders(Stock stock)
+        private IEnumerable<BookBase> AddOrders(IStock stock)
         {
             int sellOrdersCount = random.Next(1, 5);
             int buyOrdersCount = random.Next(1, 5);
-            List<OrderBook> orders = new List<OrderBook>();
+            List<BookBase> orders = new List<BookBase>();
 
             for (int i = 0; i < sellOrdersCount; i++)
             {
@@ -102,7 +96,7 @@ namespace OMS.MarketData.Stocks
                 orders.Add(trade);
             }
 
-            return  orders;
+            return orders;
         }
     }
 }

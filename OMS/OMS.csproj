@@ -95,10 +95,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\AppServiceProvider.cs" />
     <Compile Include="Helpers\AppThemeHelper.cs" />
     <Compile Include="Helpers\BootStrapper.cs" />
@@ -109,8 +108,6 @@
     <Compile Include="Home\StockMarketView.xaml.cs">
       <DependentUpon>StockMarketView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\IBootStrapper.cs" />
-    <Compile Include="Helpers\IContextMenuHelper.cs" />
     <Compile Include="LoadingWindow.xaml.cs">
       <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
@@ -153,6 +150,10 @@
     <Compile Include="Trade\TradeHistory.xaml.cs">
       <DependentUpon>TradeHistory.xaml</DependentUpon>
     </Compile>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
     <Page Include="Home\DashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,24 +166,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Loading\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Loading\SplashView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Loading\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Loading\SplashView.xaml.cs">
-      <DependentUpon>SplashView.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -302,6 +285,10 @@
       <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
       <Name>OMS.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OMS.Domain\OMS.Domain.csproj">
+      <Project>{4F7D43B8-535E-4B86-8F28-66F9C052C654}</Project>
+      <Name>OMS.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OMS.Logging\OMS.Logging.csproj">
       <Project>{3EB2D030-F27E-4B38-952F-29229F345068}</Project>
       <Name>OMS.Logging</Name>
@@ -324,13 +311,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\VS_Logo.png" />
+    <Resource Include="Resources\Images\VS_Logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Info_Circle.png" />
+    <Resource Include="Resources\Images\Info_Circle.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Info.png" />
+    <Resource Include="Resources\Images\Info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

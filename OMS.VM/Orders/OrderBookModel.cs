@@ -11,10 +11,14 @@ namespace OMS.ViewModels
     public class OrderBookModel : ViewModelBase
     {
         const int MaxTradeCount = 100;
-
         IMarketOrderService MarketOrderService;
 
+        //Private Members
         private string _selectedStockSymbol;
+        private ObservableCollection<OrderBook> _stockBuyingOrders;
+        private ObservableCollection<OrderBook> _stockSellingOrders;
+
+        //Public Members
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
@@ -26,12 +30,9 @@ namespace OMS.ViewModels
                     {
                         AddStockOrders();
                     }
-
                 }
             }
         }
-
-        private ObservableCollection<OrderBook> _stockBuyingOrders;
         public ObservableCollection<OrderBook> StockBuyingOrders
         {
             get { return _stockBuyingOrders; }
@@ -40,8 +41,6 @@ namespace OMS.ViewModels
                 _stockBuyingOrders = value;
             }
         }
-
-        private ObservableCollection<OrderBook> _stockSellingOrders;
         public ObservableCollection<OrderBook> StockSellingOrders
         {
             get { return _stockSellingOrders; }
@@ -50,16 +49,17 @@ namespace OMS.ViewModels
                 _stockSellingOrders = value;
             }
         }
-
+        
+        //Constructor
         public OrderBookModel(IMarketOrderService marketOrderService)
         {
             StockBuyingOrders = new ObservableCollection<OrderBook>();
             StockSellingOrders = new ObservableCollection<OrderBook>();
             MarketOrderService = marketOrderService;
             MarketOrderService.DataUpdated += OnDataUpdated;
-
         }
 
+        //Methods
         private void AddStockOrders()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
@@ -72,16 +72,15 @@ namespace OMS.ViewModels
 
                 foreach (var order in buyOrders)
                 {
-                    StockBuyingOrders.Add(order);
+                    StockBuyingOrders.Add((OrderBook)order);
                 }
 
                 foreach (var order in sellOrders)
                 {
-                    StockSellingOrders.Add(order);
+                    StockSellingOrders.Add((OrderBook)order);
                 }
             }
         }
-
         private void OnDataUpdated(string symbol)
         {
             if (symbol == SelectedStockSymbol)
@@ -89,7 +88,6 @@ namespace OMS.ViewModels
                 UpdateStockOrders();
             }
         }
-
         private void UpdateStockOrders()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
@@ -105,7 +103,7 @@ namespace OMS.ViewModels
                         {
                             StockSellingOrders.RemoveAt(0);
                         }
-                        StockSellingOrders.Add(trade);
+                        StockSellingOrders.Add((OrderBook)trade);
                     }
                 }
     
@@ -117,15 +115,10 @@ namespace OMS.ViewModels
                         {
                             StockBuyingOrders.RemoveAt(sellOrders.Count - 1);
                         }
-                        StockBuyingOrders.Insert(0, trade);
+                        StockBuyingOrders.Insert(0, (OrderBook)trade);
                     }
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            MarketOrderService.DataUpdated -= OnDataUpdated;
         }
     }
 }

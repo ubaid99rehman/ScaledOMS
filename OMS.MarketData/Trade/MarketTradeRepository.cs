@@ -1,4 +1,6 @@
-﻿using OMS.Core.Models;
+﻿using OMS.Core.Core.Models.Books;
+using OMS.Core.Models;
+using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Enums;
 using System;
@@ -10,56 +12,41 @@ namespace OMS.MarketData.Stocks
     public class MarketTradeRepository : IMarketTradeRepository
     {
         Random random;
-
         List<string> StockSymbols;
-        List<Stock> Stocks;
+        List<IStock> Stocks;
         IStockRepository StockRepository;
-        Dictionary<string, List<TradeBook>> tradesDictionary;
-
+        //Constructor
         public MarketTradeRepository(IStockRepository stockRepository)
         {
             StockRepository = stockRepository;
             random = new Random();
-
-            tradesDictionary = new Dictionary<string, List<TradeBook>>();
-            Stocks = new List<Stock>();
+            Stocks = new List<IStock>();
             StockSymbols = new List<string>();
         }
-
-        public IEnumerable<TradeBook> GetAll(string symbol)
+        //Public Data Access Methods
+        public IEnumerable<BookBase> GetAll(string symbol)
         {
             FetchStockData();
-            if (!tradesDictionary.ContainsKey(symbol))
-            {
-                AddTrades(Stocks.Where(s=> s.Symbol==symbol).FirstOrDefault());
-            }
-            return tradesDictionary[symbol];
+            return AddTrades(Stocks.Where(s=> s.Symbol==symbol).FirstOrDefault());
         }
-
-        public IEnumerable<TradeBook> GetAll()
+        public IEnumerable<BookBase> GetAll()
         {
             FetchStockData();
+            var tradesDictionary = new  List<BookBase>();
             foreach (var symbol in StockSymbols)
             {
-                if (!tradesDictionary.ContainsKey(symbol))
-                {
-                    AddTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-                }
+               tradesDictionary.AddRange(AddTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault()));
             }
-            return tradesDictionary.Values.SelectMany(t => t);
+            return tradesDictionary;
         }
-
-        public TradeBook GetById(int id)
+        public BookBase GetById(int id)
         {
             FetchStockData();
-            Stock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
-            if (!tradesDictionary.ContainsKey(stock.Symbol))
-            {
-                AddTrades(stock);
-            }
-            return tradesDictionary[stock.Symbol].FirstOrDefault();
+            IStock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
+            return AddTrades(stock).FirstOrDefault();
+            
         }
-
+        //Private Data Loading Methods
         void FetchStockData()
         {
             if(StockSymbols == null || StockSymbols.Count < 1)
@@ -68,21 +55,17 @@ namespace OMS.MarketData.Stocks
             }
             if(Stocks == null || Stocks.Count < 1)
             {
-                Stocks = StockRepository.GetAll().ToList<Stock>();
+                Stocks = StockRepository.GetAll().ToList<IStock>();
             }
             foreach (var symbol in StockSymbols) 
             {
                 AddTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
             }
         }
-
-        private void AddTrades(Stock stock)
+        private IEnumerable<BookBase> AddTrades(IStock stock)
         {
-            Random random = new Random();
             int tradeCount = random.Next(1, 11);
-
-            List<TradeBook> trades = new List<TradeBook>();
-
+            List<BookBase> trades = new List<BookBase>();
             for (int i = 0; i < tradeCount; i++)
             {
                 int qty = random.Next(1, 1000);
@@ -99,7 +82,7 @@ namespace OMS.MarketData.Stocks
                 trades.Add(trade);
             }
 
-            tradesDictionary[stock.Symbol] = trades;
+            return trades;
         }
     }
 }

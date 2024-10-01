@@ -1,12 +1,13 @@
-﻿using OMS.Enums;
-using System;
+﻿using OMS.Core.Models.App;
+using OMS.Enums;
 using System.Windows;
 using System.Windows.Media;
 
 namespace OMS.Core.Models.Themes
 {
-    public class ThemeModel : BaseModel
+    public class ThemeModel : BaseModel, IThemeModel
     {
+        #region Private Members
         private string _themeName;
         private SolidColorBrush _screenbackground;
         private SolidColorBrush _textBackground;
@@ -22,8 +23,10 @@ namespace OMS.Core.Models.Themes
         private FontSizeEnum _fontSize;
         private double _formattedFontSize;
         private double _buttonBorderThickness;
-        private string _fontFamilyName;
+        private string _fontFamilyName; 
+        #endregion
 
+        #region Constructors
         public ThemeModel()
         {
             TextBackground = new SolidColorBrush(Colors.Black);
@@ -70,7 +73,8 @@ namespace OMS.Core.Models.Themes
             FontWeight = fontWeight;
             FontSize = fontSize;
             ButtonBorderThickness = buttonBorderThickness;
-        }
+        } 
+        #endregion
 
         public string ThemeName
         {
@@ -80,49 +84,41 @@ namespace OMS.Core.Models.Themes
                 SetProperty(ref _themeName, value, nameof(ThemeName));
             }
         }
-
         public SolidColorBrush ScreenBackground
         {
             get => _screenbackground;
             set => SetProperty(ref _screenbackground, value, nameof(ScreenBackground));
         }
-
         public SolidColorBrush TextBackground
         {
             get => _textBackground;
             set => SetProperty(ref _textBackground, value, nameof(TextBackground));
         }
-
         public SolidColorBrush TextForeground
         {
             get => _textForeground;
             set => SetProperty(ref _textForeground, value, nameof(TextForeground));
         }
-
         public SolidColorBrush TextBoxBackground
         {
             get => _textBoxBackground;
             set => SetProperty(ref _textBoxBackground, value, nameof(TextBoxBackground));
         }
-
         public SolidColorBrush TextBoxForeground
         {
             get => _textBoxForeground;
             set => SetProperty(ref _textBoxForeground, value, nameof(TextBoxForeground));
         }
-
         public SolidColorBrush ButtonBackground
         {
             get => _buttonBackground;
             set => SetProperty(ref _buttonBackground, value, nameof(ButtonBackground));
         }
-
         public SolidColorBrush ButtonForeground
         {
             get => _buttonForeground;
             set => SetProperty(ref _buttonForeground, value, nameof(ButtonForeground));
         }
-
         public SolidColorBrush TitleBarBackground
         {
             get => _titleBarBackground;
@@ -131,7 +127,6 @@ namespace OMS.Core.Models.Themes
                 SetProperty(ref _titleBarBackground, value, nameof(TitleBarBackground));
             }
         }
-
         public SolidColorBrush TitleBarForeground
         {
             get => _titleBarForeground;
@@ -140,13 +135,11 @@ namespace OMS.Core.Models.Themes
                 SetProperty(ref _titleBarForeground, value, nameof(TitleBarForeground));
             }
         }
-
         public FontWeight FontWeight
         {
             get => _fontWeight;
             set => SetProperty(ref _fontWeight, value, nameof(FontWeight));
         }
-
         public FontFamilyEnum FontFamily
         {
             get => _fontFamily;
@@ -156,7 +149,6 @@ namespace OMS.Core.Models.Themes
                 FontFamilyName = value.ToString();
             }
         }
-
         public FontSizeEnum FontSize
         {
             get => _fontSize;
@@ -166,7 +158,24 @@ namespace OMS.Core.Models.Themes
                 FormattedFontSize = UpdateFormatSize(value);
             }
         }
-
+        public double FormattedFontSize
+        {
+            get => _formattedFontSize;
+            set { SetProperty(ref _formattedFontSize, value, nameof(FormattedFontSize)); }
+        }
+        public string FontFamilyName
+        {
+            get => _fontFamilyName;
+            set
+            {
+                SetProperty(ref _fontFamilyName, value, nameof(FontFamilyName));
+            }
+        }
+        public double ButtonBorderThickness
+        { 
+            get => _buttonBorderThickness;
+            set { SetProperty(ref _buttonBorderThickness, value, nameof(ButtonBorderThickness)); }
+        }
         private double UpdateFormatSize(FontSizeEnum value)
         {
             switch (FontSize)
@@ -182,27 +191,6 @@ namespace OMS.Core.Models.Themes
                 default:
                     return 12.0;
             };
-        }
-
-        public double FormattedFontSize
-        {
-            get => _formattedFontSize;
-            set { SetProperty(ref _formattedFontSize, value, nameof(FormattedFontSize)); }
-        }
-
-        public string FontFamilyName
-        {
-            get => _fontFamilyName;
-            set
-            {
-                SetProperty(ref _fontFamilyName, value, nameof(FontFamilyName));
-            }
-        }
-        
-        public double ButtonBorderThickness
-        { 
-            get => _buttonBorderThickness;
-            set { SetProperty(ref _buttonBorderThickness, value, nameof(ButtonBorderThickness)); }
         }
     }
 }

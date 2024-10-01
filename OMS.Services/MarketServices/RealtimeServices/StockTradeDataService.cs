@@ -16,13 +16,11 @@ namespace OMS.Services.MarketServices.RealtimeServices
     public class StockTradeDataService : IStockTradeDataService
     {
         public event Action DataUpdated;
-
         IStockRepository StockRepository;
         IStockTradeDataRepository StockTradeDataRepository;
         IStockDataService StockDataService;
         ICacheService CacheService;
         int Tick = 60000;
-
         readonly DispatcherTimer updateTimer;
         bool FetchData = false;
 
@@ -39,30 +37,28 @@ namespace OMS.Services.MarketServices.RealtimeServices
             InitTimer();
         }
 
-        public ObservableCollection<StockTradingData> GetAll()
+        //Public Access Methods Implementation
+        public ObservableCollection<IStockTradingData> GetAll()
         {
             throw new NotImplementedException();
         }
-
-        public StockTradingData GetById(int key)
+        public IStockTradingData GetById(int key)
         {
             throw new NotImplementedException();
         }
-
-        public StockTradingData GetBySymbol(string symbol)
+        public IStockTradingData GetBySymbol(string symbol)
         {
             TradeTimeInterval interval = TradeTimeInterval.Minute;
             string cacheKey = $"{symbol}_{interval}";
             if(CacheService.ContainsKey(cacheKey))
             {
-                var data = CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey);
+                var data = CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey);
                 return data.LastOrDefault();
             }
 
             return StockTradeDataRepository.GetTradeData(symbol, 1, interval).GetAwaiter().GetResult();
         }
-
-        public ObservableCollection<StockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
+        public ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
         {
             if(!FetchData)
             {
@@ -80,19 +76,19 @@ namespace OMS.Services.MarketServices.RealtimeServices
             
             if (CacheService.ContainsKey(cacheKey))
             {
-            var cachedData = CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey);
+            var cachedData = CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey);
 
                 var tradeData = cachedData.Where(trade => trade.RecordedTime >= fromTime && trade.RecordedTime < startTime)
                     .ToList();
 
                 if (tradeData.Count >= points)
                 {
-                    return tradeData.Take(points).ToObservableCollection<StockTradingData>();
+                    return tradeData.Take(points).ToObservableCollection<IStockTradingData>();
                 }
                 else
                 { 
 
-                    var moreData = Task.Run(async () => await StockTradeDataRepository.GetTradingData(symbol, startTime, points, interval)).Result.ToObservableCollection<StockTradingData>();
+                    var moreData = Task.Run(async () => await StockTradeDataRepository.GetTradingData(symbol, startTime, points, interval)).Result.ToObservableCollection<IStockTradingData>();
                     
                     foreach(var trade in moreData)
                     {
@@ -108,48 +104,46 @@ namespace OMS.Services.MarketServices.RealtimeServices
             }
             
             var resultData = Task.Run(async () => await StockTradeDataRepository
-            .GetTradingData(symbol,startTime, points, interval)).Result.ToObservableCollection<StockTradingData>();
+            .GetTradingData(symbol,startTime, points, interval)).Result.ToObservableCollection<IStockTradingData>();
             
             CacheService.Set(cacheKey, resultData);
             return resultData;
         }
-
         public void Refresh(object sender, EventArgs e)
         {
             FetchTradeData();
             DataUpdated?.Invoke();
         }
-
-        void FetchTradeData()
-        {
-            TradeTimeInterval interval = TradeTimeInterval.Minute;
-            var symbols = StockDataService.GetStockSymbols();
-
-            foreach (var symbol in symbols) 
-            {
-                var data = StockTradeDataRepository.GetTradeData(symbol, 1,interval ).GetAwaiter().GetResult();
-                string cacheKey = $"{symbol}_{interval}";
-                if (CacheService.ContainsKey(cacheKey))
-                {
-                    CacheService.Get<ObservableCollection<StockTradingData>>(cacheKey).Add(data);
-                }
-                else
-                {
-                    CacheService.Set(cacheKey,new ObservableCollection<StockTradingData> { data});
-                }
-            }
-        }
-
         public void StartSession()
         {
             updateTimer.Start();
         }
 
+        #region Private Methods
+        void FetchTradeData()
+        {
+            TradeTimeInterval interval = TradeTimeInterval.Minute;
+            var symbols = StockDataService.GetStockSymbols();
+
+            foreach (var symbol in symbols)
+            {
+                var data = StockTradeDataRepository.GetTradeData(symbol, 1, interval).GetAwaiter().GetResult();
+                string cacheKey = $"{symbol}_{interval}";
+                if (CacheService.ContainsKey(cacheKey))
+                {
+                    CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey).Add(data);
+                }
+                else
+                {
+                    CacheService.Set(cacheKey, new ObservableCollection<IStockTradingData> { data });
+                }
+            }
+        }
         void InitTimer()
         {
             updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
             updateTimer.Tick += new EventHandler(Refresh);
-        }
-
+        } 
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using OMS.Core.Models.App;
+using System;
 
 namespace OMS.Core.Models
 {
-    public class AppTime : BaseModel
+    public class AppTime : BaseModel, IAppTime
     {
         private DateTime _currentTime;
         public DateTime CurrentTime
@@ -18,6 +19,7 @@ namespace OMS.Core.Models
             }
         }
 
+        //Cosntructor
         public AppTime()
         {
             CurrentTime = DateTime.Now;

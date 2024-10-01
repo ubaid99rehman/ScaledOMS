@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using OMS.Core.Models;
+using OMS.Core.Models.Orders;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
@@ -63,16 +64,16 @@ namespace OMS.ViewModels
             set { SetProperty(ref _accounts, value, nameof(AccountsList)); }
         }
 
-        private ObservableCollection<Order> _orders;
-        public ObservableCollection<Order> Orders
+        private ObservableCollection<IOrder> _orders;
+        public ObservableCollection<IOrder> Orders
         {
             get { return OrderService.GetOpenOrders(); }
             set { SetProperty(ref _orders, value, nameof(Orders)); }
 
         }
 
-        private Order _selectedOrder;
-        public Order SelectedOrder
+        private IOrder _selectedOrder;
+        public IOrder SelectedOrder
         {
             get => _selectedOrder;
             set
@@ -97,7 +98,7 @@ namespace OMS.ViewModels
             AccountService = _accountService;
             StockDataService = _stockDataService;
             SelectedOrder = new Order();
-            _orders = new ObservableCollection<Order>();
+            _orders = new ObservableCollection<IOrder>();
             _accounts = new ObservableCollection<int>();
             //Loads Accounts and Orders List
             InitData();

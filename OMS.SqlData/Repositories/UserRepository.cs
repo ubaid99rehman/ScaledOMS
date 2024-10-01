@@ -1,23 +1,24 @@
-﻿using OMS.Core.Core.Models.User;
-using OMS.DataAccess.Repositories.AppRepositories;
+﻿using OMS.DataAccess.Repositories.AppRepositories;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using OMS.Helpers;
-using OMS.Core.Models;
+using OMS.Core.Models.User;
+using OMS.Core.Core.Models.User;
 
 namespace OMS.SqlData.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly string _connectionString;
-
+        //Constructor
         public UserRepository()
         {
             _connectionString = DbHelper.Connection;
         }
 
+        //Public Data Access Methods Implementation
         public bool AuthenticateUser(string username, string password, out string message, out int isDisabled, out int userID)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -80,15 +81,13 @@ namespace OMS.SqlData.Repositories
                 }
             }
         }
-
-        public IEnumerable<User> GetAll()
+        public IEnumerable<IUser> GetAll()
         {
             throw new NotImplementedException();
         }
-
-        public User GetById(int id)
+        public IUser GetById(int id)
         {
-            User user = null;
+            IUser user = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -110,8 +109,7 @@ namespace OMS.SqlData.Repositories
             }
             return user;
         }
-
-        public bool UpdateUser(User user)
+        public bool UpdateUser(IUser user)
         {
             bool isUpdated = false;
             using (var connection = new SqlConnection(_connectionString))

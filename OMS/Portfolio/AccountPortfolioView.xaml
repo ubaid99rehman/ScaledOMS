@@ -96,10 +96,10 @@
                                      Margin="10"
                                      GroupName="ChartCriteria" 
                                      IsChecked="True" 
-                                     Checked="RadioButton_Checked"/>
+                                     Checked="VolumeRadioButton_Checked"/>
                         <RadioButton Content="Units" 
                                      GroupName="ChartCriteria" 
-                                     Checked="RadioButton_Checked"/>
+                                     Checked="UnitsRadioButton_Checked"/>
                     </StackPanel>
                     <!-- Pie Chart -->
                     <dxc:ChartControl Grid.Row="1" Margin="10" 

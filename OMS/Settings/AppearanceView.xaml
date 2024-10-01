@@ -59,7 +59,7 @@
                     <!--Text-->
                     <StackPanel HorizontalAlignment="Center">
                         <Label Content="Text Background:"/>
-                        <dxe:PopupColorEdit Name="TextBackground" EditValue="{Binding TextBackground, Mode=TwoWay}" ColorChanged="TextBackground_ColorChanged" Width="150" />
+                        <dxe:PopupColorEdit Name="TextBackground" EditValue="{Binding TextBackground, Mode=TwoWay}" Width="150" />
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
                         <Label Content="Text Foreground:"/>

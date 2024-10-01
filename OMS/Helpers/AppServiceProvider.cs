@@ -5,7 +5,6 @@ using OMS.ViewModels;
 using System;
 using OMS.Services.AppServices;
 using OMS.Core.Services.AppServices;
-using OMS.DataAccess.Repositories;
 using OMS.SqlData.Repositories;
 using OMS.MarketData.Stocks;
 using OMS.Core.Services.MarketServices.RealtimeServices;
@@ -21,9 +20,8 @@ namespace OMS
 {
     public static class AppServiceProvider
     {
+        //Service Provider
         public static IServiceProvider ServiceProvider;
-
-        #region Service Configuration
         public static IServiceProvider GetServiceProvider()
         {
             if (ServiceProvider == null)
@@ -33,10 +31,10 @@ namespace OMS
             return ServiceProvider;
         }
 
+        //Service PRovider Instance Creation
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-
             #region Repositories
             //App Services
             services.AddSingleton<IUserRepository, UserRepository>();
@@ -110,6 +108,5 @@ namespace OMS
 
             return services.BuildServiceProvider();
         }
-        #endregion
     }
 }

@@ -109,19 +109,5 @@
 
             <dxg:GridColumn FieldName="Type" Visible="False"/>
         </dxg:GridControl>
-        
-        <Popup x:Name="filterPopup" Placement="Mouse" 
-               StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
-                <StackPanel>
-                    <dxe:ListBoxEdit Name="FilterCheckList" SelectedIndexChanged="FilterSelectionChanged">
-                        <dxe:ListBoxEdit.StyleSettings>
-                            <dxe:CheckedListBoxEditStyleSettings />
-                        </dxe:ListBoxEdit.StyleSettings>
-                    </dxe:ListBoxEdit>
-                </StackPanel>
-            </Border>
-        </Popup>
-        
     </Grid>
 </UserControl>

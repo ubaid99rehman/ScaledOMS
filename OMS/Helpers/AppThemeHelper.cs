@@ -1,5 +1,4 @@
-﻿using DevExpress.Xpf.Printing.Native;
-using OMS.Core.Models.Themes;
+﻿using OMS.Core.Models.App;
 using OMS.Enums;
 using System.Windows;
 using System.Windows.Media;
@@ -29,7 +28,6 @@ namespace OMS.Helpers
                 default: return FontWeights.Normal;
             };
         }
-
         public static double GetFontSize(FontSizeEnum fontSizeEnum)
         {
             switch( fontSizeEnum)
@@ -46,8 +44,7 @@ namespace OMS.Helpers
                     return 12.0;
             };
         }
-
-        private static ResourceDictionary GenerateResourceDictionary(ThemeModel ThemeModel)
+        private static ResourceDictionary GenerateResourceDictionary(IThemeModel ThemeModel)
         {
             var resourceDictionary = new ResourceDictionary();
 
@@ -83,8 +80,7 @@ namespace OMS.Helpers
 
             return resourceDictionary;
         }
-
-        public static void ChangeTheme(ThemeModel theme)
+        public static void ChangeTheme(IThemeModel theme)
         {
             var dictioanry = GenerateResourceDictionary(theme);
             if (dictioanry != null)

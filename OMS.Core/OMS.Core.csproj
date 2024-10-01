@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Core.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v24.1, Version=24.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -44,21 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Account\Account.cs" />
-    <Compile Include="Models\App\AppTime.cs" />
+    <Compile Include="Helpers\IContextMenuHelper.cs" />
+    <Compile Include="Models\Account\IAccount.cs" />
+    <Compile Include="Models\App\IAppTime.cs" />
+    <Compile Include="Models\App\IThemeModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Books\BookBase.cs" />
-    <Compile Include="Models\Books\OrderBook.cs" />
-    <Compile Include="Models\Books\TradeBook.cs" />
-    <Compile Include="Models\Orders\Order.cs" />
+    <Compile Include="Models\Orders\IOrder.cs" />
     <Compile Include="Models\Stocks\IStock.cs" />
-    <Compile Include="Models\Stocks\Stock.cs" />
-    <Compile Include="Models\Stocks\StockDetail.cs" />
-    <Compile Include="Models\Stocks\StockTradingData.cs" />
-    <Compile Include="Models\App\ThemeModel.cs" />
-    <Compile Include="Models\Trade\Trade.cs" />
-    <Compile Include="Models\User\SessionInfo.cs" />
-    <Compile Include="Models\User\User.cs" />
+    <Compile Include="Models\Stocks\IStockDetail.cs" />
+    <Compile Include="Models\Stocks\IStockTradingData.cs" />
+    <Compile Include="Models\Trade\ITrade.cs" />
+    <Compile Include="Models\App\ISessionInfo.cs" />
+    <Compile Include="Models\User\IUser.cs" />
     <Compile Include="Models\User\UserCredentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppServices\IAccountService.cs" />
@@ -70,13 +69,14 @@
     <Compile Include="Services\MarketServices\RealtimeServices\IMarketTradeService.cs" />
     <Compile Include="Services\MarketServices\RealtimeServices\IStockDataService.cs" />
     <Compile Include="Services\MarketServices\RealtimeServices\IStockTradeDataService.cs" />
-    <Compile Include="Services\IAppService.cs" />
+    <Compile Include="Services\AppServices\BaseService\IAppService.cs" />
     <Compile Include="Cache\ICacheManager.cs" />
-    <Compile Include="Services\Cache\ICacheService.cs" />
-    <Compile Include="Services\IMarketService.cs" />
+    <Compile Include="Cache\ICacheService.cs" />
+    <Compile Include="Services\MarketServices\BaseService\IMarketService.cs" />
     <Compile Include="Services\AppServices\IOrderService.cs" />
     <Compile Include="Services\IRealtimeService.cs" />
     <Compile Include="Services\AppServices\RealtimeServices\ISessionInfoServce.cs" />
+    <Compile Include="Services\StartupService\IBootStrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">

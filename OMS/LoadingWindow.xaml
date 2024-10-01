@@ -9,14 +9,12 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
         xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
-        xmlns:Views="clr-namespace:OMS.Loading"
         Height="400" Width="550"
         MinHeight="400" MinWidth="550"
         MaxHeight="400" MaxWidth="550" mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" Topmost="True"
         Background="{DynamicResource ScreenBackground}" Foreground="{DynamicResource TextForeground}"
         WindowStyle="None">
-    
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="BorderThickness" Value="1"/>
@@ -25,13 +23,11 @@
             <Setter Property="FontWeight" Value="Normal"/>
         </Style>
     </Window.Resources>
-
-   <Grid Style="{StaticResource CustomGridStyle}">
+    <Grid Style="{StaticResource CustomGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <StackPanel Orientation="Vertical">
             <dx:DXImage x:Name="PART_Logo" Source="/Images/VS_Logo.png" 
                         Width="150" Height="150" Stretch="Fill"
@@ -46,7 +42,6 @@
                 </TextBlock.Effect>
             </TextBlock>
         </StackPanel>
-
         <Grid Style="{StaticResource CustomGridStyle}"
               Name="LoginPanel"
               Margin="0,20,0,0"
@@ -104,18 +99,15 @@
                     FontFamily="Arial"
                     Click="Login_Click"/>
         </Grid>
-
         <Grid Style="{StaticResource CustomGridStyle}"
               Name="LoadingPanel"
               Grid.Row="1"
               Visibility="Collapsed">
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2.5*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <TextBlock x:Name="PART_Status"  
                        Grid.Column="0"
                        Margin="10 0 0 0"
@@ -124,12 +116,11 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontSize="12"/>
-       
             <StackPanel Orientation="Horizontal" 
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         VerticalAlignment="Center">
-                <dxe:ProgressBarEdit Width="400" Background="Red">
+                <dxe:ProgressBarEdit Width="400">
                     <dxe:ProgressBarEdit.StyleSettings>
                         <dxe:ProgressBarMarqueeStyleSettings/>
                     </dxe:ProgressBarEdit.StyleSettings>
@@ -137,5 +128,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-
 </Window>

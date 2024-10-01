@@ -7,13 +7,13 @@ namespace OMS
 {
     public partial class EditOrder : ThemedWindow
     {
-        Order SelectedOrder;
-
+        //Constructor
         public EditOrder()
         {
             InitializeComponent();
         }
 
+        #region Button Click Events
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is OrdersListModel model)
@@ -26,11 +26,10 @@ namespace OMS
                 }
                 else
                 {
-                    ThemedMessageBox.Show(message, "Order Cancelled", MessageBoxButton.OK);
+                    MessageBox.Show(message, "Order Cancelled", MessageBoxButton.OK);
                 }
             }
         }
-
         private void btnUpdateOrder_Click(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is OrdersListModel model)
@@ -47,7 +46,7 @@ namespace OMS
                 }
 
             }
-        }
-
+        } 
+        #endregion
     }
 }

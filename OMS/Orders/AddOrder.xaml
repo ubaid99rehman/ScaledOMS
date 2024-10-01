@@ -8,6 +8,7 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         mc:Ignorable="d" 
+        Icon="/Resources/Images/VS_Logo.png"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow"
         Topmost="True"

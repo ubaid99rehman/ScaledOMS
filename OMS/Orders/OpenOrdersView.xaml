@@ -9,14 +9,11 @@
              mc:Ignorable="d" 
              xmlns:orderviews="clr-namespace:OMS.Orders"
              d:DesignHeight="800" d:DesignWidth="1000">
-    
    <Grid Style="{StaticResource CustomGridStyle}">
         <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
-                         PreviewMouseRightButtonDown="Mouse_Right_Button_Clicked"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top" >
-
             <dxg:GridControl.View>
                 <dxg:TableView Name="gridView"
                                AutoWidth="True"
@@ -33,7 +30,6 @@
                                ShowGridMenu="ShowMenu_Click"
                                MouseDoubleClick="Show_EditForm"/>
             </dxg:GridControl.View>
-
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Status" Header="Order Status"/>
                 <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
@@ -59,133 +55,5 @@
                 <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated"/>
             </dxg:GridControl.Columns>
         </dxg:GridControl>
-
-        <Popup x:Name="OrderPopup" IsOpen="{Binding IsPopupOpen}" 
-               StaysOpen="True" Placement="Mouse" 
-               AllowsTransparency="True" PopupAnimation="Fade">
-            <Border Background="{DynamicResource ScreenBackground}" 
-                    BorderBrush="{DynamicResource TextForeground}"
-                    BorderThickness="2" Padding="10" CornerRadius="10">
-                <StackPanel>
-                    <Canvas>
-                        <dxe:ButtonClose x:Name="btnClearOrder" Content="Close" 
-                                         Canvas.Right="5"
-                                         Canvas.Top="5"
-                                         BorderBrush="Black"
-                                         BorderThickness="1"
-                                         Command="{Binding CloseEditFormCommand}" />
-                    </Canvas>
-
-                    <Grid HorizontalAlignment="Center" 
-                          Margin="20 40"
-                          VerticalAlignment="Top">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--Order Date-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 10">
-                            <TextBlock Text="Order Date:" Width="75"/>
-                            <TextBox Text="{Binding SelectedOrder.OrderDate}"
-                 IsReadOnly="True"
-                 Width="120" Margin="10 0 0 0" />
-                        </StackPanel>
-
-                        <!--Account-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" 
-                                    Grid.Column="1" Margin="20 10">
-                            <TextBlock Text="Account:" Width="75"/>
-                            <dxe:ComboBoxEdit SelectedItem="{Binding SelectedOrder.AccountID, Mode=TwoWay}" 
-                                              ItemsSource="{Binding AccountsList}"
-                                              Width="120" Margin="10 0 0 0"/>
-                        </StackPanel>
-
-                        <!--Symbol-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 10">
-                            <TextBlock Text="Symbol:" Width="75"/>
-                            <TextBox Text="{Binding SelectedOrder.Symbol}" 
-                   Width="120" Margin="10 0 0 0"/>
-                        </StackPanel>
-
-                        <!--Price-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="20 10">
-                            <TextBlock Text="Price:" Width="75"/>
-                            <TextBox Text="{Binding SelectedOrder.Price ,StringFormat={}{0:N3}}"
-                                     IsReadOnly="True"
-                                     Width="120" Margin="10 0 0 0" />
-                        </StackPanel>
-
-                        <!--Quantity-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 10">
-                            <TextBlock Text="Quantity:" Width="75"/>
-                            <dxe:SpinEdit EditValue="{Binding SelectedOrder.Quantity, StringFormat={}{0:N0}, Mode=TwoWay}" 
-                                          Width="120" Margin="10 0 0 0"
-                                          Value="1"
-                                          IsTextEditable="False"
-                                          MinValue="1" />
-                        </StackPanel>
-
-                        <!--Total-->
-                        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="20 10">
-                            <TextBlock Text="Total:" Width="75"/>
-                            <TextBox Text="{Binding SelectedOrder.Total, StringFormat={}{0:N3}}"
-                                     IsReadOnly="True"
-                                     Width="120" Margin="10 0 0 0" />
-                        </StackPanel>
-
-
-                    </Grid>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-
-                        <Button x:Name="btnUpdateOrder" Content="UPDATE ORDER" 
-                                Width="120"
-                                Margin="10, 0"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Click="btnUpdateOrder_Click" >
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="LawnGreen"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-
-                        <Button x:Name="btnCancelOrder" Content="CANCEL ORDER" 
-                                Width="120" 
-                                Margin="10,0"
-                                BorderBrush="Black"
-                                BorderThickness="1"
-                                Click="btnCancelOrder_Click" >
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Red"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-
-                    </StackPanel>
-
-                </StackPanel>
-            </Border>
-        </Popup>
     </Grid>
 </UserControl>

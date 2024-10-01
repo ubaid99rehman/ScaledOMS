@@ -1,28 +1,27 @@
-﻿using OMS.Core.Models;
-using OMS.Core.Services.AppServices;
+﻿using OMS.Core.Models.Orders;
 using System;
 using System.Collections.ObjectModel;
 
 namespace OMS.Core.Services.AppServices
 {
-    public interface IOrderService : IAppService<Order>
+    public interface IOrderService : IAppService<IOrder>
     {
         event Action DataUpdated;
-        void CancelOrder(Order selectedOrder, out string message);
-        Order GetLastOrderByUser();
+        void CancelOrder(IOrder selectedOrder, out string message);
+        IOrder GetLastOrderByUser();
         
         //Order Status
-        ObservableCollection<Order> GetOpenOrders();                       
-        ObservableCollection<Order> GetCancelledOrders();                  
-        ObservableCollection<Order> GetFulfilledOrders();                  
+        ObservableCollection<IOrder> GetOpenOrders();                       
+        ObservableCollection<IOrder> GetCancelledOrders();                  
+        ObservableCollection<IOrder> GetFulfilledOrders();                  
         
         //User and Account
-        ObservableCollection<Order> GetOrdersByUser(int userId);           
-        ObservableCollection<Order> GetOrdersByAccount(int accountId);     
+        ObservableCollection<IOrder> GetOrdersByUser(int userId);           
+        ObservableCollection<IOrder> GetOrdersByAccount(int accountId);     
         
         //Stocks
-        ObservableCollection<Order> GetOrdersByStock(string stockSymbol);
-        ObservableCollection<Order> GetOpenOrdersByStock(string stockSymbol);
+        ObservableCollection<IOrder> GetOrdersByStock(string stockSymbol);
+        ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol);
         
     }
 

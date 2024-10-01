@@ -1,48 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace OMS.Core.Models.User
 {
-    public class UserCredentials : INotifyPropertyChanged
+    public class UserCredentials
     {
-        private string _username;
-        private string _password;
-
-        public string Username
+        public string Username;
+        public string Password;
+        //Constructor
+        public UserCredentials(string username, string password)
         {
-            get => _username;
-            set
-            {
-                if (_username != value)
-                {
-                    _username = value;
-                    OnPropertyChanged(nameof(Username));
-                }
-            }
-        }
-
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                if (_password != value)
-                {
-                    _password = value;
-                    OnPropertyChanged(nameof(Password));
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Username = username;
+            Password = password;
         }
     }
 }

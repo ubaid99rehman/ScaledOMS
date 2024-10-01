@@ -85,6 +85,10 @@
       <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
       <Name>OMS.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OMS.Domain\OMS.Domain.csproj">
+      <Project>{4F7D43B8-535E-4B86-8F28-66F9C052C654}</Project>
+      <Name>OMS.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OMS.Logging\OMS.Logging.csproj">
       <Project>{3EB2D030-F27E-4B38-952F-29229F345068}</Project>
       <Name>OMS.Logging</Name>

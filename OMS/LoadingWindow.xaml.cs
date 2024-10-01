@@ -43,7 +43,6 @@ namespace OMS
             LoginPanel.Visibility = Visibility.Collapsed;
             LoadingPanel.Visibility = Visibility.Visible;
         }
-
         private void ShowLogin()
         {
             LoginPanel.Visibility = Visibility.Visible;
@@ -54,10 +53,9 @@ namespace OMS
         {
             PART_Status.Text = "Loading Services....";
             LogHelper.LogInfo("Loading Services Data....");
-            BootStrapper.LoadServices();
+            BootStrapper.LoadData();
             LogHelper.LogInfo("Services Data Loaded.");
         }
-
         private void NavigateMainWindow()
         {
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
@@ -67,7 +65,7 @@ namespace OMS
         }
         #endregion
 
-        #region Event Handlers
+        #region Click Event Handler
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             ShowPrgressBar();

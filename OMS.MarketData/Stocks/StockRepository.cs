@@ -1,4 +1,5 @@
 ﻿using OMS.Core.Models;
+using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Helpers;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ namespace OMS.MarketData.Stocks
     public class StockRepository : IStockRepository
     {
         private readonly string _connectionString;
-
+        //Constructor
         public StockRepository()
         {
             _connectionString = DbHelper.Connection;
         }
-
-        public IEnumerable<Stock> GetAll()
+        //Public Data Access Methods
+        public IEnumerable<IStock> GetAll()
         {
             var stocks = new List<Stock>();
 
@@ -39,10 +40,9 @@ namespace OMS.MarketData.Stocks
             }
             return stocks;
         }
-
-        public Stock GetById(int id)
+        public IStock GetById(int id)
         {
-            Stock stock = null;
+            IStock stock = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -65,10 +65,9 @@ namespace OMS.MarketData.Stocks
             }
             return stock;
         }
-
-        public Stock GetBySymbol(string symbol)
+        public IStock GetBySymbol(string symbol)
         {
-            Stock stock = null;
+            IStock stock = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -91,7 +90,6 @@ namespace OMS.MarketData.Stocks
             }
             return stock;
         }
-
         public IEnumerable<string> GetStockSymbols()
         {
             var stocks = new List<string>();

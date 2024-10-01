@@ -10,9 +10,7 @@
              xmlns:stockviews="clr-namespace:OMS.Stocks"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
-
     <Grid>
-
         <!--Row Definitions-->
         <Grid.RowDefinitions>
             <RowDefinition Height="0.25*" />
@@ -34,7 +32,6 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
                 <!--Stock Selection Combo-->
                 <dxe:ComboBoxEdit Name="listBox" 
                                   Grid.Column="0" Margin="0 10 0 10" 
@@ -58,7 +55,6 @@
                         </Style>
                     </dxe:ComboBoxEdit.ItemContainerStyle>
                 </dxe:ComboBoxEdit>
-
                 <!--Stock Price Details-->
                 <stockviews:StckDetailView Grid.Column="1" 
                                            HorizontalAlignment="Center"
@@ -97,7 +93,6 @@
                               IsTextEditable="False" />
 
                 </StackPanel>
-
                 <StackPanel Orientation="Horizontal" Margin="10,20,10,10">
 
                     <TextBlock Text="Order Type:" Width="100" FontSize="16"
@@ -116,7 +111,6 @@
                          Width="150" />
 
                 </StackPanel>
-
                 <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
@@ -149,7 +143,6 @@
                             Command="{Binding ClearOrderCommand}" />
 
                 </StackPanel>
-
             </StackPanel>
         </GroupBox>
 
@@ -158,15 +151,9 @@
             <!--Recent Orders Details-->
             <WrapPanel Grid.Column="0" Grid.Row="1" 
                    Orientation="Vertical" >
-
-                <!--<TextBlock Text="Last Order Details" 
-                        FontSize="26" FontWeight="Bold" 
-                        HorizontalAlignment="Center"/>-->
-
                 <StackPanel Orientation="Vertical" 
                         VerticalAlignment="Center"
                         Margin="0 10 0 0">
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock Text="Last Order Date: " 
                                FontSize="16"
@@ -175,7 +162,6 @@
                                FontSize="16"
                                Margin="5,0"/>
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock Text="Added By: "
                                FontSize="16"
@@ -184,7 +170,6 @@
                                FontSize="16" 
                                Margin="5,0"/>
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock Text="Stock: "
                                FontSize="16"
@@ -193,37 +178,30 @@
                                FontSize="16" 
                                Margin="5,0"/>
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock FontSize="16"  Text="Price: " FontWeight="Bold"/>
                         <TextBlock FontSize="16"  Text="{Binding LastOrder.Price}" Margin="5,0"/>
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock FontSize="16"  Text="Units: " FontWeight="Bold"/>
                         <TextBlock FontSize="16"  Text="{Binding LastOrder.Quantity}" Margin="5,0"/>
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Margin="10, 5">
                         <TextBlock FontSize="16"  Text="Volume: " FontWeight="Bold"/>
                         <TextBlock FontSize="16"  Text="{Binding LastOrder.Volume}" Margin="5,0"/>
                     </StackPanel>
-
                 </StackPanel>
-
             </WrapPanel>
         </GroupBox>
 
         <!-- Recent Orders Group -->
         <GroupBox Header="Recent Stock Orders" Grid.Row="1" Grid.Column="2" Margin="10">
-
             <dxg:GridControl x:Name="gridSell" Grid.Row="1"
                              Margin="0 10 0 0"
                              ItemsSource="{Binding StockOrders}"
                              ShowBorder="False"
                              dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                              dx:DXSerializer.SerializationID="gridSellID">
-
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
                         <dxg:GridColumn.EditSettings>
@@ -255,7 +233,6 @@
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
                 </dxg:GridControl.Columns>
-
                 <dxg:GridControl.View>
                     <dxg:TableView AllowEditing="False"
                        FadeSelectionOnLostFocus="False"
@@ -282,16 +259,13 @@
                   Grid.ColumnSpan="3"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"  Margin="10">
-
             <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
-
                 <dxg:GridControl.View>
                     <dxg:TableView TotalSummaryPosition="Bottom" AllowEditing="False" 
                                    ShowCriteriaInAutoFilterRow="False" ShowIndicator="False" 
                                    ShowSearchPanelMode="Always" AutoWidth="True"/>
                 </dxg:GridControl.View>
-
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Status" Header="Order Status"/>
                     <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>

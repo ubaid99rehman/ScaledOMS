@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.Native;
 using OMS.Core.Models;
+using OMS.Core.Models.Stocks;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
@@ -46,8 +47,8 @@ namespace OMS.ViewModels
 
         }
 
-        private Stock _selectedStock;
-        public Stock SelectedStock
+        private IStock _selectedStock;
+        public IStock SelectedStock
         {
             get { return _selectedStock; }
             set

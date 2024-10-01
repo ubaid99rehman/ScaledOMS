@@ -1,14 +1,12 @@
-﻿using OMS.Enums;
+﻿using OMS.Core.Models.Orders;
+using OMS.Enums;
 using System;
-using System.ComponentModel;
-
 
 namespace OMS.Core.Models
 {
-    public class Order : BaseModel
+    public class Order : BaseModel ,IOrder
     {
-
-        public Order(){ _orderID = 0; }
+        #region Private Members
         public int? ID { get; set; }
         public int ParentID { get; set; } = 0;
         private int? _orderID;
@@ -22,7 +20,11 @@ namespace OMS.Core.Models
         private int? _accountID;
         private int? _addedBy;
         private DateTime? _createdDate;
-        private DateTime? _lastupdatedDate;
+        private DateTime? _lastupdatedDate; 
+        #endregion
+
+        //Constructor
+        public Order() { _orderID = 0; }
 
         public int? OrderID
         {
@@ -36,7 +38,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public string Symbol
         {
             get => _symbol;
@@ -49,7 +50,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public int? Quantity
         {
             get => _quantity;
@@ -62,7 +62,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public decimal? Price
         {
             get => _price;
@@ -75,7 +74,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public decimal? Total
         {
             get => _total;
@@ -88,7 +86,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public OrderType? OrderType
         {
             get => _orderType;
@@ -101,7 +98,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public DateTime? OrderDate
         {
             get => _orderDate;
@@ -114,7 +110,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public OrderStatus Status
         {
             get => _status;
@@ -127,7 +122,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public int? AccountID
         {
             get => _accountID;
@@ -140,7 +134,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public int? AddedBy
         {
             get => _addedBy;
@@ -153,7 +146,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-
         public DateTime? CreatedDate
         {
             get => _createdDate;
@@ -166,7 +158,6 @@ namespace OMS.Core.Models
                 }
             }
         }
-                
         public DateTime? LasUpdatedDate
         {
             get => _lastupdatedDate;
@@ -180,19 +171,10 @@ namespace OMS.Core.Models
             }
         }
 
-        #region Event Handler
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-        #region Numeric Formatters
-        public string GetFormattedQuantity() => FormatNumber(_quantity);
-        public string GetFormattedPrice() => FormatNumber(_price);
-        public string GetFormattedTotal() => FormatNumber(_total);
+        #region Numeric Formatted Members
+        public string FormattedQuantity => FormatNumber(_quantity);
+        public string FormattedPrice => FormatNumber(_price);
+        public string FormattedTotal => FormatNumber(_total);
         #endregion
     }
 }

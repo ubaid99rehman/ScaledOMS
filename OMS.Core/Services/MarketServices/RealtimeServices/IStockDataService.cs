@@ -1,4 +1,4 @@
-﻿using OMS.Core.Models;
+﻿using OMS.Core.Models.Stocks;
 using System;
 using System.Collections.ObjectModel;
 
@@ -7,11 +7,11 @@ namespace OMS.Core.Services.MarketServices.RealtimeServices
     public interface IStockDataService : IRealtimeService
     {
         event Action DataUpdated;
-        Stock GetStock(string symbol);
-        ObservableCollection<Stock> GetStocks();
+        IStock GetStock(string symbol);
+        ObservableCollection<IStock> GetStocks();
         
-        StockDetail GetStockDetail(string symbol);
-        ObservableCollection<StockDetail> GetStockDetails();
+        IStockDetail GetStockDetail(string symbol);
+        ObservableCollection<IStockDetail> GetStockDetails();
 
         ObservableCollection<string> GetStockSymbols();
     }

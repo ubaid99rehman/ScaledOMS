@@ -10,25 +10,26 @@ namespace OMS.Orders
 
     public partial class ManageOrderView : UserControl
     {
+        //Constructor
         public ManageOrderView()
         {
             InitializeComponent();
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<OrderModel>();
         }
 
+        #region Button Click Events
         private void btnUpdateOrder_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
 
-        }
+        } 
+        #endregion
     }
 }

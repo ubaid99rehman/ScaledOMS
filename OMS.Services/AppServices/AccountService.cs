@@ -13,12 +13,14 @@ namespace OMS.Services.AppServices
         private IAccountRepository accountRepository;
         private ICacheService CacheService;
 
+        //Constructor
         public AccountService(IAccountRepository _accountRepository, ICacheService cacheService)
         {
             accountRepository = _accountRepository;
             CacheService = cacheService;
         }
 
+        //Public Methods Implementation
         public ObservableCollection<int> GetAccountsList()
         {
             if(CacheService.ContainsKey("AccountsList"))
@@ -27,17 +29,15 @@ namespace OMS.Services.AppServices
             }
             return new ObservableCollection<int>( GetAll().Select(s => s.AccountID));
         }
-
-        public ObservableCollection<Account> GetAll()
+        public ObservableCollection<IAccount> GetAll()
         {
             if (CacheService.ContainsKey("Accounts"))
             {
-                return CacheService.Get<ObservableCollection<Account>>("Accounts");
+                return CacheService.Get<ObservableCollection<IAccount>>("Accounts");
             }
-            return accountRepository.GetAll().ToObservableCollection<Account>();
+            return accountRepository.GetAll().ToObservableCollection<IAccount>();
         }
-
-        public Account GetById(int key)
+        public IAccount GetById(int key)
         {
             return GetAll().Where(a => a.AccountID == key).FirstOrDefault();
         }

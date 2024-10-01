@@ -1,8 +1,7 @@
 ﻿using DevExpress.Mvvm;
+using OMS.Core.Models.Trade;
 using System;
 using System.Collections.ObjectModel;
-using OMS.Core.Models;
-
 
 namespace OMS.VM.Trades
 {
@@ -14,8 +13,7 @@ namespace OMS.VM.Trades
             get => _orders;
             set => SetProperty(ref _orders, value, nameof(Orders));
         }
-
-
+        
         private Trade _selectedOrder;
         public Trade SelectedOrder
         {

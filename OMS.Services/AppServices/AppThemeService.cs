@@ -9,25 +9,27 @@ using OMS.Enums;
 using System;
 using OMS.Logging;
 using System.Windows;
+using OMS.Core.Models.App;
 
 namespace OMS.Services
 {
     public class AppThemeService : IAppThemeService
     {
         string _themeDirectoryPath;
-
         List<string> ThemeNames;
-        List<ThemeModel> AppThemes;
-
+        List<IThemeModel> AppThemes;
+        
+        //Constructor
         public AppThemeService() 
         {
             _themeDirectoryPath = ConfigurationManager.AppSettings["ThemeDirectory"];
-            AppThemes = new List<ThemeModel>();
+            AppThemes = new List<IThemeModel>();
             ThemeNames = new List<string>();
             LoadThemes();
         }
           
-        public ThemeModel GetAppliedTheme()
+        //Public Access Methods
+        public IThemeModel GetAppliedTheme()
         {
             var fontWeightConverter = new FontWeightConverter();
             var fontWeight = ConfigurationManager.AppSettings["FontWeight"].ToString() ?? "Normal";
@@ -49,8 +51,7 @@ namespace OMS.Services
                 FontWeight = (FontWeight)fontWeightConverter.ConvertFromString(fontWeight)
             };
         }
-
-        public void SaveAppliedTheme(ThemeModel theme)
+        public void SaveAppliedTheme(IThemeModel theme)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.Settings["ThemeName"].Value = theme.ThemeName;
@@ -70,19 +71,16 @@ namespace OMS.Services
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
-
-        public List<ThemeModel> GetThemes()
+        public List<IThemeModel> GetThemes()
         {
             LoadThemes();
             return AppThemes;
         }
-
         public List<string> GetThemeNames()
         {
             return ThemeNames;
         }
-
-        public bool SaveTheme(ThemeModel model)
+        public bool SaveTheme(IThemeModel model)
         {
             try
             {
@@ -118,7 +116,8 @@ namespace OMS.Services
             }
         }
 
-        private ThemeModel LoadThemeFromXml(string themeFilePath)
+        //Private Methods
+        private IThemeModel LoadThemeFromXml(string themeFilePath)
         {
             var xmlDoc = XDocument.Load(themeFilePath);
 
@@ -140,7 +139,6 @@ namespace OMS.Services
             var model = new ThemeModel(fontWeight, themeName, screenBackground, textBackground, textForeground, textBoxBackground, textBoxForeground, buttonBackground, buttonForeground, titleBarBackground, titleBarForeground, fontFamily, fontSize, buttonBorderThickness);
             return model;
         }
-
         private void LoadThemes()
         {
             AppThemes.Clear();

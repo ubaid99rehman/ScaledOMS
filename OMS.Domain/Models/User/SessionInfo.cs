@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace OMS.Core.Models.User
 {
-    public class SessionInfo : INotifyPropertyChanged
+    public class SessionInfo : BaseModel, ISessionInfo
     {
+        #region Private Members
+        private string _connectionstatus;
+        private string _ping;
+        private string _sessionTime;
+        private DateTime _loginTime; 
+        #endregion
+
+        //Constructor
         public SessionInfo() 
         {
             ConnectionStatus = "Connected!";
@@ -16,8 +24,7 @@ namespace OMS.Core.Models.User
             SessionTime = "00:00:00";
             LoginTime = DateTime.Now;
         }
-
-        private string _connectionstatus;
+        
         public string ConnectionStatus
         {
             get { return _connectionstatus; }
@@ -30,8 +37,6 @@ namespace OMS.Core.Models.User
                 }
             }
         }
-
-        private string _ping;
         public string Ping
         {
             get { return _ping; }
@@ -44,8 +49,6 @@ namespace OMS.Core.Models.User
                 }
             }
         }
-
-        private string _sessionTime;
         public string SessionTime
         {
             get { return _sessionTime; }
@@ -58,8 +61,6 @@ namespace OMS.Core.Models.User
                 }
             }
         }
-
-        private DateTime _loginTime;
         public DateTime LoginTime
         {
             get { return _loginTime; }
@@ -72,14 +73,5 @@ namespace OMS.Core.Models.User
                 }
             }
         }
-
-        #region Event Handler
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

@@ -12,7 +12,6 @@ namespace OMS.ViewModels
     public class LoadingViewModel : ViewModelBase
     {
         private IAuthService AuthService;
-
         public event Action AuthenticationCompleted;
         public void AuthenticationComplete()
         {
@@ -89,7 +88,7 @@ namespace OMS.ViewModels
         public void Authenticate()
         {
             LogHelper.LogInfo("Authenticating User: " + Username);
-            var user = AuthService.Authenticate(new UserCredentials { Username = this.Username, Password = this.Password });
+            var user = AuthService.Authenticate(new UserCredentials(this.Username,this.Password));
             
             if (user != null)
             {

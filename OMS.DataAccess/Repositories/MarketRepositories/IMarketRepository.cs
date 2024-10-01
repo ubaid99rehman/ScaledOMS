@@ -1,45 +1,39 @@
 ﻿using OMS.Core.Models.Stocks;
-using OMS.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using OMS.Enums;
+using OMS.Core.Core.Models.Books;
 
 namespace OMS.DataAccess.Repositories.MarketRepositories
 {
-    //Market Repo's
+    //Base Market Interface
     public interface IMarketRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
     }
-
-    public interface IStockRepository : IMarketRepository<Stock>
+    
+    public interface IStockRepository : IMarketRepository<IStock>
     {
         IEnumerable<string> GetStockSymbols();
-        Stock GetBySymbol(string symbol);
+        IStock GetBySymbol(string symbol);
     }
-
-    public interface IStockDetailRepository : IMarketRepository<StockDetail>
+    public interface IStockDetailRepository : IMarketRepository<IStockDetail>
     {
-        StockDetail GetBySymbol(string symbol);
+        IStockDetail GetBySymbol(string symbol);
     }
-
-    public interface IStockTradeDataRepository : IMarketRepository<StockTradingData>
+    public interface IStockTradeDataRepository : IMarketRepository<IStockTradingData>
     {
-        Task<IEnumerable<StockTradingData>> GetTradingData(string symbol, DateTime startTime, int points,
-            TradeTimeInterval interval);
-        Task<StockTradingData> GetTradeData(string symbol, int time, TradeTimeInterval interval);
+        Task<IEnumerable<IStockTradingData>> GetTradingData(string symbol, DateTime startTime, int points,TradeTimeInterval interval);
+        Task<IStockTradingData> GetTradeData(string symbol, int time, TradeTimeInterval interval);
     }
-
-    public interface IMarketOrderRepository : IMarketRepository<OrderBook>
+    public interface IMarketOrderRepository : IMarketRepository<BookBase>
     {
-        IEnumerable<OrderBook> GetAll(string symbol);
+        IEnumerable<BookBase> GetAll(string symbol);
     }
-
-    public interface IMarketTradeRepository : IMarketRepository<TradeBook>
+    public interface IMarketTradeRepository : IMarketRepository<BookBase>
     {
-        IEnumerable<TradeBook> GetAll(string symbol);
+        IEnumerable<BookBase> GetAll(string symbol);
     }
-
 }

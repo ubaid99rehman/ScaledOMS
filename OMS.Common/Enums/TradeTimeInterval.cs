@@ -1,5 +1,4 @@
-﻿
-namespace OMS.Enums
+﻿namespace OMS.Enums
 {
     public enum TradeTimeInterval
     {

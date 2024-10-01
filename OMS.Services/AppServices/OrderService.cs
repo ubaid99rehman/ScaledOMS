@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Core.Core.Models.User;
-using OMS.Core.Models;
+using OMS.Core.Models.Orders;
+using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.Cache;
 using OMS.DataAccess.Repositories.AppRepositories;
@@ -15,91 +16,85 @@ namespace OMS.Services.AppServices
     {
         ICacheService CacheService;
         IOrderRepository OrderRepository;
-
         public event Action DataUpdated;
 
-        public OrderService(IOrderRepository accountRepository, 
-            ICacheService cacheService)
+        //Constructor
+        public OrderService(IOrderRepository accountRepository, ICacheService cacheService)
         {
             CacheService = cacheService;
             OrderRepository = accountRepository;
         }
 
-        public ObservableCollection<Order> GetAll()
+        #region Public Data Access Methods Implementation
+        public ObservableCollection<IOrder> GetAll()
         {
-            if(CacheService.ContainsKey("Orders"))
+            if (CacheService.ContainsKey("Orders"))
             {
-                return CacheService.Get<ObservableCollection<Order>>("Orders");
+                return CacheService.Get<ObservableCollection<IOrder>>("Orders");
             }
 
-            ObservableCollection<Order> Orders = OrderRepository.GetAll().ToObservableCollection<Order>();
+            ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
             CacheService.Set("Orders", Orders);
             return Orders;
         }
-
-        public Order GetById(int key)
+        public IOrder GetById(int key)
         {
             return GetAll().Where(o => o.OrderID == key).FirstOrDefault();
         }
-
-        public bool Update(Order entity)
+        public bool Update(IOrder entity)
         {
             bool result = OrderRepository.Update(entity);
-            if(result)
+            if (result)
             {
                 FetchOrders();
                 DataUpdated?.Invoke();
             }
             return result;
         }
-
-        public ObservableCollection<Order> GetOpenOrders()
+        public ObservableCollection<IOrder> GetOpenOrders()
         {
             var orders = GetAll();
-            var openOrders = orders.Where(order => order.Status ==OrderStatus.New).ToObservableCollection<Order>();
+            var openOrders = orders.Where(order => order.Status == OrderStatus.New).ToObservableCollection<IOrder>();
             return openOrders;
         }
-
-        public ObservableCollection<Order> GetCancelledOrders()
+        public ObservableCollection<IOrder> GetCancelledOrders()
         {
-            return GetAll().Where(order => order.Status == OrderStatus.Cancelled).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.Status == OrderStatus.Cancelled).ToObservableCollection<IOrder>();
         }
-
-        public ObservableCollection<Order> GetFulfilledOrders()
+        public ObservableCollection<IOrder> GetFulfilledOrders()
         {
-            return GetAll().Where(order => order.Status == OrderStatus.Fulfilled).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.Status == OrderStatus.Fulfilled).ToObservableCollection<IOrder>();
         }
-
-        public ObservableCollection<Order> GetOrdersByUser(int userId)
+        public ObservableCollection<IOrder> GetOrdersByUser(int userId)
         {
-            return GetAll().Where(order => order.AddedBy == userId).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.AddedBy == userId).ToObservableCollection<IOrder>();
         }
-
-        public ObservableCollection<Order> GetOrdersByAccount(int accountId)
+        public ObservableCollection<IOrder> GetOrdersByAccount(int accountId)
         {
-            return GetAll().Where(order => order.AccountID == accountId).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.AccountID == accountId).ToObservableCollection<IOrder>();
         }
-
-        public ObservableCollection<Order> GetOrdersByStock(string stockSymbol)
+        public ObservableCollection<IOrder> GetOrdersByStock(string stockSymbol)
         {
-            return GetAll().Where(order => order.Symbol == stockSymbol).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.Symbol == stockSymbol).ToObservableCollection<IOrder>();
         }
-
-        public ObservableCollection<Order> GetOpenOrdersByStock(string stockSymbol)
+        public ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol)
         {
-            return GetAll().Where(order => order.Status == OrderStatus.New).Where(o => o.Symbol == stockSymbol).ToObservableCollection<Order>();
+            return GetAll().Where(order => order.Status == OrderStatus.New).Where(o => o.Symbol == stockSymbol).ToObservableCollection<IOrder>();
         }
-
-        public Order GetLastOrderByUser()
+        public IOrder GetLastOrderByUser()
         {
-            User user = CacheService.Get<User>("CurrentUser");
+            IUser user = CacheService.Get<IUser>("CurrentUser");
+            if (user == null)
+            {
+                user = new User();
+                user.UserID = 1;
+            }
 
             return GetAll().Where(order => order.AddedBy == user.UserID)
-                .OrderByDescending(order => order.CreatedDate) 
+                .OrderByDescending(order => order.CreatedDate)
                 .FirstOrDefault();
         }
-
-        public void CancelOrder(Order selectedOrder, out string message)
+        public void CancelOrder(IOrder selectedOrder, out string message)
         {
             message = string.Empty;
             selectedOrder.Status = OrderStatus.Cancelled;
@@ -111,8 +106,7 @@ namespace OMS.Services.AppServices
                 message = "Cancelled";
             }
         }
-
-        public bool Add(Order entity)
+        public bool Add(IOrder entity)
         {
             bool result = OrderRepository.Add(entity);
             if (result)
@@ -121,13 +115,14 @@ namespace OMS.Services.AppServices
                 DataUpdated?.Invoke();
             }
             return result;
-        }
+        } 
+        #endregion
 
+        //Private Data Loading Methods
         private void FetchOrders()
         {
-            ObservableCollection<Order> Orders = OrderRepository.GetAll().ToObservableCollection<Order>();
+            ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
             CacheService.Set("Orders", Orders);
         }
-
     }
 }

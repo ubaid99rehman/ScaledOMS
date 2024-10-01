@@ -25,7 +25,7 @@ namespace OMS.ViewModels
         private StockDetail _selectedStockDetails;
         public StockDetail SelectedStockDetails
         {
-            get => StockDataService.GetStockDetail(symbol);
+            get => (StockDetail)StockDataService.GetStockDetail(symbol);
             set => SetProperty(ref _selectedStockDetails, value, nameof(SelectedStockDetails));
         }
 
@@ -38,7 +38,7 @@ namespace OMS.ViewModels
 
         private void UpdateSelectedStockDetails()
         {
-            SelectedStockDetails = StockDataService.GetStockDetail(Symbol);
+            SelectedStockDetails = (StockDetail)StockDataService.GetStockDetail(Symbol);
         }
 
         public void OnDataRefreshed()

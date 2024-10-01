@@ -1,4 +1,5 @@
 ﻿using OMS.Core.Models;
+using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Helpers;
 using System;
@@ -16,41 +17,40 @@ namespace OMS.MarketData.Stocks
 
         private readonly string _connectionString;
         IStockRepository StockRepository;
-
-        IEnumerable<Stock> _stocks;
+        IEnumerable<IStock> _stocks;
         Random _random;
-
+        
+        //Constructor
         public StockDetailRepository(IStockRepository stockRepository) 
         {
             _random = new Random();
             _connectionString = DbHelper.Connection;
             StockRepository = stockRepository;
         }
-
-        public IEnumerable<StockDetail> GetAll()
+        
+        #region Public Data Access Methods
+        public IEnumerable<IStockDetail> GetAll()
         {
             FetchStocks();
-            List<StockDetail> stockDetails = new List<StockDetail>();
-            foreach(Stock stock in _stocks)
+            List<IStockDetail> stockDetails = new List<IStockDetail>();
+            foreach (Stock stock in _stocks)
             {
                 stockDetails.Add(GenerateDetails(stock));
             }
             return stockDetails;
         }
-
-        public StockDetail GetById(int id)
+        public IStockDetail GetById(int id)
         {
             FetchStocks();
             var stock = _stocks.Where(s => s.ID == id).FirstOrDefault();
 
-            if(stock != null)
+            if (stock != null)
             {
                 return GenerateDetails(stock);
             }
             return null;
         }
-
-        public StockDetail GetBySymbol(string symbol)
+        public IStockDetail GetBySymbol(string symbol)
         {
             FetchStocks();
             var stock = _stocks.Where(s => s.Symbol == symbol).FirstOrDefault();
@@ -59,13 +59,15 @@ namespace OMS.MarketData.Stocks
                 return GenerateDetails(stock);
             }
             return null;
-        }
+        } 
+        #endregion
 
-        private StockDetail GenerateDetails(Stock stock)
+        #region Private Data Loading Methods
+        private IStockDetail GenerateDetails(IStock stock)
         {
             var stockDetail = new StockDetail();
             var price = stock.LastPrice;
-            stockDetail.ID = stock.ID;  
+            stockDetail.ID = stock.ID;
             stockDetail.Name = stock.Name;
             stockDetail.Symbol = stock.Symbol;
             stockDetail.LastPrice = price * (1 - Math.Abs((decimal)_random.NextDouble() * 0.02m)); ;
@@ -76,13 +78,13 @@ namespace OMS.MarketData.Stocks
 
             return stockDetail;
         }
-        
         private void FetchStocks()
         {
             if (_stocks == null || _stocks.Count() < 1)
             {
                 _stocks = StockRepository.GetAll();
             }
-        }
+        } 
+        #endregion
     }
 }

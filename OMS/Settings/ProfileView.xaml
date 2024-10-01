@@ -12,7 +12,7 @@
              WindowStyle="ToolWindow"
             WindowStartupLocation="CenterOwner"
             BorderThickness="0"
-            Icon="/Images/VS_Logo.png"
+            Icon="/Resources/Images/VS_Logo.png"
             Height="250" Width="600"
             MinHeight="200" MinWidth="550"
             Background="{DynamicResource ScreenBackground}"
@@ -21,32 +21,27 @@
       HorizontalAlignment="Center" 
       Margin="20 40"
       VerticalAlignment="Top">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="0 10">
             <TextBlock Text="Email:" Width="75"/>
             <TextBox Text="{Binding Email, Mode=TwoWay}"
                      Width="120" Margin="10 0 0 0" />
         </StackPanel>
-
         <StackPanel Orientation="Horizontal" 
                     Grid.Row="0" Grid.Column="1" Margin="20 10">
             <TextBlock Text="Password:" Width="75"/>
             <dxe:PasswordBoxEdit Password="{Binding Password, Mode=TwoWay}" 
                                  Width="120" Margin="10 0 0 0" />
         </StackPanel>
-
         <StackPanel Orientation="Horizontal"
                 Margin="20"
                 HorizontalAlignment="Center"

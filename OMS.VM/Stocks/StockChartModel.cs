@@ -22,7 +22,7 @@ namespace OMS.ViewModels
         bool initRange = false;
         public virtual object MinVisibleDate { get; set; }
 
-        Dictionary<TradeTimeInterval, ObservableCollection<StockTradingData>> tradesCache;
+        Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>> tradesCache;
 
         private ChartIntervalItem _selectedInterval;
         public ChartIntervalItem SelectedInterval
@@ -61,8 +61,8 @@ namespace OMS.ViewModels
             }
         }
 
-        private ObservableCollection<StockTradingData> stockTradingData;
-        public ObservableCollection<StockTradingData> StockTradingData
+        private ObservableCollection<IStockTradingData> stockTradingData;
+        public ObservableCollection<IStockTradingData> StockTradingData
         {
             get => stockTradingData;
             set => SetProperty(ref stockTradingData, value, nameof(StockTradingData));
@@ -70,8 +70,8 @@ namespace OMS.ViewModels
 
         public StockChartModel(IStockTradeDataService stockTradeDataService)
         {
-            tradesCache = new Dictionary<TradeTimeInterval, ObservableCollection<StockTradingData>>();
-            StockTradingData = new ObservableCollection<StockTradingData>();
+            tradesCache = new Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>>();
+            StockTradingData = new ObservableCollection<IStockTradingData>();
             IntervalsSource = new List<ChartIntervalItem>();
             InitIntervals();
             SelectedInterval = IntervalsSource[0];
@@ -110,13 +110,13 @@ namespace OMS.ViewModels
 
             if (!tradesCache.ContainsKey(interval))
             {
-                tradesCache.Add(interval, new ObservableCollection<StockTradingData> { tradeData });
+                tradesCache.Add(interval, new ObservableCollection<IStockTradingData> { tradeData });
             }
             else
             {
                 if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
                 {
-                    tradesCache[interval] = new ObservableCollection<StockTradingData> { tradeData };
+                    tradesCache[interval] = new ObservableCollection<IStockTradingData> { tradeData };
                 }
                 else
                 {
@@ -137,7 +137,7 @@ namespace OMS.ViewModels
             IntervalsSource.Add(new ChartIntervalItem() { Caption = "Year", MeasureUnit = DateTimeMeasureUnit.Year, MeasureUnitMultiplier = 1 });
         }
 
-        void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<StockTradingData> tradingData)
+        void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<IStockTradingData> tradingData)
         {
             if (!tradesCache.ContainsKey(interval))
             {
@@ -190,7 +190,7 @@ namespace OMS.ViewModels
             {
                 if ((DateTime)eventArgs.AxisX.ActualVisualRange.ActualMinValue < (DateTime)eventArgs.AxisX.ActualWholeRange.ActualMinValue)
                 {
-                    var tradingData = new ObservableCollection<StockTradingData>();
+                    var tradingData = new ObservableCollection<IStockTradingData>();
                     TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
                     var lastItem = this.StockTradingData.Where(x => x.RecordedTime == StockTradingData.Min(d => d.RecordedTime)).FirstOrDefault();
                     if(lastItem != null)
@@ -246,7 +246,7 @@ namespace OMS.ViewModels
             if (!initRange)
             {
                 ((XYDiagram2D)chart.Diagram).ActualAxisX.ActualVisualRange.SetAuto();
-                MinVisibleDate = DateTime.Now - DateTimeHelper.ConvertInterval(SelectedInterval, initialVisiblePointsCount);
+                MinVisibleDate = DateTime.Now - DateTimeHelper.GetTimeSpan(SelectedInterval, initialVisiblePointsCount);
                 initRange = true;
             }
         }

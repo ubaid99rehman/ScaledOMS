@@ -3,15 +3,12 @@ using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
 
-
 namespace OMS.Core.Services.MarketServices.RealtimeServices
 {
-    public interface IStockTradeDataService : IMarketService<StockTradingData>, IRealtimeService
+    public interface IStockTradeDataService : IMarketService<IStockTradingData>, IRealtimeService
     {
         event Action DataUpdated;
-
-        StockTradingData GetBySymbol(string symbol);
-
-        ObservableCollection<StockTradingData> GetTradingData(string symbol, DateTime startTime, int time=180, TradeTimeInterval interval = TradeTimeInterval.Minute);
+        IStockTradingData GetBySymbol(string symbol);
+        ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, int time=180, TradeTimeInterval interval = TradeTimeInterval.Minute);
     }
 }

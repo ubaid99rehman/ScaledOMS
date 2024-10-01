@@ -6,8 +6,15 @@ namespace OMS.Core.Core.Models.Books
 {
     public abstract class BookBase : BaseModel
     {
-        #region Props
+        #region Private Members
         private string _symbol;
+        private decimal _price;
+        private int _quantity;
+        private decimal _total;
+        private DateTime _time;
+        private OrderType _type; 
+        #endregion
+
         public string Symbol
         {
             get => _symbol;
@@ -20,8 +27,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-
-        private decimal _price;
         public decimal Price
         {
             get => _price;
@@ -34,8 +39,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-
-        private int _quantity;
         public int Quantity
         {
             get => _quantity;
@@ -48,8 +51,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-
-        private decimal _total;
         public decimal Total
         {
             get => _total;
@@ -62,8 +63,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-
-        private DateTime _time;
         public DateTime Timestamp
         {
             get => _time;
@@ -76,8 +75,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-
-        private OrderType _type;
         public OrderType Type
         {
             get => _type;
@@ -90,13 +87,12 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         } 
-        #endregion
 
-        #region Numeric Formatters
-        public string GetFormattedQuantity() => FormatNumber(_quantity);
-        public string GetFormattedPrice() => FormatNumber(_price);
-        public string GetFormattedTotal() => FormatNumber(_total);
+        #region Numeric Formatted Members
+        public string FormattedQuantity => FormatNumber(_quantity);
+        public string FormattedPrice => FormatNumber(_price);
+        public string FormattedTotal => FormatNumber(_total);
         #endregion
     }
-
 }
+

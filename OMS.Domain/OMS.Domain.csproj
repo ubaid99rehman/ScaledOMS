@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\App\AppTime.cs" />
+    <Compile Include="Models\App\ThemeModel.cs" />
+    <Compile Include="Models\Books\OrderBook.cs" />
+    <Compile Include="Models\Books\TradeBook.cs" />
+    <Compile Include="Models\Orders\Order.cs" />
+    <Compile Include="Models\Stocks\Stock.cs" />
+    <Compile Include="Models\Stocks\StockDetail.cs" />
+    <Compile Include="Models\Stocks\StockTradingData.cs" />
+    <Compile Include="Models\Trade\Trade.cs" />
+    <Compile Include="Models\User\SessionInfo.cs" />
+    <Compile Include="Models\User\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
+      <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>
+      <Name>OMS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
+      <Project>{558a350a-6a96-4f41-96c7-10c8b3f74bfd}</Project>
+      <Name>OMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

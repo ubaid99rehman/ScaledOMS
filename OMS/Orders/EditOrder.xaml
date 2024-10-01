@@ -11,7 +11,7 @@
                  WindowStyle="ToolWindow"
                  WindowStartupLocation="CenterOwner"
                  BorderThickness="0"
-                 Icon="/Images/VS_Logo.png"
+                 Icon="/Resources/Images/VS_Logo.png"
                  Height="300" Width="600"
                  MinHeight="250" MinWidth="550"
                  Background="{DynamicResource ScreenBackground}"

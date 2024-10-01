@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Column 1 - Light Blue -->
-        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#D1ECF1" Padding="5">
+        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#F8D7DA" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Last Price: " FontWeight="Bold" Margin="10,0,0,0" Foreground="Black"/>
                 <TextBlock Text="{Binding SelectedStockDetails.FormattedLastPrice}" Margin="5,0" Foreground="Black"/>
@@ -26,7 +26,7 @@
         </Border>
 
         <!-- Column 2 - Light Green -->
-        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#D4EDDA" Padding="5">
+        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#FFF3CD" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="24 Volume: " FontWeight="Bold" Margin="10,0,0,0" Foreground="Black"/>
                 <TextBlock Text="{Binding SelectedStockDetails.FormattedVolume}" Margin="5,0" Foreground="Black"/>
@@ -34,7 +34,7 @@
         </Border>
 
         <!-- Column 3 - Light Purple -->
-        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#E2E3E5" Padding="5">
+        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="0,0,1,0" Background="#F8D7DA" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="24h Change: " FontWeight="Bold" Margin="10,0,0,0" Foreground="Black"/>
                 <TextBlock Text="{Binding SelectedStockDetails.FormattedChange, StringFormat={}{0}%}" Margin="5,0" Foreground="Black"/>

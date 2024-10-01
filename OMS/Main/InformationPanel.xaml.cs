@@ -2,11 +2,11 @@
 using OMS.ViewModels;
 using System.Windows.Controls;
 
-
 namespace OMS.Main
 {
     public partial class InformationPanel : UserControl
     {
+        //Constructor
         public InformationPanel()
         {
             InitializeComponent();

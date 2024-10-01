@@ -2,6 +2,7 @@
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Printing.Native;
+using OMS.Core.Models.App;
 using OMS.Core.Models.Themes;
 using OMS.Core.Services.AppServices;
 using OMS.Enums;
@@ -134,8 +135,8 @@ namespace OMS.VM.Settings
             set { SetProperty(ref _themes, value, nameof(Themes)); }
         }
 
-        private ThemeModel _selectedTheme;
-        public ThemeModel SelectedTheme
+        private IThemeModel _selectedTheme;
+        public IThemeModel SelectedTheme
         {
             get { return _selectedTheme; }
             set 
@@ -145,8 +146,8 @@ namespace OMS.VM.Settings
             }
         }
 
-        private ObservableCollection<ThemeModel> _appThemes;
-        public ObservableCollection<ThemeModel> AppThemes
+        private ObservableCollection<IThemeModel> _appThemes;
+        public ObservableCollection<IThemeModel> AppThemes
         {
             get { return _appThemes; }
             set { SetProperty(ref _appThemes, value, nameof(AppThemes)); }
@@ -160,7 +161,7 @@ namespace OMS.VM.Settings
         public AppThemeModel(IAppThemeService appThemeService)
         {
             _themes = new ObservableCollection<string>();
-            _appThemes = new ObservableCollection<ThemeModel>();
+            _appThemes = new ObservableCollection<IThemeModel>();
             _selectedTheme = new ThemeModel();
             _appThemeService = appThemeService;
             FontFamilyOptions = new ObservableCollection<FontFamilyEnum>
@@ -259,7 +260,7 @@ namespace OMS.VM.Settings
             }
         }
 
-        public ThemeModel GetSelectedTheme()
+        public IThemeModel GetSelectedTheme()
         {
             return _appThemeService.GetThemes().Where(t => t.ThemeName == ThemeName).FirstOrDefault();
         }

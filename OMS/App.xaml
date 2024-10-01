@@ -14,27 +14,26 @@
         <!--Screen Controls-->
         <ControlTemplate x:Key="ThemedWindowHeaderTemplate"
                   TargetType="{x:Type dx:ThemedWindowHeader}">
-                <Border x:Name="PART_HeaderRoot"
+            <Border x:Name="PART_HeaderRoot"
                         Background="{DynamicResource TitleBarBackground}">
 
-                    <DockPanel x:Name="PART_HeaderDock"
+                <DockPanel x:Name="PART_HeaderDock"
                                LastChildFill="True"
                                Background="{DynamicResource TitleBarBackground}">
-                        <dx:ThemedWindowIcon x:Name="PART_WindowIcon"
+                    <dx:ThemedWindowIcon x:Name="PART_WindowIcon"
                                              DockPanel.Dock="Left"
                                              Style="{DynamicResource {dxt:ThemedWindowThemeKey ResourceKey=WindowIconStyle}}" />
-                        <dx:ThemedWindowControlBoxBorder x:Name="PART_HeaderItemsAndButtons"
+                    <dx:ThemedWindowControlBoxBorder x:Name="PART_HeaderItemsAndButtons"
                                                          DockPanel.Dock="Right"
                                                          UseLayoutRounding="True" />
-                        <dx:ThemedWindowTitle x:Name="PART_WindowTitle"
+                    <dx:ThemedWindowTitle x:Name="PART_WindowTitle"
                                               Foreground="{DynamicResource TitleBarForeground}"
                                               VerticalAlignment="Center"
                                               Content="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}"
                                               TitleAlignment="{Binding Path=TitleAlignment, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}" />
-                    </DockPanel>
-                </Border>
-            </ControlTemplate>
-
+                </DockPanel>
+            </Border>
+        </ControlTemplate>
         <Style TargetType="{x:Type dx:ThemedWindowHeader}">
             <Setter Property="Template" Value="{StaticResource ThemedWindowHeaderTemplate}" />
             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
@@ -77,7 +76,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
         </Style>
-        
+
         <!--Bar Items-->
         <Style TargetType="{x:Type dxb:Bar}">
             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
@@ -88,7 +87,7 @@
             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ScreenBackground}"/>
-            
+
         </Style>
         <Style TargetType="{x:Type dxb:BarSubItem}">
             <Setter Property="BorderBrush" Value="{DynamicResource ScreenBackground}"/>
@@ -166,14 +165,14 @@
         </Style>
         <Style TargetType="{x:Type DockPanel}">
             <Setter Property="Background" Value="Transparent"/>
-            
+
         </Style>
         <Style TargetType="{x:Type StackPanel}">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
         <Style TargetType="{x:Type WrapPanel}">
             <Setter Property="Background" Value="Transparent"/>
-            
+
         </Style>
         <Style TargetType="{x:Type dxg:TableView }">
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
@@ -431,7 +430,7 @@
             <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
             <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
         </Style>
-        
+
         <!--Chart Controls-->
         <Style TargetType="{x:Type dxc:ChartControl }">
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
@@ -457,6 +456,6 @@
             <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
             <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
         </Style>
-        
+
     </Application.Resources>
 </Application>

@@ -1,5 +1,4 @@
-﻿using OMS.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OMS.DataAccess.Repositories.AppRepositories
 {
@@ -10,10 +9,5 @@ namespace OMS.DataAccess.Repositories.AppRepositories
         bool Add(T entity);
         bool Delete(T entity);
         bool Update(T entity);
-    }
-
-    public interface IOrderRepository : IAppRepository<Order>
-    {
-
     }
 }

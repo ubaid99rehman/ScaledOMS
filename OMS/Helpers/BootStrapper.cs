@@ -25,14 +25,25 @@ namespace OMS
         #endregion
 
         #region Methods
-        public void LoadServices()
+        public void LoadData()
+        {
+            LoadAccountData();
+            LoadStocksData();
+            LoadOrdersData();
+        }
+        public void LoadOrdersData()
+        {
+            _cacheService.Set("Orders", _orderService.GetAll());
+        }
+        public void LoadStocksData()
+        {
+            _cacheService.Set("StockSymbols", _stockDataService.GetStockSymbols());
+        }
+        public void LoadAccountData()
         {
             _cacheService.Set("Accounts", _accountService.GetAll());
             _cacheService.Set("AccountsList", _accountService.GetAccountsList());
-            _cacheService.Set("StockSymbols", _stockDataService.GetStockSymbols());
-            _cacheService.Set("Orders", _orderService.GetAll());
-        } 
+        }
         #endregion
-
     }
 }

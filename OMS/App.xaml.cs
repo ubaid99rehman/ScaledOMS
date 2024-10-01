@@ -20,7 +20,7 @@ namespace OMS
                 PreloadCategories.Grid,
                 PreloadCategories.LayoutControl,
                 PreloadCategories.Ribbon);
-        }    
+        }
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)
@@ -41,12 +41,11 @@ namespace OMS
                 AppThemeHelper.ChangeTheme(theme);
             }
         }
-
         private void LoadMainWindow()
         {
-            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
             mainWindow.Show();
-        } 
+        }
         #endregion
     }
 }

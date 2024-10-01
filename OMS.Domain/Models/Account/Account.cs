@@ -1,19 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OMS.Core.Models.Account
 {
-    public class Account : BaseModel
+    public class Account : BaseModel, IAccount
     {
+        //private Members
         private int _accountID;
         private string _accountName;
         private string _accountNumber;
         private DateTime _createdDate;
-        
+
+        #region Constructors
+        public Account() { }
+        public Account(int accountID, string accountName, string accountNumber, DateTime createdDate)
+        {
+            _accountID = accountID;
+            _accountName = accountName;
+            _accountNumber = accountNumber;
+            _createdDate = createdDate;
+        } 
+        #endregion
+
         public int AccountID
         {
             get => _accountID;
@@ -25,7 +32,6 @@ namespace OMS.Core.Models.Account
                 }
             }
         }
-
         public string AccountName
         {
             get => _accountName;
@@ -37,7 +43,6 @@ namespace OMS.Core.Models.Account
                 }
             }
         }
-
         public string AccountNumber
         {
             get => _accountNumber;
@@ -49,7 +54,6 @@ namespace OMS.Core.Models.Account
                 }
             }
         }
-
         public DateTime CreatedDate
         {
             get => _createdDate;
@@ -61,6 +65,5 @@ namespace OMS.Core.Models.Account
                 }
             }
         }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpf.Charts;
+using Microsoft.Win32;
 using OMS.Core.Models.Stocks;
 using OMS.ViewModels;
 using System;
@@ -6,14 +7,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace OMS.Stocks
 {
-
     public partial class StockChart : UserControl
     {
         public StockChart()
@@ -21,16 +19,27 @@ namespace OMS.Stocks
             InitializeComponent();
         }
 
+        #region Chart Export Event
         private void ExportToCSV(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            if(this.DataContext is StockChartModel model) 
+            if (this.DataContext is StockChartModel model)
             {
                 var data = model.StockTradingData;
             }
-            ExportDisplayedChartData();
+            GenerateCSV();
         }
+        private void ExportToPDF(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            var printOptions = new ChartPrintOptions();
+            printOptions.SizeMode = PrintSizeMode.ProportionalZoom;
+            Chart.PrintOptions = printOptions;
 
-        private void ExportDisplayedChartData()
+            GeneratePDF();
+        } 
+        #endregion
+
+        #region Export File Generation Methods
+        private void GenerateCSV()
         {
             var chartControl = (ChartControl)Chart;
             var volumeChartData = new List<StockTradingData>();
@@ -91,39 +100,29 @@ namespace OMS.Stocks
                 MessageBox.Show("No visible data available for export.", "Export to CSV", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
-        private void ExportToPDF(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private void GeneratePDF()
         {
-            var printOptions = new ChartPrintOptions();
-            printOptions.SizeMode = PrintSizeMode.ProportionalZoom;
-            Chart.PrintOptions = printOptions;
-
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 Filter = "PDF Files (*.pdf)|*.pdf",
                 FileName = "StockChart.pdf"
             };
-
             if (saveFileDialog.ShowDialog() == true)
             {
                 Chart.ExportToPdf(saveFileDialog.FileName);
                 Process.Start(saveFileDialog.FileName);
             }
-        }
+        } 
+        #endregion
 
+        //Volume Chart Axis Toggle Button Event
         private void Volume_Toggle_Millions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             VolumeAxisPattern.TextPattern = "{V:0,,}M";
         }
-
         private void Volume_Toggle_Billions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             VolumeAxisPattern.TextPattern = "{V:0,,,}B";
-        }
-
-        private void Volume_Toggle_Trillions(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
-        {
-            VolumeAxisPattern.TextPattern = "{V:0,,,,}T";
         }
     }
 }

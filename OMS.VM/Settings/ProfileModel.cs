@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Core.Models.User;
+using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
 
 namespace OMS.VM.Settings
@@ -28,15 +29,23 @@ namespace OMS.VM.Settings
 
             }
         }
-
-        private User _user;
-        
+        private IUser _user;
 
         public ProfileModel(IUserService userService) 
         {
             UserService = userService;
-            _user = UserService.GetUser();
-            Password = _user.Password;   
+            LoadUser();
+        }
+
+        private void LoadUser()
+        {
+            var user = UserService.GetUser();
+            if (user == null)
+            {
+                user = new User();
+            }
+            _user = user;
+            Password = _user.Password;
             Email = _user.Email;
         }
 
