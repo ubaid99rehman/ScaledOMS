@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using OMS.Core.Logging;
 using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
 using OMS.Logging;
@@ -11,31 +12,31 @@ namespace OMS.ViewModels
 {
     public class LoadingViewModel : ViewModelBase
     {
+        //Services
         private IAuthService AuthService;
+        private ILogHelper Logger;
+        //Events
         public event Action AuthenticationCompleted;
-        public void AuthenticationComplete()
-        {
-            AuthenticationCompleted?.Invoke();   
-        }
 
-        #region Props
-
+        #region Private Member
         private bool _isAuthenticated;
+        private string _authMessage;
+        private string _username;
         public bool IsAuthenticated
         {
             get { return _isAuthenticated; }
             set { SetProperty(ref _isAuthenticated, value, nameof(IsAuthenticated)); }
 
         }
+        private string _password;
+        #endregion
 
-        private string _authMessage;
+        //Public Members
         public string AuthMessage
         {
             get { return _authMessage; }
             set { SetProperty(ref _authMessage, value, nameof(AuthMessage)); }
         }
-
-        private string _username;
         public string Username
         {
             get => _username;
@@ -44,8 +45,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _username, value, nameof(Username));
             }
         }
-
-        private string _password;
         public string Password
         {
             get => _password;
@@ -55,17 +54,15 @@ namespace OMS.ViewModels
             }
         }
 
-        #endregion
-
-        #region Constructor
-        public LoadingViewModel(IAuthService authService)
+        //Constructor
+        public LoadingViewModel(IAuthService authService, ILogHelper logHelper)
         {
+            Logger = logHelper;
             IsAuthenticated = false;
             AuthService = authService;
         }
-        #endregion
 
-        #region Methods
+        //Methods
         public async Task Login()
         {
             await Task.Delay(3000);
@@ -84,10 +81,9 @@ namespace OMS.ViewModels
             }
             Authenticate();
         }
-
         public void Authenticate()
         {
-            LogHelper.LogInfo("Authenticating User: " + Username);
+            Logger.LogInfo("Authenticating User: " + Username);
             var user = AuthService.Authenticate(new UserCredentials(this.Username,this.Password));
             
             if (user != null)
@@ -95,17 +91,19 @@ namespace OMS.ViewModels
                 IsAuthenticated = true;
                 AuthMessage = "Authenticated!";
                 AuthenticationComplete();
-                LogHelper.LogInfo("User: " + Username + " Authenticated.");
+                Logger.LogInfo("User: " + Username + " Authenticated.");
             }
             else
             {
                 IsAuthenticated = false;
                 AuthMessage = "User or Password Not Matched!";
                 AuthenticationComplete();
-                LogHelper.LogInfo("User: " + Username + " is not Authenticated.");
+                Logger.LogInfo("User: " + Username + " is not Authenticated.");
             }
         } 
-        #endregion
-
+        public void AuthenticationComplete()
+        {
+            AuthenticationCompleted?.Invoke();   
+        }
     }
 }

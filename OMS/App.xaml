@@ -243,6 +243,15 @@
                 <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
             </Style.Setters>
         </Style>
+        <Style TargetType="{x:Type ContextMenu}">
+            <Style.Setters>
+                <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+                <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+                <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
+            </Style.Setters>
+        </Style>
 
         <!--Inputs-->
         <Style TargetType="{x:Type dxe:PopupColorEdit}">

@@ -12,22 +12,31 @@ namespace OMS.ViewModels
 {
     public class OrdersListModel : ViewModelBase
     {
+        //Services
         IOrderService OrderService;
         IStockDataService StockDataService;
         IAccountService AccountService;
 
+        #region Private Members
         private decimal _quantity;
+        private int _account;
+        private decimal _price;
+        private decimal _total;
+        private ObservableCollection<int> _accounts;
+        private ObservableCollection<IOrder> _orders;
+        private IOrder _selectedOrder;
+        #endregion
+
+        #region Public Members
         public decimal OrderUpdatedQuantity
         {
             get { return _quantity; }
             set
             {
                 SetProperty(ref _quantity, value, nameof(OrderUpdatedQuantity));
-                OrderUpdatedTotal = OrderUpdatedQuantity* StockCurrentPrice;
+                OrderUpdatedTotal = OrderUpdatedQuantity * StockCurrentPrice;
             }
         }
-
-        private int _account;
         public int OrderUpdatedAccount
         {
             get { return _account; }
@@ -36,8 +45,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _account, value, nameof(OrderUpdatedAccount));
             }
         }
-
-        private decimal _price;
         public decimal StockCurrentPrice
         {
             get => _price;
@@ -46,8 +53,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _price, value, nameof(StockCurrentPrice));
             }
         }
-
-        private decimal _total;
         public decimal OrderUpdatedTotal
         {
             get => _total;
@@ -56,23 +61,17 @@ namespace OMS.ViewModels
                 SetProperty(ref _total, value, nameof(OrderUpdatedTotal));
             }
         }
-
-        private ObservableCollection<int> _accounts;
         public ObservableCollection<int> AccountsList
         {
             get { return _accounts; }
             set { SetProperty(ref _accounts, value, nameof(AccountsList)); }
         }
-
-        private ObservableCollection<IOrder> _orders;
         public ObservableCollection<IOrder> Orders
         {
             get { return OrderService.GetOpenOrders(); }
             set { SetProperty(ref _orders, value, nameof(Orders)); }
 
         }
-
-        private IOrder _selectedOrder;
         public IOrder SelectedOrder
         {
             get => _selectedOrder;
@@ -89,8 +88,10 @@ namespace OMS.ViewModels
                     UpdateCurrentOrder();
                 }
             }
-        }
-        
+        } 
+        #endregion
+
+        //Constructor
         public OrdersListModel(IOrderService _orderService,
             IStockDataService _stockDataService, IAccountService _accountService)
         {
@@ -103,15 +104,14 @@ namespace OMS.ViewModels
             //Loads Accounts and Orders List
             InitData();
             OrderService.DataUpdated += UpdateData;
-
         }
 
+        //Private Methods
         private void UpdateOrderTotal()
         {
             OrderUpdatedTotal = OrderUpdatedQuantity * StockCurrentPrice;
             SelectedOrder.Total = OrderUpdatedTotal;
         }
-
         private void UpdateCurrentOrder()
         {
             OrderUpdatedAccount = (int)SelectedOrder.AccountID;
@@ -119,14 +119,18 @@ namespace OMS.ViewModels
             OrderUpdatedTotal = (decimal)SelectedOrder.Total;
             StockCurrentPrice = (decimal)SelectedOrder.Price;
         }
-
         private void InitData()
         {
             AccountsList = AccountService.GetAccountsList();
             UpdateData();
             SelectedOrder = Orders.FirstOrDefault();
         }
+        private void UpdateData()
+        {
+            Orders = OrderService.GetOpenOrders();
+        }
 
+        //Public Methods
         public void CancelOrder(out bool isCancelled, out string message)
         {
             isCancelled = false;
@@ -154,7 +158,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-
         public void UpdateOrder(out bool isUpdated, out string message)
         {
             isUpdated = false;
@@ -189,9 +192,5 @@ namespace OMS.ViewModels
             }
         }
 
-        private void UpdateData()
-        {
-            Orders = OrderService.GetOpenOrders();
-        }
     }
 }

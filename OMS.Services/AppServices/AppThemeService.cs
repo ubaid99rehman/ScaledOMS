@@ -10,6 +10,7 @@ using System;
 using OMS.Logging;
 using System.Windows;
 using OMS.Core.Models.App;
+using OMS.Core.Logging;
 
 namespace OMS.Services
 {
@@ -18,10 +19,12 @@ namespace OMS.Services
         string _themeDirectoryPath;
         List<string> ThemeNames;
         List<IThemeModel> AppThemes;
+        ILogHelper  Logger;
         
         //Constructor
-        public AppThemeService() 
+        public AppThemeService(ILogHelper logHelper) 
         {
+            Logger = logHelper;
             _themeDirectoryPath = ConfigurationManager.AppSettings["ThemeDirectory"];
             AppThemes = new List<IThemeModel>();
             ThemeNames = new List<string>();
@@ -111,7 +114,7 @@ namespace OMS.Services
             }
             catch (Exception ex)
             {
-                LogHelper.LogError(ex.ToString(), ex);
+                Logger.LogError(ex.ToString(), ex);
                 return false;
             }
         }

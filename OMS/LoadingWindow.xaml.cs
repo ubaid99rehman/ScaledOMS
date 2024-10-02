@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OMS.Core.Logging;
 using OMS.Logging;
 using OMS.ViewModels;
 using System.Windows;
@@ -8,17 +9,18 @@ namespace OMS
     public partial class LoadingWindow : Window
     {
         IBootStrapper BootStrapper;
-
-        #region Constructor
-        public LoadingWindow(IBootStrapper bootStrapper)
+        ILogHelper Logger;
+        
+        //Constructor
+        public LoadingWindow(IBootStrapper bootStrapper, ILogHelper logHelper)
         {
+            Logger = logHelper;
             InitializeComponent();
             BootStrapper = bootStrapper;
             //Adding Datacontext
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingViewModel>();
             ((LoadingViewModel)this.DataContext).AuthenticationCompleted += LoadingWindow_AuthenticationCompleted;
         }
-        #endregion
 
         #region Methods
         private void LoadingWindow_AuthenticationCompleted()
@@ -37,7 +39,6 @@ namespace OMS
                 }
             }
         }
-
         private void ShowPrgressBar()
         {
             LoginPanel.Visibility = Visibility.Collapsed;
@@ -48,13 +49,12 @@ namespace OMS
             LoginPanel.Visibility = Visibility.Visible;
             LoadingPanel.Visibility = Visibility.Collapsed;
         } 
-
         private void LoadServices()
         {
             PART_Status.Text = "Loading Services....";
-            LogHelper.LogInfo("Loading Services Data....");
+            Logger.LogInfo("Loading Services Data....");
             BootStrapper.LoadData();
-            LogHelper.LogInfo("Services Data Loaded.");
+            Logger.LogInfo("Services Data Loaded.");
         }
         private void NavigateMainWindow()
         {

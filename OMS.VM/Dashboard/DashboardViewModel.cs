@@ -7,12 +7,14 @@ namespace OMS.ViewModels
 
     public class DashboardViewModel : ViewModelBase
     {
+        //Demo Data 
         public ObservableCollection<MarketOverview> MarketOverviewData { get; set; }
         public ObservableCollection<StockHolding> StockHoldingsData { get; set; }
         public ObservableCollection<MonthlyOrderData> MonthlyOrderData { get; set; }
         public ObservableCollection<PortfolioOverview> PortfolioOverviewData { get; set; }
         public ObservableCollection<OrderManagement> OrderManagementData { get; set; }
 
+        //Constructor
         public DashboardViewModel()
         {
             MarketOverviewData = new ObservableCollection<MarketOverview>
@@ -50,6 +52,7 @@ namespace OMS.ViewModels
         }
     }
 
+    #region Demo Data Classes
     // MarketOverview Class
     public class MarketOverview
     {
@@ -58,7 +61,6 @@ namespace OMS.ViewModels
         public double Change24H { get; set; }
         public double Volume24H { get; set; }
     }
-
     // StockHolding Class
     public class StockHolding
     {
@@ -66,14 +68,12 @@ namespace OMS.ViewModels
         public double Volume { get; set; }
         public int Units { get; set; }
     }
-
     // MonthlyOrderData Class
     public class MonthlyOrderData
     {
         public string Month { get; set; }
         public double ProfitLoss { get; set; }
     }
-
     // PortfolioOverview Class
     public class PortfolioOverview
     {
@@ -83,7 +83,6 @@ namespace OMS.ViewModels
         public double MarketValue { get; set; }
         public double UnrealizedPnL { get; set; }
     }
-
     // OrderManagement Class
     public class OrderManagement
     {
@@ -92,6 +91,6 @@ namespace OMS.ViewModels
         public string OrderType { get; set; }
         public int Quantity { get; set; }
         public string Status { get; set; }
-    }
-
+    } 
+    #endregion
 }

@@ -10,8 +10,10 @@ namespace OMS.ViewModels
 {
     public class OrderBookModel : ViewModelBase
     {
-        const int MaxTradeCount = 100;
+        //Service
         IMarketOrderService MarketOrderService;
+        //Max Visible Trades
+        const int MaxVisibleOrders = 100;
 
         //Private Members
         private string _selectedStockSymbol;
@@ -99,7 +101,7 @@ namespace OMS.ViewModels
                 {
                     foreach (var trade in buyOrders.Reverse())
                     {
-                        if (StockSellingOrders.Count >= MaxTradeCount)
+                        if (StockSellingOrders.Count >= MaxVisibleOrders)
                         {
                             StockSellingOrders.RemoveAt(0);
                         }
@@ -111,7 +113,7 @@ namespace OMS.ViewModels
                 {
                     foreach (var trade in sellOrders.Reverse())
                     {
-                        if (StockBuyingOrders.Count >= MaxTradeCount)
+                        if (StockBuyingOrders.Count >= MaxVisibleOrders)
                         {
                             StockBuyingOrders.RemoveAt(sellOrders.Count - 1);
                         }

@@ -7,10 +7,15 @@ namespace OMS.VM.Settings
 {
     public class ProfileModel : ViewModelBase
     {
+        //Service
         IUserService UserService;
 
+        //Private Members
         private string _email;
         private string _password;
+        private IUser _user;
+        
+        //Public Members
         public string Password
         {
             get { return _password; }
@@ -29,26 +34,27 @@ namespace OMS.VM.Settings
 
             }
         }
-        private IUser _user;
 
+        //Cosntructor
         public ProfileModel(IUserService userService) 
         {
             UserService = userService;
             LoadUser();
         }
 
+        //Methods
         private void LoadUser()
         {
             var user = UserService.GetUser();
             if (user == null)
             {
                 user = new User();
+                user.UserID = 1;
             }
             _user = user;
             Password = _user.Password;
             Email = _user.Email;
         }
-
         public bool UpdateUser(out string message)
         {
             _user.Password = Password;
@@ -61,7 +67,6 @@ namespace OMS.VM.Settings
             }
             message = "Unable to Update User!";
             return false;
-
         }
     }
 }

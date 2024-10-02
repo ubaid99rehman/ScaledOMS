@@ -10,10 +10,16 @@ namespace OMS.ViewModels
 {
     public class TradeBookModel : ViewModelBase, IDisposable
     {
-        private const int MaxTradeCount = 100;
+        //Service
         private readonly IMarketTradeService _marketTradeService;
+        //Max Visible Trades 
+        private const int MaxTradeCount = 100;
 
+        //Private Members
         private string _selectedStockSymbol;
+        private ObservableCollection<TradeBook> _stockTrades;
+
+        //Public Members
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
@@ -29,14 +35,13 @@ namespace OMS.ViewModels
                 }
             }
         }
-        
-        private ObservableCollection<TradeBook> _stockTrades;
         public ObservableCollection<TradeBook> StockTrades
         {
             get => _stockTrades;
             private set => SetProperty(ref _stockTrades, value,nameof(StockTrades));
         }
-
+        
+        //Constructor
         public TradeBookModel(IMarketTradeService marketTradeService)
         {
             _marketTradeService = marketTradeService;
@@ -45,6 +50,7 @@ namespace OMS.ViewModels
             _marketTradeService.DataUpdated += OnDataUpdated;
         }
 
+        //Methods
         private void AddStockTrades()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
@@ -58,7 +64,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-
         private void OnDataUpdated(string symbol)
         {
             if (symbol == SelectedStockSymbol)
@@ -66,7 +71,6 @@ namespace OMS.ViewModels
                 UpdateStockTrades();
             }
         }
-
         private void UpdateStockTrades()
         {
             if (!string.IsNullOrEmpty(SelectedStockSymbol))
@@ -86,7 +90,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-
         public void Dispose()
         {
             _marketTradeService.DataUpdated -= OnDataUpdated;

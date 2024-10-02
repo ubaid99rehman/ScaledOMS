@@ -1,7 +1,5 @@
 ﻿using DevExpress.Mvvm;
-using DevExpress.Mvvm.UI.Native;
 using OMS.Core.Services.AppServices;
-using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.VM.Trades;
 using System.Collections.ObjectModel;
@@ -11,16 +9,27 @@ namespace OMS.ViewModels
 {
     public class StockMarketModel : ViewModelBase
     {
+        //Service
         private IStockDataService _stockService;
 
+        #region Private Members
         private StockDetailViewModel _stockDetailsModel;
+        private OrderHistoryViewModel _orderHistoryModel;
+        private OrdersListModel _openOrdersModel;
+        private TradeViewModel _tradeModel;
+        private string _selectedStockSymbol;
+        private ObservableCollection<string> _stockSymbols;
+        private StockChartModel _stockChartViewModel;
+        private OrderBookModel _orderBookModel;
+        private TradeBookModel _tradeBookModel;
+        #endregion
+
+        #region Public Members
         public StockDetailViewModel StockDetailsModel
         {
             get { return _stockDetailsModel; }
             set { SetProperty(ref _stockDetailsModel, value, nameof(StockDetailsModel)); }
         }
-
-        private OrderHistoryViewModel _orderHistoryModel;
         public OrderHistoryViewModel OrderHistoryModel
         {
             get => _orderHistoryModel;
@@ -29,8 +38,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _orderHistoryModel, value, nameof(OrderHistoryModel));
             }
         }
-
-        private OrdersListModel _openOrdersModel;
         public OrdersListModel OpenOrdersModel
         {
             get => _openOrdersModel;
@@ -39,8 +46,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _openOrdersModel, value, nameof(OpenOrdersModel));
             }
         }
-
-        private TradeViewModel _tradeModel;
         public TradeViewModel TradeHistoryModel
         {
             get => _tradeModel;
@@ -49,8 +54,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _tradeModel, value, nameof(TradeHistoryModel));
             }
         }
-
-        private string _selectedStockSymbol;
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
@@ -63,15 +66,11 @@ namespace OMS.ViewModels
             }
 
         }
-
-        private ObservableCollection<string> _stockSymbols;
         public ObservableCollection<string> StockSymbols
         {
             get { return _stockSymbols; }
             set { SetProperty(ref _stockSymbols, value, nameof(StockSymbols)); }
         }
-
-        private StockChartModel _stockChartViewModel;
         public StockChartModel StockChartViewModel
         {
             get { return _stockChartViewModel; }
@@ -80,8 +79,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _stockChartViewModel, value, nameof(StockChartViewModel));
             }
         }
-
-        private OrderBookModel _orderBookModel;
         public OrderBookModel OrderBookModel
         {
             get => _orderBookModel;
@@ -90,8 +87,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _orderBookModel, value, nameof(OrderBookModel));
             }
         }
-
-        private TradeBookModel _tradeBookModel;
         public TradeBookModel TradeBookModel
         {
             get => _tradeBookModel;
@@ -99,14 +94,13 @@ namespace OMS.ViewModels
             {
                 SetProperty(ref _tradeBookModel, value, nameof(TradeBookModel));
             }
-        }
+        } 
+        #endregion
 
-        public StockMarketModel(IStockDataService stockDataService, 
-            IMarketOrderService marketOrderService,
-            IMarketTradeService marketTradeService,
-            IStockTradeDataService stockTradeDataService,
-            IOrderService orderService,
-            IAccountService accountService)
+        //Constructor
+        public StockMarketModel(IStockDataService stockDataService, IMarketOrderService marketOrderService,
+            IMarketTradeService marketTradeService,IStockTradeDataService stockTradeDataService,
+            IOrderService orderService,IAccountService accountService)
         {
             _stockService = stockDataService;
             _orderBookModel = new OrderBookModel(marketOrderService);
@@ -119,12 +113,12 @@ namespace OMS.ViewModels
             InitData();
         }
 
+        //Private Methods
         private void InitData()
         {
             StockSymbols = _stockService.GetStockSymbols();
             SelectedStockSymbol = StockSymbols.FirstOrDefault();
         }
-        
         private void UpdateViews()
         {
             if (SelectedStockSymbol != null)

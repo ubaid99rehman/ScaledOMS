@@ -2,6 +2,7 @@
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
+using OMS.Core.Logging;
 using OMS.Core.Models;
 using OMS.Core.Models.App;
 using OMS.Core.Services.AppServices;
@@ -23,8 +24,10 @@ namespace OMS.ViewModels
         private string fileName;
         //Landing Page Displayed 
         private bool landingPageLoaded;
-        //DateTime Service
+        
+        //Services
         private IAppTimerService AppTimerService;
+        private ILogHelper Logger;
         //Navigation Service
         [ServiceProperty(Key = "documentManagerService")]
         public virtual IDocumentManagerService DocumentManagerService
@@ -32,20 +35,20 @@ namespace OMS.ViewModels
             get { return GetService<IDocumentManagerService>(); }
         }
 
-        #region Props
+        //Private Members
+        private string _title;
+        private bool _isLoadingScreen;
+        
+        //Public Members
         public IAppTime CurrentTime
         {
             get { return AppTimerService.GetCurrentDateTime(); }
         }
-
-        private string _title;
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value, nameof(Title)); }
         }
-
-        private bool _isLoadingScreen;
         public bool IsLoadingScreen
         {
             get
@@ -59,34 +62,23 @@ namespace OMS.ViewModels
             }
         }
 
-        private AddOrderModel _orderModel;
-        public AddOrderModel NewOrderModel
+        //Constructor
+        public MainViewModel(IAppTimerService timerService,IOrderService orderService, 
+            ILogHelper logHelper, IAccountService accountService, IStockDataService stockDataService)
         {
-            get { return _orderModel; }
-            set { SetProperty(ref _orderModel, value, nameof(NewOrderModel)); }
-        }
-        #endregion
-
-        #region Constructor
-        public MainViewModel(IAppTimerService timerService,
-            IOrderService orderService, IAccountService accountService,
-            IStockDataService stockDataService)
-        {
+            Logger = logHelper;
             fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
             landingPageLoaded = false;
             AppTimerService = timerService;
             AppTimerService.StartSession();
             Title = "OMS";
-            NewOrderModel = new AddOrderModel(orderService, stockDataService, accountService);
         }
-        #endregion
-
+        
         #region Loading Decorator
         private void Navigating()
         {
             IsLoadingScreen = true;
         }
-
         private void Navigated()
         {
             IsLoadingScreen = false;
@@ -99,71 +91,50 @@ namespace OMS.ViewModels
         {
             AddView("DashboardView", "Dashboard");
         }
-
         [Command]
         public void StockMarket()
         {
             AddView("StockMarketView", "Market Watch");
         }
-
         [Command]
         public void Portfolio()
         {
             AddView("AccountPortfolioView", "Portfolio");
         }
-
         [Command]
         public void ManageOrders()
         {
             AddView("ManageOrderView", "Manage Orders");
         }
-
         [Command]
         public void OrderHistory()
         {
             AddView("OrderHistoryView", "Orders History");
         }
-
         [Command]
         public void Profile()
         {
             AddView("ProfileView", "Profile");
         }
-
         [Command]
         public void Appearance()
         {
             AddView("AppearanceView", "Appearance");
         }
-
-        [Command]
-        public void OnViewLoaded()
-        {
-            if (DocumentManagerService != null)
-            {
-                Dashboard();
-            }
-            else
-            {
-                var exception = new InvalidOperationException("DocumentManagerService is not available.");
-                LogHelper.LogError(exception.Message, exception);
-            }
-        }
         #endregion
 
-        #region Event Handler
+        #region View Changed Event Handler
         private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
         {
             Title = (string)e.NewDocument?.Title ?? "HOME";
         }
         #endregion
 
-        #region Pagess Layout Method
+        #region Open Views Layout Method
         public IEnumerable<IDocument> GetOpenedDocuments()
         {
             return DocumentManagerService.Documents;
         }
-
         public void SaveOpenedDocumentsState()
         {
             var documentStates = GetOpenedDocuments().Select(doc =>
@@ -178,7 +149,6 @@ namespace OMS.ViewModels
                 serializer.Serialize(writer, documentStates);
             }
         }
-
         public void RestoreOpenedDocumentsState()
         {
             string fileName = ConfigurationManager.AppSettings["LayoutFilePath"];
@@ -204,20 +174,21 @@ namespace OMS.ViewModels
         } 
         #endregion
 
-        //Render New Page/View
+        //Open New View
         public void AddView(string view, string title)
         {
             Navigating();
             if (DocumentManagerService == null)
             {
                 var exception = new InvalidOperationException("DocumentManagerService is not available.");
-                LogHelper.LogError(exception.Message, exception);
+                Logger.LogError(exception.Message, exception);
             }
 
             IDocument document = DocumentManagerService.CreateDocument(view, null, this);
             document.Title = title;
             document.Show();
             Title = title;
+            Logger.LogInfo($"Loaded View: {view}");
             Navigated();
             if(landingPageLoaded)
             {
@@ -225,6 +196,7 @@ namespace OMS.ViewModels
             }
         }
     }
+    //Document State Class
     public class DocumentState
     {
         public string Content { get; set; }

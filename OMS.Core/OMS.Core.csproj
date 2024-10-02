@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\IContextMenuHelper.cs" />
+    <Compile Include="Logging\ILogHelper.cs" />
     <Compile Include="Models\Account\IAccount.cs" />
     <Compile Include="Models\App\IAppTime.cs" />
     <Compile Include="Models\App\IThemeModel.cs" />

@@ -15,6 +15,8 @@ using OMS.Services.MarketServices.RealtimeServices;
 using OMS.VM.Trades;
 using OMS.Services;
 using OMS.VM.Settings;
+using OMS.Core.Logging;
+using OMS.Logging;
 
 namespace OMS
 {
@@ -35,6 +37,7 @@ namespace OMS
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+
             #region Repositories
             //App Services
             services.AddSingleton<IUserRepository, UserRepository>();
@@ -53,6 +56,10 @@ namespace OMS
             #region Cache 
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddSingleton<ICacheService, CacheService>();
+            #endregion
+
+            #region Logging
+            services.AddSingleton<ILogHelper, LogHelper>(); 
             #endregion
 
             #region Services

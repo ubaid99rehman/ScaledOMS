@@ -1,12 +1,9 @@
 ﻿using DevExpress.Mvvm;
-using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
-using DevExpress.Xpf.Printing.Native;
 using OMS.Core.Models.App;
 using OMS.Core.Models.Themes;
 using OMS.Core.Services.AppServices;
 using OMS.Enums;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -18,18 +15,32 @@ namespace OMS.VM.Settings
     {
         IAppThemeService _appThemeService;
 
+        #region Private Members
         private Color _textBackground;
+        private Color _textForeground;
+        private Color _textBoxBackground;
+        private Color _textBoxForeground;
+        private Color _buttonBackground;
+        private Color _buttonForeground;
+        private Color _titleBarBackground;
+        private Color _titleBarForeground;
+        private string _themeName;
+        private string _appliedThemeName;
+        private ObservableCollection<string> _themes;
+        private IThemeModel _selectedTheme;
+        private ObservableCollection<IThemeModel> _appThemes;
+        #endregion
+
+        #region Public Members
         public Color TextBackground
         {
             get => _textBackground;
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _textBackground, value, nameof(TextBackground));
                 SelectedTheme.TextBackground = new SolidColorBrush(value);
             }
         }
-
-        private Color _textForeground;
         public Color TextForeground
         {
             get => _textForeground;
@@ -39,8 +50,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.TextForeground = new SolidColorBrush(value);
             }
         }
-
-        private Color _textBoxBackground;
         public Color TextBoxBackground
         {
             get => _textBoxBackground;
@@ -50,8 +59,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.TextBoxBackground = new SolidColorBrush(value);
             }
         }
-
-        private Color _textBoxForeground;
         public Color TextBoxForeground
         {
             get => _textBoxForeground;
@@ -61,8 +68,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.TextBoxForeground = new SolidColorBrush(value);
             }
         }
-
-        private Color _buttonBackground;
         public Color ButtonBackground
         {
             get => _buttonBackground;
@@ -72,8 +77,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.ButtonBackground = new SolidColorBrush(value);
             }
         }
-
-        private Color _buttonForeground;
         public Color ButtonForeground
         {
             get => _buttonForeground;
@@ -83,8 +86,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.ButtonForeground = new SolidColorBrush(value);
             }
         }
-
-        private Color _titleBarBackground;
         public Color TitleBarBackground
         {
             get => _titleBarBackground;
@@ -94,8 +95,6 @@ namespace OMS.VM.Settings
                 SelectedTheme.TitleBarBackground = new SolidColorBrush(value);
             }
         }
-
-        private Color _titleBarForeground;
         public Color TitleBarForeground
         {
             get => _titleBarForeground;
@@ -105,19 +104,15 @@ namespace OMS.VM.Settings
                 SelectedTheme.TitleBarForeground = new SolidColorBrush(value);
             }
         }
-
-        private string _themeName;
         public string ThemeName
         {
             get { return _themeName; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _themeName, value, nameof(ThemeName));
                 ChangeSelectedTheme();
             }
         }
-
-        private string _appliedThemeName;
         public string AppliedThemeName
         {
             get { return _appliedThemeName; }
@@ -127,37 +122,32 @@ namespace OMS.VM.Settings
                 ChangeSelectedTheme();
             }
         }
-
-        private ObservableCollection<string> _themes;
         public ObservableCollection<string> Themes
         {
-            get { return _themes; } 
+            get { return _themes; }
             set { SetProperty(ref _themes, value, nameof(Themes)); }
         }
-
-        private IThemeModel _selectedTheme;
         public IThemeModel SelectedTheme
         {
             get { return _selectedTheme; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _selectedTheme, value, nameof(SelectedTheme));
                 InitColors();
             }
         }
-
-        private ObservableCollection<IThemeModel> _appThemes;
         public ObservableCollection<IThemeModel> AppThemes
         {
             get { return _appThemes; }
             set { SetProperty(ref _appThemes, value, nameof(AppThemes)); }
-        }
-
+        } 
         public ObservableCollection<FontFamilyEnum> FontFamilyOptions { get; set; }
         public ObservableCollection<FontSizeEnum> FontSizeOptions { get; set; }
         public ObservableCollection<FontWeight> FontWeightOptions { get; set; }
         public ObservableCollection<double> ButtonBorderThicknessOptions { get; set; }
+        #endregion
 
+        //Constructor
         public AppThemeModel(IAppThemeService appThemeService)
         {
             _themes = new ObservableCollection<string>();
@@ -212,18 +202,7 @@ namespace OMS.VM.Settings
             InitTheme();
         }
 
-        public void SaveAppliedTheme()
-        {
-            _appThemeService.SaveAppliedTheme(GetSelectedTheme());
-            AppliedThemeName = _appThemeService.GetAppliedTheme().ThemeName;
-        }
-
-        private void LoadThemes()
-        {
-            AppThemes = _appThemeService.GetThemes().ToObservableCollection();
-            Themes = _appThemeService.GetThemeNames().ToObservableCollection();
-        }
-
+        //Priavte Methods 
         private void InitTheme()
         {
             LoadThemes();
@@ -232,7 +211,11 @@ namespace OMS.VM.Settings
             SelectedTheme = AppThemes.First();
             InitColors();
         }
-
+        private void LoadThemes()
+        {
+            AppThemes = _appThemeService.GetThemes().ToObservableCollection();
+            Themes = _appThemeService.GetThemeNames().ToObservableCollection();
+        }
         private void InitColors()
         {
             if (SelectedTheme != null)
@@ -247,7 +230,6 @@ namespace OMS.VM.Settings
                 TitleBarForeground = SelectedTheme.TitleBarForeground.Color;
             }
         }
-
         private void ChangeSelectedTheme()
         {
             if (!string.IsNullOrEmpty(ThemeName)) 
@@ -260,11 +242,16 @@ namespace OMS.VM.Settings
             }
         }
 
+        //Public Methods
         public IThemeModel GetSelectedTheme()
         {
             return _appThemeService.GetThemes().Where(t => t.ThemeName == ThemeName).FirstOrDefault();
         }
-
+        public void SaveAppliedTheme()
+        {
+            _appThemeService.SaveAppliedTheme(GetSelectedTheme());
+            AppliedThemeName = _appThemeService.GetAppliedTheme().ThemeName;
+        }
         public bool SaveTheme(out string message)
         {
             if (SelectedTheme != null)

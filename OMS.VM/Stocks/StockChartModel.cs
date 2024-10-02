@@ -9,22 +9,31 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace OMS.ViewModels
 {
     public class StockChartModel : ViewModelBase
     {
+        //Service
         IStockTradeDataService StockTradeDataService;
 
-        const int initialVisiblePointsCount = 180;
-        const int maxVisiblePointsCount = 800;
-        bool initRange = false;
-        public virtual object MinVisibleDate { get; set; }
+        //Visible Chart Data Points
+        const int maxVisiblePointsCount = 360;
 
-        Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>> tradesCache;
-
+        //Private Members
+        private bool initRange = false;
         private ChartIntervalItem _selectedInterval;
+        private string selectedStockSymbol;
+        private ObservableCollection<IStockTradingData> stockTradingData;
+        private Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>> tradesCache;
+
+        //Public Members
+        public virtual object MinVisibleDate { get; set; }
+        public ObservableCollection<IStockTradingData> StockTradingData
+        {
+            get => stockTradingData;
+            set => SetProperty(ref stockTradingData, value, nameof(StockTradingData));
+        }
         public ChartIntervalItem SelectedInterval
         {
             get => _selectedInterval;
@@ -40,10 +49,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-
-        public List<ChartIntervalItem> IntervalsSource { get; private set; }
-
-        private string selectedStockSymbol;
         public string SelectedStockSymbol
         {
             get { return selectedStockSymbol; }
@@ -60,14 +65,9 @@ namespace OMS.ViewModels
                 }
             }
         }
+        public List<ChartIntervalItem> IntervalsSource { get; private set; }
 
-        private ObservableCollection<IStockTradingData> stockTradingData;
-        public ObservableCollection<IStockTradingData> StockTradingData
-        {
-            get => stockTradingData;
-            set => SetProperty(ref stockTradingData, value, nameof(StockTradingData));
-        }
-
+        //Constructor
         public StockChartModel(IStockTradeDataService stockTradeDataService)
         {
             tradesCache = new Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>>();
@@ -79,110 +79,6 @@ namespace OMS.ViewModels
             stockTradeDataService.DataUpdated += OnDataUpdated;
         }
         
-        private void GetTradeData()
-        {
-            StockTradingData.Clear();
-            TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
-            if (interval == TradeTimeInterval.Year)
-            {
-                var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 25, interval);
-                ChangeChartSourceData(interval, tradeData);
-            }
-            else
-            {
-                var Data = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 180, interval);
-                ChangeChartSourceData(interval, Data);
-            }
-        }
-
-        [Obsolete]
-        private void LoadIntervalData()
-        {
-            TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
-            var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol,DateTime.Now, 180,interval);
-            ChangeChartSourceData(interval,tradeData);
-        }
-
-        void OnDataUpdated()
-        {
-            var tradeData = StockTradeDataService.GetBySymbol(selectedStockSymbol);
-            TradeTimeInterval interval = TradeTimeInterval.Minute;
-
-            if (!tradesCache.ContainsKey(interval))
-            {
-                tradesCache.Add(interval, new ObservableCollection<IStockTradingData> { tradeData });
-            }
-            else
-            {
-                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
-                {
-                    tradesCache[interval] = new ObservableCollection<IStockTradingData> { tradeData };
-                }
-                else
-                {
-                    lock (tradesCache)
-                    {
-                        tradesCache[interval].Add(tradeData);
-                    }
-                }
-            }
-        }
-
-        void InitIntervals()
-        {
-            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Minute", MeasureUnit = DateTimeMeasureUnit.Minute, MeasureUnitMultiplier = 1 });
-            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Hour", MeasureUnit = DateTimeMeasureUnit.Hour, MeasureUnitMultiplier = 1 });
-            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Day", MeasureUnit = DateTimeMeasureUnit.Day, MeasureUnitMultiplier = 1 });
-            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Month", MeasureUnit = DateTimeMeasureUnit.Month, MeasureUnitMultiplier = 1 });
-            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Year", MeasureUnit = DateTimeMeasureUnit.Year, MeasureUnitMultiplier = 1 });
-        }
-
-        void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<IStockTradingData> tradingData)
-        {
-            if (!tradesCache.ContainsKey(interval))
-            {
-                tradesCache.Add(interval, tradingData);
-            }
-            else
-            {
-                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
-                {
-                    tradesCache[interval] = tradingData;
-                }
-                else
-                {
-                    lock (tradesCache) 
-                    {
-                        foreach (var trade in tradingData)
-                        {
-                            tradesCache[interval].Add(trade);
-                        }
-                    }
-                }
-            }
-            StockTradingData.Clear();
-            StockTradingData = tradesCache[interval];
-        }
-
-        TradeTimeInterval GetTradeTimeInterval(DateTimeMeasureUnit item)
-        {
-            switch (item)
-            {
-                case DateTimeMeasureUnit.Minute:
-                    return TradeTimeInterval.Minute;
-                case DateTimeMeasureUnit.Hour:
-                    return TradeTimeInterval.Hour;
-                case DateTimeMeasureUnit.Day:
-                    return TradeTimeInterval.Day;
-                case DateTimeMeasureUnit.Month:
-                    return TradeTimeInterval.Month;
-                case DateTimeMeasureUnit.Year:
-                    return TradeTimeInterval.Year;
-                default:
-                    return TradeTimeInterval.Minute;
-            }
-        }
-
         [Command]
         public void ChartScroll(XYDiagram2DScrollEventArgs eventArgs)
         {
@@ -216,39 +112,114 @@ namespace OMS.ViewModels
                 }
             }
         }
-
         [Command]
         public void ChartZoom(XYDiagram2DZoomEventArgs eventArgs)
         {
-            //ManualDateTimeScaleOptions scaleOptions = eventArgs.AxisX.DateTimeScaleOptions as ManualDateTimeScaleOptions;
-            //if (scaleOptions != null)
-            //{
-            //    TimeSpan measureUnitInterval = DateTimeHelper.GetInterval(scaleOptions.MeasureUnit, scaleOptions.MeasureUnitMultiplier);
-            //    DateTime max = (DateTime)eventArgs.AxisX.ActualVisualRange.ActualMaxValue;
-            //    DateTime min = (DateTime)eventArgs.AxisX.ActualVisualRange.ActualMinValue;
-            //    TimeSpan duration = max - min;
-            //    double visibleUnitsCount = duration.TotalSeconds / measureUnitInterval.TotalSeconds;
-            //    if (visibleUnitsCount > maxVisiblePointsCount)
-            //        eventArgs.AxisX.VisualRange.SetMinMaxValues(eventArgs.OldXRange.MinValue, eventArgs.OldXRange.MaxValue);
-            //}
-        }
-
-        [Command]
-        public void DataChanged(RoutedEventArgs e)
-        {
-            ChartControl chart = e.Source as ChartControl;
-            if (chart != null)
-                InitChartRange(chart);
-        }
-
-        void InitChartRange(ChartControl chart)
-        {
-            if (!initRange)
+            ManualDateTimeScaleOptions scaleOptions = eventArgs.AxisX.DateTimeScaleOptions as ManualDateTimeScaleOptions;
+            if (scaleOptions != null)
             {
-                ((XYDiagram2D)chart.Diagram).ActualAxisX.ActualVisualRange.SetAuto();
-                MinVisibleDate = DateTime.Now - DateTimeHelper.GetTimeSpan(SelectedInterval, initialVisiblePointsCount);
-                initRange = true;
+                TimeSpan measureUnitInterval = DateTimeHelper.GetTimeSpan(scaleOptions.MeasureUnit, scaleOptions.MeasureUnitMultiplier);
+                DateTime max = (DateTime)eventArgs.AxisX.ActualVisualRange.ActualMaxValue;
+                DateTime min = (DateTime)eventArgs.AxisX.ActualVisualRange.ActualMinValue;
+                TimeSpan duration = max - min;
+                double visibleUnitsCount = duration.TotalSeconds / measureUnitInterval.TotalSeconds;
+                if (visibleUnitsCount > maxVisiblePointsCount)
+                    eventArgs.AxisX.VisualRange.SetMinMaxValues(eventArgs.OldXRange.MinValue, eventArgs.OldXRange.MaxValue);
             }
         }
+
+        //Private Methods 
+        private void GetTradeData()
+        {
+            StockTradingData.Clear();
+            TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
+            if (interval == TradeTimeInterval.Year)
+            {
+                var tradeData = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 25, interval);
+                ChangeChartSourceData(interval, tradeData);
+            }
+            else
+            {
+                var Data = StockTradeDataService.GetTradingData(SelectedStockSymbol, DateTime.Now, 180, interval);
+                ChangeChartSourceData(interval, Data);
+            }
+        }
+        private void OnDataUpdated()
+        {
+            var tradeData = StockTradeDataService.GetBySymbol(selectedStockSymbol);
+            TradeTimeInterval interval = TradeTimeInterval.Minute;
+
+            if (!tradesCache.ContainsKey(interval))
+            {
+                tradesCache.Add(interval, new ObservableCollection<IStockTradingData> { tradeData });
+            }
+            else
+            {
+                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
+                {
+                    tradesCache[interval] = new ObservableCollection<IStockTradingData> { tradeData };
+                }
+                else
+                {
+                    lock (tradesCache)
+                    {
+                        tradesCache[interval].Add(tradeData);
+                    }
+                }
+            }
+        }
+        private void InitIntervals()
+        {
+            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Minute", MeasureUnit = DateTimeMeasureUnit.Minute, MeasureUnitMultiplier = 1 });
+            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Hour", MeasureUnit = DateTimeMeasureUnit.Hour, MeasureUnitMultiplier = 1 });
+            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Day", MeasureUnit = DateTimeMeasureUnit.Day, MeasureUnitMultiplier = 1 });
+            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Month", MeasureUnit = DateTimeMeasureUnit.Month, MeasureUnitMultiplier = 1 });
+            IntervalsSource.Add(new ChartIntervalItem() { Caption = "Year", MeasureUnit = DateTimeMeasureUnit.Year, MeasureUnitMultiplier = 1 });
+        }
+        private void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<IStockTradingData> tradingData)
+        {
+            if (!tradesCache.ContainsKey(interval))
+            {
+                tradesCache.Add(interval, tradingData);
+            }
+            else
+            {
+                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
+                {
+                    tradesCache[interval] = tradingData;
+                }
+                else
+                {
+                    lock (tradesCache) 
+                    {
+                        foreach (var trade in tradingData)
+                        {
+                            tradesCache[interval].Add(trade);
+                        }
+                    }
+                }
+            }
+            StockTradingData.Clear();
+            StockTradingData = tradesCache[interval];
+        }
+        private TradeTimeInterval GetTradeTimeInterval(DateTimeMeasureUnit item)
+        {
+            switch (item)
+            {
+                case DateTimeMeasureUnit.Minute:
+                    return TradeTimeInterval.Minute;
+                case DateTimeMeasureUnit.Hour:
+                    return TradeTimeInterval.Hour;
+                case DateTimeMeasureUnit.Day:
+                    return TradeTimeInterval.Day;
+                case DateTimeMeasureUnit.Month:
+                    return TradeTimeInterval.Month;
+                case DateTimeMeasureUnit.Year:
+                    return TradeTimeInterval.Year;
+                default:
+                    return TradeTimeInterval.Minute;
+            }
+        }
+
     }
 }

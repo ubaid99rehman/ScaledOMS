@@ -6,14 +6,13 @@ namespace OMS
 {
     public class BootStrapper : IBootStrapper
     {
-        #region Props Services
+        //Services
         ICacheService _cacheService;
         IOrderService _orderService;
         IStockDataService _stockDataService;
         IAccountService _accountService;
-        #endregion
 
-        #region Constructor
+        //Constructor
         public BootStrapper(IOrderService orderService, IStockDataService stockDataService,
             IAccountService accountService, ICacheService cacheService)
         {
@@ -22,9 +21,8 @@ namespace OMS
             _accountService = accountService;
             _cacheService = cacheService;
         }
-        #endregion
 
-        #region Methods
+        //Methods
         public void LoadData()
         {
             LoadAccountData();
@@ -44,6 +42,5 @@ namespace OMS
             _cacheService.Set("Accounts", _accountService.GetAll());
             _cacheService.Set("AccountsList", _accountService.GetAccountsList());
         }
-        #endregion
     }
 }

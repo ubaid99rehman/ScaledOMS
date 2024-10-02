@@ -7,26 +7,30 @@ namespace OMS.VM.Trades
 {
     public class TradeViewModel : ViewModelBase
     {
+        //Private Members
         private ObservableCollection<Trade> _orders;
-        public ObservableCollection<Trade> Orders
-        {
-            get => _orders;
-            set => SetProperty(ref _orders, value, nameof(Orders));
-        }
-        
         private Trade _selectedOrder;
+
+        //Public Members
         public Trade SelectedOrder
         {
             get => _selectedOrder;
             set => SetProperty(ref _selectedOrder, value, nameof(SelectedOrder));
         }
-
-        public TradeViewModel()
+        public ObservableCollection<Trade> Orders
         {
-            LoadOrders();
+            get => _orders;
+            set => SetProperty(ref _orders, value, nameof(Orders));
         }
 
-        private void LoadOrders()
+        //Constructor
+        public TradeViewModel()
+        {
+            LoadTrades();
+        }
+
+        //Data Loading Method
+        private void LoadTrades()
         {
             Orders = new ObservableCollection<Trade>
             {

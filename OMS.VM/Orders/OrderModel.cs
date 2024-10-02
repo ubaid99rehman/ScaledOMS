@@ -14,18 +14,33 @@ namespace OMS.ViewModels
 {
     public class OrderModel : ViewModelBase
     {
+        //Services
         IStockDataService StockDataService;
         IOrderService OrderService;
         IAccountService AccountService;
 
+        #region Private Members
         private StockDetailViewModel _stockDetailsModel;
+        private ObservableCollection<int> _accounts;
+        private ObservableCollection<IOrder> _orders;
+        private ObservableCollection<IOrder> _stockOrders;
+        private ObservableCollection<string> _stockSymbols;
+        private int _selectedAccount;
+        private IOrder _selectedOrder;
+        private IOrder _lastOrder;
+        private IStock _selectedStock;
+        private string _selectedStockSymbol;
+        private OrderType _orderType;
+        private decimal _quantity;
+        private decimal _total;
+        #endregion
+
+        #region Public Members
         public StockDetailViewModel StockDetailsModel
         {
             get { return _stockDetailsModel; }
             set { SetProperty(ref _stockDetailsModel, value, nameof(StockDetailsModel)); }
         }
-
-        private ObservableCollection<int> _accounts;
         public ObservableCollection<int> Accounts
         {
             get { return _accounts; }
@@ -34,31 +49,22 @@ namespace OMS.ViewModels
                 SetProperty(ref _accounts, value, nameof(Accounts));
             }
         }
-
-        private ObservableCollection<IOrder> _orders;
         public ObservableCollection<IOrder> Orders
         {
             get { return _orders; }
             set { SetProperty(ref _orders, value, nameof(Orders)); }
         }
-
-        private ObservableCollection<IOrder> _stockOrders;
         public ObservableCollection<IOrder> StockOrders
         {
             get { return _stockOrders; }
             set { SetProperty(ref _stockOrders, value, nameof(StockOrders)); }
         }
-
-        private ObservableCollection<string> _stockSymbols;
         public ObservableCollection<string> StockSymbols
         {
             get { return _stockSymbols; }
             set { SetProperty(ref _stockSymbols, value, nameof(StockSymbols)); }
         }
-
         public ObservableCollection<string> OrderTypes { get; }
-
-        private int _selectedAccount;
         public int SelectedAccount
         {
             get { return _selectedAccount; }
@@ -67,8 +73,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _selectedAccount, value, nameof(SelectedAccount));
             }
         }
-
-        private IOrder _selectedOrder;
         public IOrder SelectedOrder
         {
             get => _selectedOrder;
@@ -94,15 +98,11 @@ namespace OMS.ViewModels
                 }
             }
         }
-
-        private IOrder _lastOrder;
         public IOrder LastOrder
         {
             get => _lastOrder;
             set => SetProperty(ref _lastOrder, value, nameof(LastOrder));
         }
-
-        private IStock _selectedStock;
         public IStock SelectedStock
         {
             get { return _selectedStock; }
@@ -111,8 +111,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _selectedStock, value, nameof(SelectedStock));
             }
         }
-
-        private string _selectedStockSymbol;
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
@@ -129,8 +127,6 @@ namespace OMS.ViewModels
             }
 
         }
-
-        private OrderType _orderType;
         public OrderType OrderType
         {
             get { return _orderType; }
@@ -139,8 +135,6 @@ namespace OMS.ViewModels
                 SetProperty(ref _orderType, value, nameof(OrderType));
             }
         }
-
-        private decimal _quantity;
         public decimal Quantity
         {
             get { return _quantity; }
@@ -157,8 +151,6 @@ namespace OMS.ViewModels
 
             }
         }
-
-        private decimal _total;
         public decimal Total
         {
             get { return _total; }
@@ -167,32 +159,10 @@ namespace OMS.ViewModels
                 SetProperty(ref _total, value, nameof(Total));
                 SelectedOrder.Price = value;
             }
-        }
+        } 
+        #endregion
 
-        private void ClearFields()
-        {
-            SelectedOrder = new Order();
-            Quantity = 1;
-            Total = SelectedStock.LastPrice;
-            OrderType = OrderType.Buy;
-        }
-
-        private void UpdateTotal()
-        {
-            Total = SelectedStock.LastPrice * Quantity;
-        }
-
-        private void UpdateData()
-        {
-            SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
-            StockDetailsModel.Symbol = SelectedStockSymbol;
-
-            LastOrder = OrderService.GetLastOrderByUser();
-            StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
-            Orders = OrderService.GetOpenOrders();
-        }
-
-        #region Constructors
+        //Constructor
         public OrderModel(IStockDataService stockDataService, IOrderService orderService, IAccountService accountService)
         {
 
@@ -218,8 +188,8 @@ namespace OMS.ViewModels
 
             InitData();
         }
-        #endregion
 
+        //Private Methods
         private void InitData()
         {
             //Stocks related Data
@@ -231,14 +201,34 @@ namespace OMS.ViewModels
 
             //Accounts Data
             Accounts = AccountService.GetAccountsList();
-
             //Orders
             LastOrder = OrderService.GetLastOrderByUser();
             StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
             Orders = OrderService.GetOpenOrders();
 
         }
+        private void UpdateData()
+        {
+            SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
+            StockDetailsModel.Symbol = SelectedStockSymbol;
 
+            LastOrder = OrderService.GetLastOrderByUser();
+            StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
+            Orders = OrderService.GetOpenOrders();
+        }
+        private void ClearFields()
+        {
+            SelectedOrder = new Order();
+            Quantity = 0;
+            Total = 0;
+            OrderType = OrderType.Buy;
+        }
+        private void UpdateTotal()
+        {
+            Total = SelectedStock.LastPrice * Quantity;
+        }
+
+        //Public Methods
         public void AddOrder(out bool isAdded, out string message)
         {
             isAdded = false;
@@ -282,7 +272,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-
         public void CancelOrder(out bool isCancelled, out string message)
         {
             isCancelled = false;
@@ -306,12 +295,10 @@ namespace OMS.ViewModels
                 UpdateData();
             }
         }
-
         public void ClearOrder()
         {
             ClearFields();
         }
-
         public bool isValidOrder(IOrder SelectedOrder)
         {
             if (
@@ -326,7 +313,6 @@ namespace OMS.ViewModels
             }
             return false;
         }
-
         public void UpdateOrder(out bool isUpdated, out string message)
         {
             isUpdated = false;

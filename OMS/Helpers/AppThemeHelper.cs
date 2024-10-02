@@ -44,6 +44,7 @@ namespace OMS.Helpers
                     return 12.0;
             };
         }
+        
         private static ResourceDictionary GenerateResourceDictionary(IThemeModel ThemeModel)
         {
             var resourceDictionary = new ResourceDictionary();

@@ -9,7 +9,6 @@ namespace OMS.Orders
 {
     public partial class OpenOrdersView : UserControl
     {
-        GridColumn CurrentColumn;
         IContextMenuHelper ContextMenuHelper;
         bool isEditOpen;
 

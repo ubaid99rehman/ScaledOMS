@@ -6,13 +6,16 @@ namespace OMS.ViewModels
 {
     public class InformationPanelViewModel : ViewModelBase
     {
+        //Services
         ISessionInfoServce SessionInfoServce { get;}
         
+        //Public Session Data Member
         public ISessionInfo SessionInfo
         {
             get { return SessionInfoServce.GetSessionInfo(); }
         }
 
+        //Constructor
         public InformationPanelViewModel(ISessionInfoServce infoServce) 
         {
             SessionInfoServce = infoServce;

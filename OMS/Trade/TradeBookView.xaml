@@ -19,10 +19,8 @@
         <dxg:GridControl Name="dataGrid"
                          ItemsSource="{Binding StockTrades}"
                          ShowBorder="False"
-                         MouseRightButtonDown="Mouse_Right_Button_Clicked"
                          dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                          dx:DXSerializer.SerializationID="gridTradesID">
-
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="watchListView"
                                 ShowIndicator="False"
@@ -88,25 +86,21 @@
                     </dxg:TableView.FormatConditions>
                 </dxg:TableView>
             </dxg:GridControl.View>
-
             <dxg:GridColumn FieldName="Price" Header="Price">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-
             <dxg:GridColumn FieldName="Quantity" Header="Volume" Width="70">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-
             <dxg:GridColumn FieldName="Timestamp" Header="Time">
                 <dxg:GridColumn.EditSettings>
                     <dxe:TextEditSettings DisplayFormat="HH:mm:ss"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-
             <dxg:GridColumn FieldName="Type" Visible="False"/>
         </dxg:GridControl>
     </Grid>

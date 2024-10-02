@@ -44,5 +44,11 @@
     <Compile Include="LogHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
+      <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
+      <Name>OMS.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

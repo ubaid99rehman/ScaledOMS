@@ -7,8 +7,10 @@ namespace OMS.ViewModels
 {
     public class OrderHistoryViewModel : ViewModelBase
     {
+        //Service
         IOrderService OrderService;
 
+        //Orders Data Member
         private ObservableCollection<IOrder> orders;
         public ObservableCollection<IOrder> Orders
         {
@@ -19,12 +21,14 @@ namespace OMS.ViewModels
             }
         }
 
+        //Constructor
         public OrderHistoryViewModel(IOrderService orderService)
         {
             OrderService = orderService;
             LoadOrders();
         }
 
+        //Data Loading Method
         private void LoadOrders()
         {
             Orders = OrderService.GetAll();
