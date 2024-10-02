@@ -25,7 +25,7 @@ namespace OMS.Services.AppServices
             OrderRepository = accountRepository;
         }
 
-        #region Public Data Access Methods Implementation
+        //Public Data Access Methods Implementation
         public ObservableCollection<IOrder> GetAll()
         {
             if (CacheService.ContainsKey("Orders"))
@@ -116,7 +116,7 @@ namespace OMS.Services.AppServices
             }
             return result;
         } 
-        #endregion
+        
 
         //Private Data Loading Methods
         private void FetchOrders()

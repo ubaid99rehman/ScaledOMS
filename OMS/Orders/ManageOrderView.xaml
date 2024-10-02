@@ -11,29 +11,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
-        <!--Row Definitions-->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.25*" />
-            <RowDefinition Height="0.75*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
+            <!--Row Definitions-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.75*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Stock Selection and Details Group -->
-        <GroupBox Header="Stock Details" 
+            <!-- Stock Selection and Details Group -->
+            <GroupBox Header="Stock Details" 
                   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
                   Margin="10">
-           <Grid Style="{StaticResource CustomGridStyle}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <!--Stock Selection Combo-->
-                <dxe:ComboBoxEdit Name="listBox" 
+                <Grid Style="{StaticResource CustomGridStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Stock Selection Combo-->
+                    <dxe:ComboBoxEdit Name="listBox" 
                                   Grid.Column="0" Margin="0 10 0 10" 
                                   HorizontalAlignment="Center" 
                                   MinWidth="150" MaxWidth="200"
@@ -47,194 +47,194 @@
                                   ImmediatePopup="True"
                                   ClearSelectionOnBackspace="True"
                                   AssignNullValueOnClearingEditText="True">
-                    <dxe:ComboBoxEdit.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="BorderBrush" Value="{DynamicResource ScreenBackground}" />
-                            <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
-                            <Setter Property="Background" Value="{DynamicResource ScreenBackground}" />
-                        </Style>
-                    </dxe:ComboBoxEdit.ItemContainerStyle>
-                </dxe:ComboBoxEdit>
-                <!--Stock Price Details-->
-                <stockviews:StckDetailView Grid.Column="1" 
+                        <dxe:ComboBoxEdit.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="BorderBrush" Value="{DynamicResource ScreenBackground}" />
+                                <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+                                <Setter Property="Background" Value="{DynamicResource ScreenBackground}" />
+                            </Style>
+                        </dxe:ComboBoxEdit.ItemContainerStyle>
+                    </dxe:ComboBoxEdit>
+                    <!--Stock Price Details-->
+                    <stockviews:StckDetailView Grid.Column="1" 
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Margin="0 10 0 10"  
                                            DataContext="{Binding StockDetailsModel}"/>
-            </Grid>
-        </GroupBox>
+                </Grid>
+            </GroupBox>
 
-        <!-- Order Form Group -->
-        <GroupBox Header="Order Form" 
+            <!-- Order Form Group -->
+            <GroupBox Header="Order Form" 
                   Grid.Row="1" Grid.Column="1" Margin="10">
-            <!--Order Form-->
-            <StackPanel Grid.Row="1" 
+                <!--Order Form-->
+                <StackPanel Grid.Row="1" 
                         HorizontalAlignment="Center"
                         Grid.Column="1" >
 
-                <StackPanel Orientation="Horizontal" Margin="10,20,10,10">
-                    <TextBlock Text="Account ID:" Width="100" FontSize="16"
+                    <StackPanel Orientation="Horizontal" Margin="10,20,10,10">
+                        <TextBlock Text="Account ID:" Width="100" FontSize="16"
                                VerticalAlignment="Center"/>
-                    <ComboBox Name="txtAccountId" 
+                        <ComboBox Name="txtAccountId" 
                               ItemsSource="{Binding Accounts}"
                               SelectedItem="{Binding SelectedAccount}"
                              
                              Width="150"/>
-                    <TextBlock Text="Units:" Width="50" 
+                        <TextBlock Text="Units:" Width="50" 
                            Margin="50 0 0 0"
                            FontSize="16"
                            VerticalAlignment="Center"/>
 
-                    <dxe:SpinEdit Value="1.0"  Width="150"
+                        <dxe:SpinEdit Value="1.0"  Width="150"
                               EditValue="{Binding Quantity, Mode=TwoWay}" 
                               x:Name="txtQuantity"  
                               MinValue="1" 
                               Increment="1"  
                               IsTextEditable="False" />
 
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="10,20,10,10">
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,20,10,10">
 
-                    <TextBlock Text="Order Type:" Width="100" FontSize="16"
+                        <TextBlock Text="Order Type:" Width="100" FontSize="16"
                        VerticalAlignment="Center" Margin="0,0,0,0"/>
-                    <ComboBox Name="cboOrderType" 
+                        <ComboBox Name="cboOrderType" 
                           ItemsSource="{Binding OrderTypes}" 
                           SelectedItem="{Binding OrderType, Mode=TwoWay}" 
                           Width="150"/>
 
-                    <TextBlock Text="Price:" Width="50" 
+                        <TextBlock Text="Price:" Width="50" 
                            FontSize="16"
                            Margin="50 0 0 0"
                            VerticalAlignment="Center"/>
-                    <TextBox Name="txtPrice" IsReadOnly="True" 
+                        <TextBox Name="txtPrice" IsReadOnly="True" 
                          Text="{Binding Total, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Width="150" />
 
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" 
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Margin="0,20,0,0">
 
-                    <Button x:Name="btnAddOrder" Content="ADD ORDER" 
+                        <Button x:Name="btnAddOrder" Content="ADD ORDER" 
                             Width="120" 
                             Margin="10, 0"
                             Style="{DynamicResource AddButtonStyle}"
                             Click="btnAddOrder_Click">
-                    </Button>
+                        </Button>
 
-                    <Button x:Name="btnUpdateOrder" Content="UPDATE ORDER" 
+                        <Button x:Name="btnUpdateOrder" Content="UPDATE ORDER" 
                             Width="120"
                             Margin="10, 0"
                             Style="{DynamicResource UpdateButtonStyle}"
                             Click="btnUpdateOrder_Click" >
-                    </Button>
+                        </Button>
 
-                    <Button x:Name="btnCancelOrder" Content="CANCEL ORDER" 
+                        <Button x:Name="btnCancelOrder" Content="CANCEL ORDER" 
                             Width="120" 
                             Margin="10,0"
                             Style="{DynamicResource CancelButtonStyle}"
                             Click="btnCancelOrder_Click" >
-                    </Button>
+                        </Button>
 
-                    <Button x:Name="btnClearOrder" Content="Clear Fields" 
+                        <Button x:Name="btnClearOrder" Content="Clear Fields" 
                             Width="120" 
                             Margin="10, 0"
                             Command="{Binding ClearOrderCommand}" />
 
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </GroupBox>
+            </GroupBox>
 
-        <!-- Last Order Details Group -->
-        <GroupBox Header="Last Order" Grid.Row="1" Grid.Column="0" Margin="10">
-            <!--Recent Orders Details-->
-            <WrapPanel Grid.Column="0" Grid.Row="1" 
+            <!-- Last Order Details Group -->
+            <GroupBox Header="Last Order" Grid.Row="1" Grid.Column="0" Margin="10">
+                <!--Recent Orders Details-->
+                <WrapPanel Grid.Column="0" Grid.Row="1" 
                    Orientation="Vertical" >
-                <StackPanel Orientation="Vertical" 
+                    <StackPanel Orientation="Vertical" 
                         VerticalAlignment="Center"
                         Margin="0 10 0 0">
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock Text="Last Order Date: " 
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock Text="Last Order Date: " 
                                FontSize="16"
                                FontWeight="Bold"/>
-                        <TextBlock Text="{Binding LastOrder.OrderDate}" 
+                            <TextBlock Text="{Binding LastOrder.OrderDate}" 
                                FontSize="16"
                                Margin="5,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock Text="Added By: "
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock Text="Added By: "
                                FontSize="16"
                                FontWeight="Bold"/>
-                        <TextBlock Text="{Binding LastOrder.AddedBy}" 
+                            <TextBlock Text="{Binding LastOrder.AddedBy}" 
                                FontSize="16" 
                                Margin="5,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock Text="Stock: "
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock Text="Stock: "
                                FontSize="16"
                                FontWeight="Bold"/>
-                        <TextBlock Text="{Binding LastOrder.Symbol}" 
+                            <TextBlock Text="{Binding LastOrder.Symbol}" 
                                FontSize="16" 
                                Margin="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock FontSize="16"  Text="Price: " FontWeight="Bold"/>
+                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Price}" Margin="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock FontSize="16"  Text="Units: " FontWeight="Bold"/>
+                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Quantity}" Margin="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10, 5">
+                            <TextBlock FontSize="16"  Text="Volume: " FontWeight="Bold"/>
+                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Volume}" Margin="5,0"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock FontSize="16"  Text="Price: " FontWeight="Bold"/>
-                        <TextBlock FontSize="16"  Text="{Binding LastOrder.Price}" Margin="5,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock FontSize="16"  Text="Units: " FontWeight="Bold"/>
-                        <TextBlock FontSize="16"  Text="{Binding LastOrder.Quantity}" Margin="5,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10, 5">
-                        <TextBlock FontSize="16"  Text="Volume: " FontWeight="Bold"/>
-                        <TextBlock FontSize="16"  Text="{Binding LastOrder.Volume}" Margin="5,0"/>
-                    </StackPanel>
-                </StackPanel>
-            </WrapPanel>
-        </GroupBox>
+                </WrapPanel>
+            </GroupBox>
 
-        <!-- Recent Orders Group -->
-        <GroupBox Header="Recent Stock Orders" Grid.Row="1" Grid.Column="2" Margin="10">
-            <dxg:GridControl x:Name="gridSell" Grid.Row="1"
+            <!-- Recent Orders Group -->
+            <GroupBox Header="Recent Stock Orders" Grid.Row="1" Grid.Column="2" Margin="10">
+                <dxg:GridControl x:Name="gridSell" Grid.Row="1"
                              Margin="0 10 0 0"
                              ItemsSource="{Binding StockOrders}"
                              ShowBorder="False"
                              dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                              dx:DXSerializer.SerializationID="gridSellID">
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Total" Header="Volume">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Total" Header="Volume">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Quantity" Header="Units" Width="70">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Quantity" Header="Units" Width="70">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Price" Header="Price" >
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Price" Header="Price" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="AddedBy" Header="Added By">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
-                </dxg:GridControl.Columns>
-                <dxg:GridControl.View>
-                    <dxg:TableView AllowEditing="False"
+                        <dxg:GridColumn FieldName="AddedBy" Header="Added By">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowEditing="False"
                        FadeSelectionOnLostFocus="False"
                        AllowPerPixelScrolling="True"
                        ShowGroupPanel="False"
@@ -249,37 +249,37 @@
                        AllowSorting="False"
                        AllowColumnFiltering="False"
                        IsColumnMenuEnabled="False">
-                    </dxg:TableView>
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-        </GroupBox>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </GroupBox>
 
-        <!-- Last Order Details Group -->
-        <GroupBox Header="Open Orders" Grid.Row="2"
+            <!-- Last Order Details Group -->
+            <GroupBox Header="Open Orders" Grid.Row="2"
                   Grid.ColumnSpan="3"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"  Margin="10">
-            <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
+                <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
-                <dxg:GridControl.View>
-                    <dxg:TableView TotalSummaryPosition="Bottom" AllowEditing="False" 
+                    <dxg:GridControl.View>
+                        <dxg:TableView TotalSummaryPosition="Bottom" AllowEditing="False" 
                                    ShowCriteriaInAutoFilterRow="False" ShowIndicator="False" 
                                    ShowSearchPanelMode="Always" AutoWidth="True"/>
-                </dxg:GridControl.View>
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Status" Header="Order Status"/>
-                    <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
-                    <dxg:GridColumn FieldName="OrderDate" Header="Order Date"/>
-                    <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
-                    <dxg:GridColumn FieldName="OrderType" Header="Order Type"/>
-                    <dxg:GridColumn FieldName="AccountID" Header="Account"/>
-                    <dxg:GridColumn FieldName="Price" Header="Price"/>
-                    <dxg:GridColumn FieldName="Quantity" Header="Quantity"/>
-                    <dxg:GridColumn FieldName="Total" Header="Total"/>
-                    <dxg:GridColumn FieldName="ExpirationDate" Header="Expiration Date"/>
-                    <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated"/>
-                </dxg:GridControl.Columns>
-            </dxg:GridControl>
-        </GroupBox>
-    </Grid>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Status" Header="Order Status"/>
+                        <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
+                        <dxg:GridColumn FieldName="OrderDate" Header="Order Date"/>
+                        <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
+                        <dxg:GridColumn FieldName="OrderType" Header="Order Type"/>
+                        <dxg:GridColumn FieldName="AccountID" Header="Account"/>
+                        <dxg:GridColumn FieldName="Price" Header="Price"/>
+                        <dxg:GridColumn FieldName="Quantity" Header="Quantity"/>
+                        <dxg:GridColumn FieldName="Total" Header="Total"/>
+                        <dxg:GridColumn FieldName="ExpirationDate" Header="Expiration Date"/>
+                        <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated"/>
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
+            </GroupBox>
+        </Grid>
 </UserControl>

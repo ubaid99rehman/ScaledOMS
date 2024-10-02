@@ -27,6 +27,7 @@
                                IsRowCellMenuEnabled="False"
                                IsTotalSummaryMenuEnabled="False"
                                ShowGroupPanel="False"
+                               MouseRightButtonDown="Mouse_Right_Button_Clicked"
                                ShowGridMenu="ShowMenu_Click"
                                MouseDoubleClick="Show_EditForm"/>
             </dxg:GridControl.View>

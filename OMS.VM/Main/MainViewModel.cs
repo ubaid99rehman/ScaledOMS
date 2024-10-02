@@ -20,7 +20,7 @@ namespace OMS.ViewModels
 {
     public partial class MainViewModel : ViewModelBase
     {
-        //Layout File
+        //Theme Layout File
         private string fileName;
         //Landing Page Displayed 
         private bool landingPageLoaded;

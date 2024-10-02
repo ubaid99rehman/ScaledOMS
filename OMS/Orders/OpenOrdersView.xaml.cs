@@ -59,6 +59,10 @@ namespace OMS.Orders
             e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.FullCollapse });
             e.Customizations.Add(new RemoveAction { ElementName = DefaultColumnMenuItemNames.MenuColumnGroupInterval });
         }
+        private void Mouse_Right_Button_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenuHelper.Mouse_Right_Button_Clicked(sender,e);
+        }
 
         //EditOrder Form
         private void Show_EditForm(object sender, MouseButtonEventArgs e)

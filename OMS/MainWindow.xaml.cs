@@ -10,12 +10,11 @@ namespace OMS
 {
     public partial class MainWindow : ThemedWindow
     {
-        #region Child Winodw Open Props
+        //Child Winodw Open Props
         bool isOrderOpen;
         bool isUserWindowOpen;
-        #endregion
         
-        #region Constructor
+        //Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -27,9 +26,8 @@ namespace OMS
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
             this.DataContext = model;
         }
-        #endregion
 
-        #region Child Window Open Click Events
+        #region Child Window Open Click
         private void InfoIcon_Click(object sender, RoutedEventArgs e)
         {
             InfoPopup.IsOpen = !InfoPopup.IsOpen;
@@ -62,7 +60,7 @@ namespace OMS
         } 
         #endregion
 
-        #region Main Window Open/Close Events
+        #region Main Window Open/Close
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (this.DataContext is MainViewModel model)
@@ -79,7 +77,7 @@ namespace OMS
         } 
         #endregion
 
-        #region Child Window Closed Events
+        #region Child Window Closed
         private void OrderWindow_Closed(object sender, System.EventArgs e)
         {
             isOrderOpen = false;

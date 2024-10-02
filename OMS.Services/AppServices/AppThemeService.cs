@@ -7,7 +7,6 @@ using System.IO;
 using System.Windows.Media;
 using OMS.Enums;
 using System;
-using OMS.Logging;
 using System.Windows;
 using OMS.Core.Models.App;
 using OMS.Core.Logging;
@@ -28,7 +27,6 @@ namespace OMS.Services
             _themeDirectoryPath = ConfigurationManager.AppSettings["ThemeDirectory"];
             AppThemes = new List<IThemeModel>();
             ThemeNames = new List<string>();
-            LoadThemes();
         }
           
         //Public Access Methods
@@ -123,7 +121,6 @@ namespace OMS.Services
         private IThemeModel LoadThemeFromXml(string themeFilePath)
         {
             var xmlDoc = XDocument.Load(themeFilePath);
-
             var themeName = xmlDoc.Root.Element("ThemeName")?.Value;
             var screenBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("ScreenBackground")?.Value);
             var textBackground = (SolidColorBrush)new BrushConverter().ConvertFromString(xmlDoc.Root.Element("TextBackground")?.Value);

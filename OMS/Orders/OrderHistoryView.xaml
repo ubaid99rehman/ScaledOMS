@@ -13,7 +13,7 @@
         
     
     <Grid Grid.Row="1">
-        <dxg:GridControl Name="OrderGrid" 
+        <dxg:GridControl Name="dataGrid" 
                          AutoExpandAllGroups="True"
                          FontFamily="{DynamicResource FontFamily}"
                          FontWeight="{DynamicResource FontWeight}"

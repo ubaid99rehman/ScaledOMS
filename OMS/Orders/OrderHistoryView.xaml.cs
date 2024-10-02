@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Grid;
+using Microsoft.Extensions.DependencyInjection;
 using OMS.ViewModels;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace OMS.Orders
 {

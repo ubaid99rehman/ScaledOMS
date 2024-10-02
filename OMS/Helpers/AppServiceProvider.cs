@@ -86,21 +86,19 @@ namespace OMS
             services.AddSingleton<LoadingViewModel>();
             services.AddSingleton<InformationPanelViewModel>();
             services.AddSingleton<MainViewModel>();
-
             //Orders
             services.AddSingleton<AddOrderModel>();
             services.AddTransient<OrderBookModel>();
             services.AddTransient<OrderModel>();
             services.AddSingleton<OrdersListModel>();
             services.AddTransient<OrderHistoryViewModel>();
-
             //Home
             services.AddTransient<StockMarketModel>();
             services.AddTransient<DashboardViewModel>();
-
+            //portfolio
+            services.AddSingleton<AccountPortfolioViewModel>();
             //Trade
             services.AddSingleton<TradeViewModel>();
-
             //User
             services.AddSingleton<ProfileModel>();
             #endregion

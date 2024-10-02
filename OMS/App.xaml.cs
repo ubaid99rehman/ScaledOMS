@@ -8,7 +8,7 @@ namespace OMS
 {
     public partial class App : Application
     {
-        #region Constructor
+        //Constructor
         public App()
         {
             CompatibilitySettings.UseLightweightThemes = true;
@@ -21,16 +21,15 @@ namespace OMS
                 PreloadCategories.LayoutControl,
                 PreloadCategories.Ribbon);
         }
-        #endregion
 
+        #region Methods
+        //Startup Method
         protected override void OnStartup(StartupEventArgs e)
         {
             ApplyTheme();
             LoadMainWindow();
             base.OnStartup(e);
         }
-
-        #region Methods
         private void ApplyTheme()
         {
             //Applying Theme
@@ -43,7 +42,7 @@ namespace OMS
         }
         private void LoadMainWindow()
         {
-            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
+            var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
             mainWindow.Show();
         }
         #endregion

@@ -91,8 +91,6 @@ namespace OMS.ViewModels
 
                             SelectedAccount = (int)order.AccountID;
                             OrderType = (OrderType)order.OrderType;
-
-                            SelectedStockSymbol = order.Symbol;
                         }
                     }
                 }
@@ -145,7 +143,7 @@ namespace OMS.ViewModels
                     SelectedOrder.Quantity = (int)value;
                     if ((int)value > 1)
                     {
-                        UpdateTotal();
+                        Total = (decimal)(SelectedOrder.Quantity*SelectedOrder.Price);
                     }
                 }
 
@@ -215,6 +213,8 @@ namespace OMS.ViewModels
             LastOrder = OrderService.GetLastOrderByUser();
             StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
             Orders = OrderService.GetOpenOrders();
+            SelectedOrder = new Order();
+            SelectedOrder.Price = SelectedStock.LastPrice;
         }
         private void ClearFields()
         {
