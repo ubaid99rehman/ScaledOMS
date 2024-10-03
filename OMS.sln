@@ -23,33 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.Cache", "OMS.Cache\OMS.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.MarketData", "OMS.MarketData\OMS.MarketData.csproj", "{E36DD549-8569-476D-A418-618987E3344A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{088179A0-8B9F-4AA3-9D32-D638A5AC0278}"
-	ProjectSection(SolutionItems) = preProject
-		DB_Scripts\dbo.Account.Table.sql = DB_Scripts\dbo.Account.Table.sql
-		DB_Scripts\dbo.Orders.Table.sql = DB_Scripts\dbo.Orders.Table.sql
-		DB_Scripts\dbo.Order_Status.Table.sql = DB_Scripts\dbo.Order_Status.Table.sql
-		DB_Scripts\dbo.Order_Type.Table.sql = DB_Scripts\dbo.Order_Type.Table.sql
-		DB_Scripts\dbo.PermissionGroups.Table.sql = DB_Scripts\dbo.PermissionGroups.Table.sql
-		DB_Scripts\dbo.Permissions.Table.sql = DB_Scripts\dbo.Permissions.Table.sql
-		DB_Scripts\dbo.SP_AuthenticateUser.StoredProcedure.sql = DB_Scripts\dbo.SP_AuthenticateUser.StoredProcedure.sql
-		DB_Scripts\dbo.StockDailyData.Table.sql = DB_Scripts\dbo.StockDailyData.Table.sql
-		DB_Scripts\dbo.StockDetails.Table.sql = DB_Scripts\dbo.StockDetails.Table.sql
-		DB_Scripts\dbo.StockHistory.Table.sql = DB_Scripts\dbo.StockHistory.Table.sql
-		DB_Scripts\dbo.StockHourlyData.Table.sql = DB_Scripts\dbo.StockHourlyData.Table.sql
-		DB_Scripts\dbo.StockMinuteData.Table.sql = DB_Scripts\dbo.StockMinuteData.Table.sql
-		DB_Scripts\dbo.StockMonthlyData.Table.sql = DB_Scripts\dbo.StockMonthlyData.Table.sql
-		DB_Scripts\dbo.Stocks.Table.sql = DB_Scripts\dbo.Stocks.Table.sql
-		DB_Scripts\dbo.StockTrade.Table.sql = DB_Scripts\dbo.StockTrade.Table.sql
-		DB_Scripts\dbo.StockWeeklyData.Table.sql = DB_Scripts\dbo.StockWeeklyData.Table.sql
-		DB_Scripts\dbo.TradeHistory.Table.sql = DB_Scripts\dbo.TradeHistory.Table.sql
-		DB_Scripts\dbo.Trades.Table.sql = DB_Scripts\dbo.Trades.Table.sql
-		DB_Scripts\dbo.UserAccounts.Table.sql = DB_Scripts\dbo.UserAccounts.Table.sql
-		DB_Scripts\dbo.UserPermissionGroups.Table.sql = DB_Scripts\dbo.UserPermissionGroups.Table.sql
-		DB_Scripts\dbo.Users.Table.sql = DB_Scripts\dbo.Users.Table.sql
-		DB_Scripts\OMS.bak = DB_Scripts\OMS.bak
-		DB_Scripts\OMS.Database.sql = DB_Scripts\OMS.Database.sql
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.Logging", "OMS.Logging\OMS.Logging.csproj", "{3EB2D030-F27E-4B38-952F-29229F345068}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.AppData", "OMS.AppData\OMS.AppData.csproj", "{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}"
