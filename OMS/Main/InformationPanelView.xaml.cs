@@ -4,10 +4,10 @@ using System.Windows.Controls;
 
 namespace OMS.Main
 {
-    public partial class InformationPanel : UserControl
+    public partial class InformationPanelView : UserControl
     {
         //Constructor
-        public InformationPanel()
+        public InformationPanelView()
         {
             InitializeComponent();
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<InformationPanelViewModel>();

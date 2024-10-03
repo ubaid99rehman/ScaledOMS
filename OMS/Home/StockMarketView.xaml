@@ -90,7 +90,7 @@
                                             TabCaptionHorizontalAlignment="Center"
                                             FontWeight="Regular">
 
-                                <stockviews:StockChart DataContext="{Binding StockChartViewModel}"/>
+                                <stockviews:StockChartView DataContext="{Binding StockChartViewModel}"/>
                             </dxdo:DocumentPanel>
 
                         </dxdo:DocumentGroup>
@@ -113,7 +113,7 @@
 
                             <dxdo:DocumentPanel Caption="TRADE HISTORY"
                                                 AllowClose="False">
-                                <tradeviews:TradeHistory DataContext="{Binding TradeHistoryModel}"/>
+                                <tradeviews:TradeHistoryView DataContext="{Binding TradeHistoryModel}"/>
                             </dxdo:DocumentPanel>
 
                         </dxdo:DocumentGroup>

@@ -1,19 +1,18 @@
 ﻿using DevExpress.Xpf.Core;
-using OMS.Core.Models;
 using OMS.ViewModels;
 using System.Windows;
 
 namespace OMS
 {
-    public partial class EditOrder : ThemedWindow
+    public partial class EditOrderView : ThemedWindow
     {
         //Constructor
-        public EditOrder()
+        public EditOrderView()
         {
             InitializeComponent();
         }
 
-        #region Button Click Events
+        //Button Click Events
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is OrdersListModel model)
@@ -47,6 +46,5 @@ namespace OMS
 
             }
         } 
-        #endregion
     }
 }

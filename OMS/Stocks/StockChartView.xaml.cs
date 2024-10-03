@@ -12,9 +12,9 @@ using System.Windows.Controls;
 
 namespace OMS.Stocks
 {
-    public partial class StockChart : UserControl
+    public partial class StockChartView : UserControl
     {
-        public StockChart()
+        public StockChartView()
         {
             InitializeComponent();
         }

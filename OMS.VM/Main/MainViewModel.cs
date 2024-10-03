@@ -3,12 +3,10 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
 using OMS.Core.Logging;
-using OMS.Core.Models;
 using OMS.Core.Models.App;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
-using OMS.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -123,14 +121,13 @@ namespace OMS.ViewModels
         }
         #endregion
 
-        #region View Changed Event Handler
+        //View Changed Event Handler
         private void OnDocumentActivated(object sender, ActiveDocumentChangedEventArgs e)
         {
             Title = (string)e.NewDocument?.Title ?? "HOME";
         }
-        #endregion
 
-        #region Open Views Layout Method
+        //Open Views Layout Method
         public IEnumerable<IDocument> GetOpenedDocuments()
         {
             return DocumentManagerService.Documents;
@@ -172,7 +169,6 @@ namespace OMS.ViewModels
             landingPageLoaded = true;
             DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
         } 
-        #endregion
 
         //Open New View
         public void AddView(string view, string title)
@@ -196,6 +192,7 @@ namespace OMS.ViewModels
             }
         }
     }
+    
     //Document State Class
     public class DocumentState
     {
@@ -204,4 +201,3 @@ namespace OMS.ViewModels
         public string ViewType { get; set; }
     }
 }
-    

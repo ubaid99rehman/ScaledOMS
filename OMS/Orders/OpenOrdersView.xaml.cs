@@ -71,7 +71,7 @@ namespace OMS.Orders
             {
                 if (DataContext is OrdersListModel model)
                 {
-                    EditOrder editOrder = new EditOrder();
+                    EditOrderView editOrder = new EditOrderView();
                     editOrder.DataContext = this.DataContext;
                     editOrder.Closed += EditOrder_Closed;
                     var Owner= AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>(); ;

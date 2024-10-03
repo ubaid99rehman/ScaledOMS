@@ -1,16 +1,14 @@
 ﻿using DevExpress.Xpf.Core;
 using Microsoft.Extensions.DependencyInjection;
-using OMS.Cache;
-using OMS.Core.Services.Cache;
 using OMS.ViewModels;
 using System.Windows;
 
 namespace OMS
 {
-    public partial class AddOrder : ThemedWindow
+    public partial class AddOrderView : ThemedWindow
     {
         //Constructor
-        public AddOrder()
+        public AddOrderView()
         {
             InitializeComponent();
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AddOrderModel>();

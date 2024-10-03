@@ -37,7 +37,7 @@ namespace OMS
         {
             if (!isOrderOpen)
             {
-                AddOrder windo = new AddOrder();
+                AddOrderView windo = new AddOrderView();
                 windo.Closed += OrderWindow_Closed;
                 var Owner = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>(); ;
                 windo.Owner = Owner;

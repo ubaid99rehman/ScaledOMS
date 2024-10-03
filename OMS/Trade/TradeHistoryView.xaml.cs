@@ -1,11 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace OMS.Main
+namespace OMS.Trade
 {
-    public partial class MainView : UserControl
+    public partial class TradeHistoryView : UserControl
     {
         //Constructor
-        public MainView()
+        public TradeHistoryView()
         {
             InitializeComponent();
         }

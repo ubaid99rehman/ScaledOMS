@@ -114,11 +114,11 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\AddOrder.xaml.cs">
-      <DependentUpon>AddOrder.xaml</DependentUpon>
+    <Compile Include="Orders\AddOrderView.xaml.cs">
+      <DependentUpon>AddOrderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Orders\EditOrder.xaml.cs">
-      <DependentUpon>EditOrder.xaml</DependentUpon>
+    <Compile Include="Orders\EditOrderView.xaml.cs">
+      <DependentUpon>EditOrderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Orders\ManageOrderView.xaml.cs">
       <DependentUpon>ManageOrderView.xaml</DependentUpon>
@@ -141,14 +141,14 @@
     <Compile Include="Stocks\StckDetailView.xaml.cs">
       <DependentUpon>StckDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Stocks\StockChart.xaml.cs">
-      <DependentUpon>StockChart.xaml</DependentUpon>
+    <Compile Include="Stocks\StockChartView.xaml.cs">
+      <DependentUpon>StockChartView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Trade\TradeBookView.xaml.cs">
       <DependentUpon>TradeBookView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Trade\TradeHistory.xaml.cs">
-      <DependentUpon>TradeHistory.xaml</DependentUpon>
+    <Compile Include="Trade\TradeHistoryView.xaml.cs">
+      <DependentUpon>TradeHistoryView.xaml</DependentUpon>
     </Compile>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
@@ -170,19 +170,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\InformationPanel.xaml">
+    <Page Include="Main\InformationPanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\MainView.xaml">
+    <Page Include="Orders\AddOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Orders\AddOrder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Orders\EditOrder.xaml">
+    <Page Include="Orders\EditOrderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,7 +214,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Stocks\StockChart.xaml">
+    <Page Include="Stocks\StockChartView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -226,17 +222,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Trade\TradeHistory.xaml">
+    <Page Include="Trade\TradeHistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main\InformationPanel.xaml.cs">
-      <DependentUpon>InformationPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Main\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Include="Main\InformationPanelView.xaml.cs">
+      <DependentUpon>InformationPanelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Portfolio\AccountPortfolioView.xaml.cs">
       <DependentUpon>AccountPortfolioView.xaml</DependentUpon>
