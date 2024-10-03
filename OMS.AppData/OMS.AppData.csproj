@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1218F48F-E103-4D02-97ED-5DC2B81C3CB2}</ProjectGuid>
+    <ProjectGuid>{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OMS.SqlData</RootNamespace>
-    <AssemblyName>OMS.SqlData</AssemblyName>
+    <RootNamespace>OMS.AppData</RootNamespace>
+    <AssemblyName>OMS.AppData</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -43,6 +46,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,90 +56,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Accounts.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\OMSModel.Context.cs">
-      <DependentUpon>OMSModel.Context.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Model\OMSModel.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Model\OMSModel.Designer.cs">
-      <DependentUpon>OMSModel.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Model\Orders.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Order_Statuses.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Order_Types.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Permissions.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Roles.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Screens.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Stocks.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Trades.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UserAccounts.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UserPermissions.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UserRoles.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Users.cs">
-      <DependentUpon>OMSModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Mapping\MappingProfile .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <EntityDeploy Include="Model\OMSModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OMSModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\OMSModel.edmx.diagram">
-      <DependentUpon>OMSModel.edmx</DependentUpon>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Model\OMSModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OMSModel.edmx</DependentUpon>
-      <LastGenOutput>OMSModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\OMSModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>OMSModel.edmx</DependentUpon>
-      <LastGenOutput>OMSModel.cs</LastGenOutput>
-    </Content>
+    <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj">
+      <Project>{F88C2C47-31BD-4921-B442-3E6409A341CD}</Project>
+      <Name>OMS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Core\OMS.Core.csproj">
+      <Project>{558A350A-6A96-4F41-96C7-10C8B3F74BFD}</Project>
+      <Name>OMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.DataAccess\OMS.DataAccess.csproj">
+      <Project>{8C22B101-3F82-4F07-895C-CA97B33DD8C5}</Project>
+      <Name>OMS.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.Domain\OMS.Domain.csproj">
+      <Project>{4F7D43B8-535E-4B86-8F28-66F9C052C654}</Project>
+      <Name>OMS.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OMS.SqlData\OMS.SqlData.csproj">
+      <Project>{1218F48F-E103-4D02-97ED-5DC2B81C3CB2}</Project>
+      <Name>OMS.SqlData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

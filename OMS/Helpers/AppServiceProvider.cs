@@ -17,6 +17,8 @@ using OMS.Services;
 using OMS.VM.Settings;
 using OMS.Core.Logging;
 using OMS.Logging;
+using AutoMapper;
+using OMS.SqlData.Mapping;
 
 namespace OMS
 {
@@ -37,6 +39,9 @@ namespace OMS
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+            IMapper Mapper = InitializeMapper();
+            services.AddSingleton<IMapper>(sp => InitializeMapper());
+
 
             #region Repositories
             //App Services
@@ -112,6 +117,16 @@ namespace OMS
             #endregion
 
             return services.BuildServiceProvider();
+        }
+
+        private static IMapper InitializeMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>(); // Add your mapping profiles here
+            });
+
+            return config.CreateMapper();
         }
     }
 }

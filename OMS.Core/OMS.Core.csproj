@@ -48,11 +48,17 @@
     <Compile Include="Helpers\IContextMenuHelper.cs" />
     <Compile Include="Logging\ILogHelper.cs" />
     <Compile Include="Models\Account\IAccount.cs" />
+    <Compile Include="Models\Account\IUserAccount.cs" />
     <Compile Include="Models\App\IAppTime.cs" />
+    <Compile Include="Models\App\IScreen.cs" />
     <Compile Include="Models\App\IThemeModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Books\BookBase.cs" />
     <Compile Include="Models\Orders\IOrder.cs" />
+    <Compile Include="Models\Permissions\IPermission.cs" />
+    <Compile Include="Models\Permissions\IUserPermission.cs" />
+    <Compile Include="Models\Roles\IRole.cs" />
+    <Compile Include="Models\Roles\IUserRole.cs" />
     <Compile Include="Models\Stocks\IStock.cs" />
     <Compile Include="Models\Stocks\IStockDetail.cs" />
     <Compile Include="Models\Stocks\IStockTradingData.cs" />

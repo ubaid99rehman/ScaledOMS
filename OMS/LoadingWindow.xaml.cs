@@ -22,7 +22,6 @@ namespace OMS
             ((LoadingViewModel)this.DataContext).AuthenticationCompleted += LoadingWindow_AuthenticationCompleted;
         }
 
-        #region Methods
         private void LoadingWindow_AuthenticationCompleted()
         {
             if (this.DataContext is LoadingViewModel viewModel)
@@ -63,9 +62,7 @@ namespace OMS
             mainWindow.Show();
             this.Close();
         }
-        #endregion
 
-        #region Click Event Handler
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             ShowPrgressBar();
@@ -73,9 +70,9 @@ namespace OMS
             {
                 viewModel.Username = txtUsername.Text;
                 viewModel.Password = txtPassword.Password.ToString();
-                viewModel.Login().GetAwaiter();
+                
+                viewModel.Login();
             }
         } 
-        #endregion
     }
 }

@@ -45,6 +45,8 @@ namespace OMS
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
             mainWindow.Show();
         }
+
+      
         #endregion
     }
 }

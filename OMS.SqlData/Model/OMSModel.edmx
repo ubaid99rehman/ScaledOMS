@@ -1,0 +1,1122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order_Statuses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order_Types">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="StockID" Type="int" Nullable="false" />
+          <Property Name="OrderType" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="ExpirationDate" Type="datetime" />
+          <Property Name="LastUpdatedDate" Type="datetime" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="AddedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScreenID" Type="int" Nullable="false" />
+          <Property Name="CanCreate" Type="bit" Nullable="false" />
+          <Property Name="CanRead" Type="bit" Nullable="false" />
+          <Property Name="CanUpdate" Type="bit" Nullable="false" />
+          <Property Name="CanDelete" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="RolePermissions">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="PermissionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleDescription" Type="varchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Screens">
+          <Key>
+            <PropertyRef Name="ScreenID" />
+          </Key>
+          <Property Name="ScreenID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScreenName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ScreenDescription" Type="varchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Stocks">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="StockSymbol" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPrice" Type="decimal" Precision="10" Scale="4" />
+        </EntityType>
+        <EntityType Name="Trades">
+          <Key>
+            <PropertyRef Name="TradeID" />
+          </Key>
+          <Property Name="TradeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="TradeType" Type="int" Nullable="false" />
+          <Property Name="StockID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="TradeDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAccounts">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="AddedDate" Type="datetime" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPermissions">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="PermissionID" Type="int" Nullable="false" />
+          <Property Name="AssignedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="AssignedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="LastPasswordChangeDate" Type="datetime" />
+          <Property Name="PasswordRetryCount" Type="int" Nullable="false" />
+          <Property Name="DefaultPassword" Type="bit" Nullable="false" />
+          <Property Name="UserStatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Orders__AccountI__4CA06362">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__CreatedD__49C3F6B7">
+          <End Role="Order_Types" Type="Self.Order_Types" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Types">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Status__4AB81AF0">
+          <End Role="Order_Statuses" Type="Self.Order_Statuses" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__StockID__4BAC3F29">
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stocks">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__AccountI__5535A963">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__OrderID__52593CB8">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__StockID__5441852A">
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stocks">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__TradeTyp__534D60F1">
+          <End Role="Order_Types" Type="Self.Order_Types" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Types">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="TradeType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__Added__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserI__6FE99F9F">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Screens">
+          <End Role="Screens" Type="Self.Screens" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screens">
+              <PropertyRef Name="ScreenID" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="ScreenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermissions_Permissions">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionID" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="PermissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RolePermissions_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPermissions_Permissions">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPermissions" Type="Self.UserPermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionID" />
+            </Principal>
+            <Dependent Role="UserPermissions">
+              <PropertyRef Name="PermissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPermissions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPermissions" Type="Self.UserPermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserPermissions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OMSModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_Statuses" EntityType="Self.Order_Statuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_Types" EntityType="Self.Order_Types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Screens" EntityType="Self.Screens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPermissions" EntityType="Self.UserPermissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Orders__AccountI__4CA06362" Association="Self.FK__Orders__AccountI__4CA06362">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__CreatedD__49C3F6B7" Association="Self.FK__Orders__CreatedD__49C3F6B7">
+            <End Role="Order_Types" EntitySet="Order_Types" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Status__4AB81AF0" Association="Self.FK__Orders__Status__4AB81AF0">
+            <End Role="Order_Statuses" EntitySet="Order_Statuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__StockID__4BAC3F29" Association="Self.FK__Orders__StockID__4BAC3F29">
+            <End Role="Stocks" EntitySet="Stocks" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__AccountI__5535A963" Association="Self.FK__Trades__AccountI__5535A963">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__OrderID__52593CB8" Association="Self.FK__Trades__OrderID__52593CB8">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__StockID__5441852A" Association="Self.FK__Trades__StockID__5441852A">
+            <End Role="Stocks" EntitySet="Stocks" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__TradeTyp__534D60F1" Association="Self.FK__Trades__TradeTyp__534D60F1">
+            <End Role="Order_Types" EntitySet="Order_Types" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__Added__70DDC3D8" Association="Self.FK__UserAccou__Added__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserI__6FE99F9F" Association="Self.FK__UserAccou__UserI__6FE99F9F">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Screens" Association="Self.FK_Permissions_Screens">
+            <End Role="Screens" EntitySet="Screens" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermissions_Permissions" Association="Self.FK_RolePermissions_Permissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RolePermissions_Roles" Association="Self.FK_RolePermissions_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPermissions_Permissions" Association="Self.FK_UserPermissions_Permissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="UserPermissions" EntitySet="UserPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPermissions_Users" Association="Self.FK_UserPermissions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPermissions" EntitySet="UserPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__AccountI__4CA06362" FromRole="Accounts" ToRole="Orders" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__AccountI__5535A963" FromRole="Accounts" ToRole="Trades" />
+        </EntityType>
+        <EntityType Name="Order_Statuses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Status__4AB81AF0" FromRole="Order_Statuses" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Order_Types">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__CreatedD__49C3F6B7" FromRole="Order_Types" ToRole="Orders" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__TradeTyp__534D60F1" FromRole="Order_Types" ToRole="Trades" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StockID" Type="Int32" Nullable="false" />
+          <Property Name="OrderType" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AddedBy" Type="Int32" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK__Orders__AccountI__4CA06362" FromRole="Orders" ToRole="Accounts" />
+          <NavigationProperty Name="Order_Statuses" Relationship="Self.FK__Orders__Status__4AB81AF0" FromRole="Orders" ToRole="Order_Statuses" />
+          <NavigationProperty Name="Order_Types" Relationship="Self.FK__Orders__CreatedD__49C3F6B7" FromRole="Orders" ToRole="Order_Types" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK__Orders__StockID__4BAC3F29" FromRole="Orders" ToRole="Stocks" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__OrderID__52593CB8" FromRole="Orders" ToRole="Trades" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="PermissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenID" Type="Int32" Nullable="false" />
+          <Property Name="CanCreate" Type="Boolean" Nullable="false" />
+          <Property Name="CanRead" Type="Boolean" Nullable="false" />
+          <Property Name="CanUpdate" Type="Boolean" Nullable="false" />
+          <Property Name="CanDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="Screens" Relationship="Self.FK_Permissions_Screens" FromRole="Permissions" ToRole="Screens" />
+          <NavigationProperty Name="UserPermissions" Relationship="Self.FK_UserPermissions_Permissions" FromRole="Permissions" ToRole="UserPermissions" />
+          <NavigationProperty Name="Roles" Relationship="Self.RolePermissions" FromRole="Permissions" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_Roles" FromRole="Roles" ToRole="UserRoles" />
+          <NavigationProperty Name="Permissions" Relationship="Self.RolePermissions" FromRole="Roles" ToRole="Permissions" />
+        </EntityType>
+        <EntityType Name="Screens">
+          <Key>
+            <PropertyRef Name="ScreenID" />
+          </Key>
+          <Property Name="ScreenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ScreenDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="Permissions" Relationship="Self.FK_Permissions_Screens" FromRole="Screens" ToRole="Permissions" />
+        </EntityType>
+        <EntityType Name="Stocks">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StockSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastPrice" Type="Decimal" Precision="10" Scale="4" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__StockID__4BAC3F29" FromRole="Stocks" ToRole="Orders" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__StockID__5441852A" FromRole="Stocks" ToRole="Trades" />
+        </EntityType>
+        <EntityType Name="Trades">
+          <Key>
+            <PropertyRef Name="TradeID" />
+          </Key>
+          <Property Name="TradeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="TradeType" Type="Int32" Nullable="false" />
+          <Property Name="StockID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="TradeDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK__Trades__AccountI__5535A963" FromRole="Trades" ToRole="Accounts" />
+          <NavigationProperty Name="Order_Types" Relationship="Self.FK__Trades__TradeTyp__534D60F1" FromRole="Trades" ToRole="Order_Types" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Trades__OrderID__52593CB8" FromRole="Trades" ToRole="Orders" />
+          <NavigationProperty Name="Stocks" Relationship="Self.FK__Trades__StockID__5441852A" FromRole="Trades" ToRole="Stocks" />
+        </EntityType>
+        <EntityType Name="UserAccounts">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__UserAccou__Added__70DDC3D8" FromRole="UserAccounts" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.FK__UserAccou__UserI__6FE99F9F" FromRole="UserAccounts" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserPermissions">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="PermissionID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="PermissionID" Type="Int32" Nullable="false" />
+          <Property Name="AssignedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Permissions" Relationship="Self.FK_UserPermissions_Permissions" FromRole="UserPermissions" ToRole="Permissions" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UserPermissions_Users" FromRole="UserPermissions" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <Property Name="AssignedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_UserRoles_Roles" FromRole="UserRoles" ToRole="Roles" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UserRoles_Users" FromRole="UserRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="LastPasswordChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordRetryCount" Type="Int32" Nullable="false" />
+          <Property Name="DefaultPassword" Type="Boolean" Nullable="false" />
+          <Property Name="UserStatus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__Added__70DDC3D8" FromRole="Users" ToRole="UserAccounts" />
+          <NavigationProperty Name="UserAccounts1" Relationship="Self.FK__UserAccou__UserI__6FE99F9F" FromRole="Users" ToRole="UserAccounts" />
+          <NavigationProperty Name="UserPermissions" Relationship="Self.FK_UserPermissions_Users" FromRole="Users" ToRole="UserPermissions" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_Users" FromRole="Users" ToRole="UserRoles" />
+        </EntityType>
+        <Association Name="FK__Orders__AccountI__4CA06362">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__AccountI__5535A963">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Status__4AB81AF0">
+          <End Role="Order_Statuses" Type="Self.Order_Statuses" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Statuses">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__CreatedD__49C3F6B7">
+          <End Role="Order_Types" Type="Self.Order_Types" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Types">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="OrderType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__TradeTyp__534D60F1">
+          <End Role="Order_Types" Type="Self.Order_Types" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_Types">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="TradeType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__StockID__4BAC3F29">
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stocks">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__OrderID__52593CB8">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permissions_Screens">
+          <End Role="Screens" Type="Self.Screens" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Screens">
+              <PropertyRef Name="ScreenID" />
+            </Principal>
+            <Dependent Role="Permissions">
+              <PropertyRef Name="ScreenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPermissions_Permissions">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPermissions" Type="Self.UserPermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="PermissionID" />
+            </Principal>
+            <Dependent Role="UserPermissions">
+              <PropertyRef Name="PermissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Trades__StockID__5441852A">
+          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stocks">
+              <PropertyRef Name="StockID" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="StockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__Added__70DDC3D8">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserI__6FE99F9F">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPermissions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserPermissions" Type="Self.UserPermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserPermissions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRoles_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RolePermissions">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="*" />
+          <End Role="Roles" Type="Self.Roles" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="OMSContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" />
+          <EntitySet Name="Order_Statuses" EntityType="Self.Order_Statuses" />
+          <EntitySet Name="Order_Types" EntityType="Self.Order_Types" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Screens" EntityType="Self.Screens" />
+          <EntitySet Name="Stocks" EntityType="Self.Stocks" />
+          <EntitySet Name="Trades" EntityType="Self.Trades" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccounts" />
+          <EntitySet Name="UserPermissions" EntityType="Self.UserPermissions" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK__Orders__AccountI__4CA06362" Association="Self.FK__Orders__AccountI__4CA06362">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__AccountI__5535A963" Association="Self.FK__Trades__AccountI__5535A963">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Status__4AB81AF0" Association="Self.FK__Orders__Status__4AB81AF0">
+            <End Role="Order_Statuses" EntitySet="Order_Statuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__CreatedD__49C3F6B7" Association="Self.FK__Orders__CreatedD__49C3F6B7">
+            <End Role="Order_Types" EntitySet="Order_Types" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__TradeTyp__534D60F1" Association="Self.FK__Trades__TradeTyp__534D60F1">
+            <End Role="Order_Types" EntitySet="Order_Types" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__StockID__4BAC3F29" Association="Self.FK__Orders__StockID__4BAC3F29">
+            <End Role="Stocks" EntitySet="Stocks" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__OrderID__52593CB8" Association="Self.FK__Trades__OrderID__52593CB8">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permissions_Screens" Association="Self.FK_Permissions_Screens">
+            <End Role="Screens" EntitySet="Screens" />
+            <End Role="Permissions" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPermissions_Permissions" Association="Self.FK_UserPermissions_Permissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="UserPermissions" EntitySet="UserPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Roles" Association="Self.FK_UserRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Trades__StockID__5441852A" Association="Self.FK__Trades__StockID__5441852A">
+            <End Role="Stocks" EntitySet="Stocks" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__Added__70DDC3D8" Association="Self.FK__UserAccou__Added__70DDC3D8">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserI__6FE99F9F" Association="Self.FK__UserAccou__UserI__6FE99F9F">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPermissions_Users" Association="Self.FK_UserPermissions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPermissions" EntitySet="UserPermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_Users" Association="Self.FK_UserRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="RolePermissions" Association="Self.RolePermissions">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OMSModelStoreContainer" CdmEntityContainer="OMSContext">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="OMSModel.Accounts">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order_Statuses">
+            <EntityTypeMapping TypeName="OMSModel.Order_Statuses">
+              <MappingFragment StoreEntitySet="Order_Statuses">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order_Types">
+            <EntityTypeMapping TypeName="OMSModel.Order_Types">
+              <MappingFragment StoreEntitySet="Order_Types">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="OMSModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="OMSModel.Permissions">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+                <ScalarProperty Name="ScreenID" ColumnName="ScreenID" />
+                <ScalarProperty Name="CanCreate" ColumnName="CanCreate" />
+                <ScalarProperty Name="CanRead" ColumnName="CanRead" />
+                <ScalarProperty Name="CanUpdate" ColumnName="CanUpdate" />
+                <ScalarProperty Name="CanDelete" ColumnName="CanDelete" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="OMSModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDescription" ColumnName="RoleDescription" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Screens">
+            <EntityTypeMapping TypeName="OMSModel.Screens">
+              <MappingFragment StoreEntitySet="Screens">
+                <ScalarProperty Name="ScreenID" ColumnName="ScreenID" />
+                <ScalarProperty Name="ScreenName" ColumnName="ScreenName" />
+                <ScalarProperty Name="ScreenDescription" ColumnName="ScreenDescription" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stocks">
+            <EntityTypeMapping TypeName="OMSModel.Stocks">
+              <MappingFragment StoreEntitySet="Stocks">
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="StockName" ColumnName="StockName" />
+                <ScalarProperty Name="StockSymbol" ColumnName="StockSymbol" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trades">
+            <EntityTypeMapping TypeName="OMSModel.Trades">
+              <MappingFragment StoreEntitySet="Trades">
+                <ScalarProperty Name="TradeID" ColumnName="TradeID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="TradeType" ColumnName="TradeType" />
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="OMSModel.UserAccounts">
+              <MappingFragment StoreEntitySet="UserAccounts">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPermissions">
+            <EntityTypeMapping TypeName="OMSModel.UserPermissions">
+              <MappingFragment StoreEntitySet="UserPermissions">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+                <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="OMSModel.UserRoles">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="OMSModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="LastPasswordChangeDate" ColumnName="LastPasswordChangeDate" />
+                <ScalarProperty Name="PasswordRetryCount" ColumnName="PasswordRetryCount" />
+                <ScalarProperty Name="DefaultPassword" ColumnName="DefaultPassword" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RolePermissions" TypeName="OMSModel.RolePermissions" StoreEntitySet="RolePermissions">
+            <EndProperty Name="Permissions">
+              <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+            </EndProperty>
+            <EndProperty Name="Roles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

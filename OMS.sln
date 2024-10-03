@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{0881
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.Logging", "OMS.Logging\OMS.Logging.csproj", "{3EB2D030-F27E-4B38-952F-29229F345068}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.AppData", "OMS.AppData\OMS.AppData.csproj", "{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{3EB2D030-F27E-4B38-952F-29229F345068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB2D030-F27E-4B38-952F-29229F345068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB2D030-F27E-4B38-952F-29229F345068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5FC3CC7-0A84-4B34-8AAC-87E7E49B8AFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
