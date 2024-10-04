@@ -34,7 +34,6 @@
           </Key>
           <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderDate" Type="datetime" Nullable="false" />
-          <Property Name="StockID" Type="int" Nullable="false" />
           <Property Name="OrderType" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -45,6 +44,8 @@
           <Property Name="LastUpdatedDate" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="AddedBy" Type="int" />
+          <Property Name="Symbol" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrderGuid" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Permissions">
           <Key>
@@ -110,12 +111,12 @@
           <Property Name="TradeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="TradeType" Type="int" Nullable="false" />
-          <Property Name="StockID" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AccountID" Type="int" Nullable="false" />
           <Property Name="TradeDate" Type="datetime" Nullable="false" />
+          <Property Name="Symbol" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="UserAccounts">
           <Key>
@@ -198,18 +199,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Orders__StockID__4BAC3F29">
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="StockID" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="StockID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Trades__AccountI__5535A963">
           <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
           <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
@@ -234,18 +223,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Trades__StockID__5441852A">
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
-          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="StockID" />
-            </Principal>
-            <Dependent Role="Trades">
-              <PropertyRef Name="StockID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Trades__TradeTyp__534D60F1">
           <End Role="Order_Types" Type="Self.Order_Types" Multiplicity="1" />
           <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
@@ -258,7 +235,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserAccou__Added__70DDC3D8">
+        <Association Name="FK__UserAccou__Accou__662B2B3B">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__Added__6442E2C9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -270,7 +259,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserAccou__UserI__6FE99F9F">
+        <Association Name="FK__UserAccou__UserI__65370702">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -407,10 +396,6 @@
             <End Role="Order_Statuses" EntitySet="Order_Statuses" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__Orders__StockID__4BAC3F29" Association="Self.FK__Orders__StockID__4BAC3F29">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK__Trades__AccountI__5535A963" Association="Self.FK__Trades__AccountI__5535A963">
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Trades" EntitySet="Trades" />
@@ -419,19 +404,19 @@
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Trades" EntitySet="Trades" />
           </AssociationSet>
-          <AssociationSet Name="FK__Trades__StockID__5441852A" Association="Self.FK__Trades__StockID__5441852A">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Trades" EntitySet="Trades" />
-          </AssociationSet>
           <AssociationSet Name="FK__Trades__TradeTyp__534D60F1" Association="Self.FK__Trades__TradeTyp__534D60F1">
             <End Role="Order_Types" EntitySet="Order_Types" />
             <End Role="Trades" EntitySet="Trades" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserAccou__Added__70DDC3D8" Association="Self.FK__UserAccou__Added__70DDC3D8">
+          <AssociationSet Name="FK__UserAccou__Accou__662B2B3B" Association="Self.FK__UserAccou__Accou__662B2B3B">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__Added__6442E2C9" Association="Self.FK__UserAccou__Added__6442E2C9">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAccounts" EntitySet="UserAccounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserAccou__UserI__6FE99F9F" Association="Self.FK__UserAccou__UserI__6FE99F9F">
+          <AssociationSet Name="FK__UserAccou__UserI__65370702" Association="Self.FK__UserAccou__UserI__65370702">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAccounts" EntitySet="UserAccounts" />
           </AssociationSet>
@@ -479,6 +464,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__AccountI__4CA06362" FromRole="Accounts" ToRole="Orders" />
           <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__AccountI__5535A963" FromRole="Accounts" ToRole="Trades" />
+          <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__Accou__662B2B3B" FromRole="Accounts" ToRole="UserAccounts" />
         </EntityType>
         <EntityType Name="Order_Statuses">
           <Key>
@@ -503,7 +489,6 @@
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StockID" Type="Int32" Nullable="false" />
           <Property Name="OrderType" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
@@ -514,10 +499,11 @@
           <Property Name="LastUpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AddedBy" Type="Int32" />
+          <Property Name="Symbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrderGuid" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Accounts" Relationship="Self.FK__Orders__AccountI__4CA06362" FromRole="Orders" ToRole="Accounts" />
           <NavigationProperty Name="Order_Statuses" Relationship="Self.FK__Orders__Status__4AB81AF0" FromRole="Orders" ToRole="Order_Statuses" />
           <NavigationProperty Name="Order_Types" Relationship="Self.FK__Orders__CreatedD__49C3F6B7" FromRole="Orders" ToRole="Order_Types" />
-          <NavigationProperty Name="Stocks" Relationship="Self.FK__Orders__StockID__4BAC3F29" FromRole="Orders" ToRole="Stocks" />
           <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__OrderID__52593CB8" FromRole="Orders" ToRole="Trades" />
         </EntityType>
         <EntityType Name="Permissions">
@@ -574,8 +560,6 @@
           <Property Name="StockSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastPrice" Type="Decimal" Precision="10" Scale="4" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__StockID__4BAC3F29" FromRole="Stocks" ToRole="Orders" />
-          <NavigationProperty Name="Trades" Relationship="Self.FK__Trades__StockID__5441852A" FromRole="Stocks" ToRole="Trades" />
         </EntityType>
         <EntityType Name="Trades">
           <Key>
@@ -584,16 +568,15 @@
           <Property Name="TradeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="TradeType" Type="Int32" Nullable="false" />
-          <Property Name="StockID" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AccountID" Type="Int32" Nullable="false" />
           <Property Name="TradeDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Symbol" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Accounts" Relationship="Self.FK__Trades__AccountI__5535A963" FromRole="Trades" ToRole="Accounts" />
           <NavigationProperty Name="Order_Types" Relationship="Self.FK__Trades__TradeTyp__534D60F1" FromRole="Trades" ToRole="Order_Types" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Trades__OrderID__52593CB8" FromRole="Trades" ToRole="Orders" />
-          <NavigationProperty Name="Stocks" Relationship="Self.FK__Trades__StockID__5441852A" FromRole="Trades" ToRole="Stocks" />
         </EntityType>
         <EntityType Name="UserAccounts">
           <Key>
@@ -604,8 +587,9 @@
           <Property Name="AccountID" Type="Int32" Nullable="false" />
           <Property Name="AddedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AddedBy" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__UserAccou__Added__70DDC3D8" FromRole="UserAccounts" ToRole="Users" />
-          <NavigationProperty Name="Users1" Relationship="Self.FK__UserAccou__UserI__6FE99F9F" FromRole="UserAccounts" ToRole="Users" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK__UserAccou__Accou__662B2B3B" FromRole="UserAccounts" ToRole="Accounts" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__UserAccou__Added__6442E2C9" FromRole="UserAccounts" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.FK__UserAccou__UserI__65370702" FromRole="UserAccounts" ToRole="Users" />
         </EntityType>
         <EntityType Name="UserPermissions">
           <Key>
@@ -645,8 +629,8 @@
           <Property Name="PasswordRetryCount" Type="Int32" Nullable="false" />
           <Property Name="DefaultPassword" Type="Boolean" Nullable="false" />
           <Property Name="UserStatus" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__Added__70DDC3D8" FromRole="Users" ToRole="UserAccounts" />
-          <NavigationProperty Name="UserAccounts1" Relationship="Self.FK__UserAccou__UserI__6FE99F9F" FromRole="Users" ToRole="UserAccounts" />
+          <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__Added__6442E2C9" FromRole="Users" ToRole="UserAccounts" />
+          <NavigationProperty Name="UserAccounts1" Relationship="Self.FK__UserAccou__UserI__65370702" FromRole="Users" ToRole="UserAccounts" />
           <NavigationProperty Name="UserPermissions" Relationship="Self.FK_UserPermissions_Users" FromRole="Users" ToRole="UserPermissions" />
           <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_Users" FromRole="Users" ToRole="UserRoles" />
         </EntityType>
@@ -670,6 +654,18 @@
               <PropertyRef Name="AccountID" />
             </Principal>
             <Dependent Role="Trades">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__Accou__662B2B3B">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
+          <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="UserAccounts">
               <PropertyRef Name="AccountID" />
             </Dependent>
           </ReferentialConstraint>
@@ -707,18 +703,6 @@
             </Principal>
             <Dependent Role="Trades">
               <PropertyRef Name="TradeType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Orders__StockID__4BAC3F29">
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="StockID" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="StockID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -776,19 +760,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Trades__StockID__5441852A">
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="1" />
-          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="StockID" />
-            </Principal>
-            <Dependent Role="Trades">
-              <PropertyRef Name="StockID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__UserAccou__Added__70DDC3D8">
+        <Association Name="FK__UserAccou__Added__6442E2C9">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -800,7 +772,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UserAccou__UserI__6FE99F9F">
+        <Association Name="FK__UserAccou__UserI__65370702">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserAccounts" Type="Self.UserAccounts" Multiplicity="*" />
           <ReferentialConstraint>
@@ -866,6 +838,10 @@
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Trades" EntitySet="Trades" />
           </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__Accou__662B2B3B" Association="Self.FK__UserAccou__Accou__662B2B3B">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="UserAccounts" EntitySet="UserAccounts" />
+          </AssociationSet>
           <AssociationSet Name="FK__Orders__Status__4AB81AF0" Association="Self.FK__Orders__Status__4AB81AF0">
             <End Role="Order_Statuses" EntitySet="Order_Statuses" />
             <End Role="Orders" EntitySet="Orders" />
@@ -877,10 +853,6 @@
           <AssociationSet Name="FK__Trades__TradeTyp__534D60F1" Association="Self.FK__Trades__TradeTyp__534D60F1">
             <End Role="Order_Types" EntitySet="Order_Types" />
             <End Role="Trades" EntitySet="Trades" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Orders__StockID__4BAC3F29" Association="Self.FK__Orders__StockID__4BAC3F29">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK__Trades__OrderID__52593CB8" Association="Self.FK__Trades__OrderID__52593CB8">
             <End Role="Orders" EntitySet="Orders" />
@@ -898,15 +870,11 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="UserRoles" EntitySet="UserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__Trades__StockID__5441852A" Association="Self.FK__Trades__StockID__5441852A">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Trades" EntitySet="Trades" />
-          </AssociationSet>
-          <AssociationSet Name="FK__UserAccou__Added__70DDC3D8" Association="Self.FK__UserAccou__Added__70DDC3D8">
+          <AssociationSet Name="FK__UserAccou__Added__6442E2C9" Association="Self.FK__UserAccou__Added__6442E2C9">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAccounts" EntitySet="UserAccounts" />
           </AssociationSet>
-          <AssociationSet Name="FK__UserAccou__UserI__6FE99F9F" Association="Self.FK__UserAccou__UserI__6FE99F9F">
+          <AssociationSet Name="FK__UserAccou__UserI__65370702" Association="Self.FK__UserAccou__UserI__65370702">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserAccounts" EntitySet="UserAccounts" />
           </AssociationSet>
@@ -960,7 +928,6 @@
               <MappingFragment StoreEntitySet="Orders">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="StockID" ColumnName="StockID" />
                 <ScalarProperty Name="OrderType" ColumnName="OrderType" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -971,6 +938,8 @@
                 <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="OrderGuid" ColumnName="OrderGuid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1033,12 +1002,12 @@
                 <ScalarProperty Name="TradeID" ColumnName="TradeID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="TradeType" ColumnName="TradeType" />
-                <ScalarProperty Name="StockID" ColumnName="StockID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="AccountID" ColumnName="AccountID" />
                 <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

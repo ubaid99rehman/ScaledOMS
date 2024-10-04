@@ -157,7 +157,7 @@ namespace OMS.ViewModels
         public void ClearFields()
         {
             SelectedOrder = new Order();
-            SelectedOrder.OrderType = null;
+            SelectedOrder.OrderType = -1;
             Quantity = 0;
             Total = 0;
         }
@@ -167,7 +167,8 @@ namespace OMS.ViewModels
             SelectedOrder.Total = Quantity * StockPrice;
             SelectedOrder.Price= StockPrice;
             SelectedOrder.OrderID = 010124;
-            SelectedOrder.Status = OrderStatus.New;
+            SelectedOrder.Status = (int)OrderStatus.New;
+            SelectedOrder.Order_Statuses = OrderStatus.New;
             SelectedOrder.OrderDate = DateTime.Now;
             SelectedOrder.LasUpdatedDate = DateTime.Now;
             SelectedOrder.AddedBy = 1;

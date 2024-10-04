@@ -1,155 +1,118 @@
 ﻿using OMS.Core.Models;
-using OMS.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using OMS.DataAccess.Repositories.AppRepositories;
-using OMS.DataAccess.Repositories.MarketRepositories;
-using OMS.Enums;
 using OMS.Core.Models.Orders;
+using OMS.SqlData.Model;
+using System.Linq;
+using AutoMapper;
+using OMS.Core.Core.Models.User;
+using System;
 
 namespace OMS.SqlData.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly string _connectionString;
-        IStockRepository _stockDataService;
+        OMSContext Context;
+        IMapper Mapper;
+
         //Constructor
-        public OrderRepository(IStockRepository stockDataService)
+        public OrderRepository(IMapper mapper)
         {
-            _connectionString = DbHelper.Connection;
-            _stockDataService = stockDataService;
+            Context = new OMSContext();
+            Mapper = mapper;
         }
 
         //Public Data Access Methods Implementation
         public IEnumerable<IOrder> GetAll()
         {
-            var orders = new List<IOrder>();
-
-            using (var connection = new SqlConnection(_connectionString))
+            var ordersList = Context.Orders.ToList();
+            if (ordersList.Count < 0 || ordersList == null)
             {
-                var command = new SqlCommand("SELECT s.StockSymbol,o.* FROM Orders o inner join Stocks s on s.StockID = o.StockID", connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        orders.Add(new Order
-                        {
-                            OrderID = (int)reader["OrderID"],
-                            OrderDate = (DateTime)reader["OrderDate"],
-                            Symbol = reader["StockSymbol"].ToString(),
-                            OrderType = (OrderType)((int)reader["OrderType"]),
-                            Quantity = (int)reader["Quantity"],
-                            Price = (decimal)reader["Price"],
-                            Total = (decimal)reader["Total"],
-                            Status = (OrderStatus)((int)reader["Status"]),
-                            AccountID = (int)reader["AccountID"],
-                            CreatedDate = (DateTime)reader["CreatedDate"],
-                            LasUpdatedDate = (DateTime)reader["LastUpdatedDate"],
-                            AddedBy = (int)reader["AddedBy"]
-                        });
-                    }
-                }
+                return new List<IOrder>();
             }
-            return orders;
+            ICollection<IOrder> orders = new List<IOrder>();
+            try
+            {
+                 orders = ordersList.Select(o => Mapper.Map<IOrder>(o)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return orders;  
         }
         public IOrder GetById(int orderID)
         {
-            IOrder order = null;
-
-            using (var connection = new SqlConnection(_connectionString))
+            Orders orderEntity = Context.Orders.Where(o => o.OrderID == orderID).FirstOrDefault();
+            if (orderEntity == null)
             {
-                var command = new SqlCommand("SELECT * FROM Orders WHERE OrderID = @OrderID", connection);
-                command.Parameters.AddWithValue("@OrderID", orderID);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        order = new Order
-                        {
-                            OrderID = (int)reader["OrderID"],
-                            OrderDate = (DateTime)reader["OrderDate"],
-                            Symbol = reader["StockSymbol"].ToString(),
-                            OrderType = (OrderType)((int)reader["OrderType"]),
-                            Quantity = (int)reader["Quantity"],
-                            Price = (decimal)reader["Price"],
-                            Total = (decimal)reader["Total"],
-                            Status = (OrderStatus)((int)reader["Status"]),
-                            AccountID = (int)reader["AccountID"],
-                            CreatedDate = (DateTime)reader["CreatedDate"],
-                            AddedBy = (int)reader["AddedBy"]
-                        };
-                    }
-                }
+                return new Order();
             }
+            var order = Mapper.Map<IOrder>(orderEntity);
             return order;
         }
         public bool Add(IOrder order)
         {
-            int StockID = _stockDataService.GetBySymbol(order.Symbol).ID;
-            bool isAdded = false;
-            using (var connection = new SqlConnection(_connectionString))
+            Orders orderEntity = Mapper.Map<Orders>(order);
+            Context.Orders.Add(orderEntity);
+            Context.SaveChanges();
+            Orders addedOrder = Context.Orders.Where(o => o.OrderGuid == order.OrderGuid).FirstOrDefault();
+            if(addedOrder !=null)
             {
-                var command = new SqlCommand("INSERT INTO Orders (OrderDate, StockID, OrderType, Quantity," +
-                    " Price, Total, Status, AccountID, ExpirationDate, LastUpdatedDate, CreatedDate, AddedBy)" +
-                    " VALUES (@OrderDate, @StockID, @OrderType, @Quantity, @Price, @Total, @Status, @AccountID," +
-                    " @ExpirationDate, @LastUpdatedDate, @CreatedDate, @AddedBy)", connection);
-
-                //command.Parameters.AddWithValue("@StockSymbol", order.Symbol);
-                command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
-                command.Parameters.AddWithValue("@StockID", StockID);
-                command.Parameters.AddWithValue("@OrderType", (int) order.OrderType);
-                command.Parameters.AddWithValue("@Quantity", order.Quantity);
-                command.Parameters.AddWithValue("@Price", order.Price);
-                command.Parameters.AddWithValue("@Total", order.Total);
-                command.Parameters.AddWithValue("@Status", (int) order.Status);
-                command.Parameters.AddWithValue("@AccountID", order.AccountID);
-                command.Parameters.AddWithValue("@ExpirationDate", DateTime.Now);
-                command.Parameters.AddWithValue("@LastUpdatedDate", DateTime.Now.AddDays(2));
-                command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                command.Parameters.AddWithValue("@AddedBy", order.AddedBy);
-                connection.Open();
-                command.ExecuteNonQuery();
-                isAdded = true;
+                return true;
             }
-            return isAdded; 
+            return false;
         }
         public bool Update(IOrder order)
         {
             bool isUpdated = false;
-            using (var connection = new SqlConnection(_connectionString))
+            Orders toUpdate;
+            try
             {
-                var command = new SqlCommand("UPDATE Orders SET Quantity = @Quantity, Price = @Price, Total = @Total, " +
-                    "Status = @Status, AccountID = @AccountID WHERE OrderID = @OrderID", connection);
-                command.Parameters.AddWithValue("@OrderID", order.OrderID);
-                command.Parameters.AddWithValue("@Quantity", order.Quantity);
-                command.Parameters.AddWithValue("@Price", order.Price);
-                command.Parameters.AddWithValue("@Total", order.Total);
-                command.Parameters.AddWithValue("@Status", (int) order.Status);
-                command.Parameters.AddWithValue("@AccountID", order.AccountID);
-                connection.Open();
-                command.ExecuteNonQuery();
-                isUpdated = true;
+                toUpdate = Mapper.Map<Orders>(order);
             }
+            catch(Exception ex)
+            {
+                throw ex; 
+            }
+            var userEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+            if (userEntity != null)
+            {
+                // Manually update properties
+                userEntity.Quantity = toUpdate.Quantity;
+                userEntity.Total = toUpdate.Total;
+                userEntity.Status = toUpdate.Status;
+                userEntity.AccountID = toUpdate.AccountID;
+                //userEntity.Accounts = toUpdate.Accounts;
+                userEntity.ExpirationDate = toUpdate.ExpirationDate;
+                userEntity.LastUpdatedDate = toUpdate.LastUpdatedDate;
+
+                // Save changes
+                int result = Context.SaveChanges();
+                if(result > 0)
+                {
+                    isUpdated = true;
+                }
+            }
+
             return isUpdated;
         }
         public bool Delete(IOrder order)
         {
             bool isDeleted = false;
-            using (var connection = new SqlConnection(_connectionString))
+            //Remove Order
+            Orders orderEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+            if (orderEntity != null)
             {
-                var command = new SqlCommand("UPDATE ORDERS SET STATUS = @OrderStaus WHERE OrderID = @OrderID", connection);
-                command.Parameters.AddWithValue("@OrderID", order.OrderID);
-                command.Parameters.AddWithValue("@OrderStaus", order.Status);
-                connection.Open();
-                command.ExecuteNonQuery();
-
-                if(GetById((int)order.OrderID) == null)
-                {
-                    isDeleted = true;
-                }
+                Context.Orders.Remove(orderEntity);
+                Context.SaveChanges();
+            }
+            //Check if Order is removed
+            orderEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+            if (orderEntity == null)
+            {
+                isDeleted = true;
             }
             return isDeleted;
         }

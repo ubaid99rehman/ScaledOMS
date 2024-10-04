@@ -17,16 +17,15 @@ namespace OMS.SqlData.Model
         public int TradeID { get; set; }
         public int OrderID { get; set; }
         public int TradeType { get; set; }
-        public int StockID { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
         public int AccountID { get; set; }
         public System.DateTime TradeDate { get; set; }
+        public string Symbol { get; set; }
     
         public virtual Accounts Accounts { get; set; }
         public virtual Order_Types Order_Types { get; set; }
         public virtual Orders Orders { get; set; }
-        public virtual Stocks Stocks { get; set; }
     }
 }

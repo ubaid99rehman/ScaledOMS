@@ -1,8 +1,11 @@
-﻿using OMS.Core.Core.Models.User;
+﻿using DevExpress.Mvvm.Native;
+using OMS.Core.Models.Permissions;
+using OMS.Core.Models.Roles;
 using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.Cache;
 using OMS.DataAccess.Repositories.AppRepositories;
+using System.Collections.ObjectModel;
 
 namespace OMS.Services.AppServices
 {
@@ -21,24 +24,34 @@ namespace OMS.Services.AppServices
         //Public Access Method Implementation
         public IUser Authenticate(UserCredentials credentials)
         {
-            var user = UserAuth(credentials.Username, credentials.Password, out string MessageBoxHelper, out int userID);
-            if (user is User && user != null)
+            IUser user = UserAuth(credentials);
+            if (user is IUser && user != null)
             {
                 CacheService.Set("CurrentUser", user);
+                ObservableCollection<IPermission> permissions = new ObservableCollection<IPermission>();
+                foreach(IUserRole userRole in user.UserRoles)
+                {
+                    ObservableCollection<IPermission> rolePermissions = userRole.Roles.Permissions.ToObservableCollection<IPermission>();
+                    rolePermissions.ForEach(p => permissions.Add(p));
+                }
+                CacheService.Set("UserPermissions", permissions);
+                return user;
             }
-            return user;
+            return null;
         }
         
         //Prvate Method 
-        public IUser UserAuth(string username, string password, out string message, out int isDisabled)
+        private IUser UserAuth(UserCredentials credentials)
         {
-            bool isAuthenticated = _userRespository.AuthenticateUser(username, password, out message, out isDisabled, out int userID);
-            if(isAuthenticated)
+            IUser user = _userRespository.AuthenticateUser(credentials);
+            if(user != null)
             {
-                var user = _userRespository.GetById(userID);
                 if (user !=null)
                 {
-                    return user;
+                    if(user.UserStatus && user.PasswordRetryCount > 0)
+                    {
+                        return user;
+                    }
                 }
             }
             return null;

@@ -1,124 +1,81 @@
 ﻿using OMS.DataAccess.Repositories.AppRepositories;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using OMS.Helpers;
 using OMS.Core.Models.User;
 using OMS.SqlData.Model;
 using System.Linq;
 using AutoMapper;
-using OMS.Core.Models.Account;
+using OMS.Core.Core.Models.User;
 
 namespace OMS.SqlData.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly string _connectionString;
         IMapper Mapper;
+        OMSContext Context;
 
         //Constructor
         public UserRepository(IMapper mapper)
         {
             Mapper = mapper;
-            _connectionString = DbHelper.Connection;
+            Context = new OMSContext();
         }
 
-        //Public Data Access Methods Implementation
-        public bool AuthenticateUser(string username, string password, out string message, out int isDisabled, out int userID)
+        //Public Access Methods
+        public IUser AuthenticateUser(UserCredentials credentials)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            Users userEntity =  Context.Users.Where(u=> u.Password == credentials.Password 
+            && u.UserName == credentials.Username).FirstOrDefault();
+            if (userEntity == null)
             {
-                var command = new SqlCommand("SP_AuthenticateUser", connection)
+                return null;
+            }
+            foreach(UserRoles roles in userEntity.UserRoles)
+            {
+                foreach(Permissions permission in roles.Roles.Permissions)
                 {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                command.Parameters.AddWithValue("@Username", username);
-                command.Parameters.AddWithValue("@Password", password);
-
-                var isAuthenticatedParam = new SqlParameter("@IsAuthenticated", SqlDbType.Bit)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                command.Parameters.Add(isAuthenticatedParam);
-
-                var isDisabledParam = new SqlParameter("@IsDisabled", SqlDbType.Bit)
-                {
-                    Direction = ParameterDirection.Output
-                };
-
-                command.Parameters.Add(isDisabledParam);
-
-                var _userID = new SqlParameter("@UserId", SqlDbType.Int)
-                {
-                    Direction = ParameterDirection.Output
-                };
-
-                command.Parameters.Add(_userID);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-
-                bool isAuthenticated = (bool)isAuthenticatedParam.Value;
-                bool userDisabled = (bool)isDisabledParam.Value;
-                userID = (int)_userID.Value;
-
-                if (userDisabled)
-                {
-                    isDisabled = 1;
-                    message = ("User account is disabled due to multiple incorrect password attempts.");
-                    return false;
-                }
-                else
-                {
-                    isDisabled = 0;
-                }
-
-                if (isAuthenticated)
-                {
-                    message = ("User Validated!");
-                    return true;
-                }
-                else
-                {
-                    message = ("Invalid username or password.");
-                    return false;
+                    var screen = permission.Screens;
+                    var name = permission.Screens.ScreenName;
                 }
             }
+            IUser user = Mapper.Map<IUser>(userEntity);
+            if(user != null)
+            {
+                return user;
+            }
+            return null;
         }
         public IEnumerable<IUser> GetAll()
         {
-            throw new NotImplementedException();
+            var usersList = Context.Users.ToList();
+            if (usersList.Count < 0 || usersList == null)
+            {
+                return new List<IUser>();
+            }
+            var users = usersList.Select(u => Mapper.Map<IUser>(u)).ToList();
+            return users;
         }
         public IUser GetById(int id)
         {
-            IUser user = null;
-            using(var context = new OMSContext() )
+            Users userEntity = Context.Users.Where(u => u.UserID == id).FirstOrDefault();
+            if (userEntity == null)
             {
-                var entity =  context.Users.Where(u=> u.UserID == id).FirstOrDefault();
-                if(entity == null)
-                {
-                    return null;
-                }
-                user = Mapper.Map<IUser>(entity);
-                return user;
+                return new User();
             }
+            var user = Mapper.Map<IUser>(userEntity);
+            return user;
         }
         public bool UpdateUser(IUser user)
         {
             bool isUpdated = false;
-            using (var connection = new SqlConnection(_connectionString))
+            var toUpdate = Mapper.Map<Users>(user);
+            var userEntity = Context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
+            if (userEntity != null)
             {
-                var command = new SqlCommand("UPDATE Users SET Email = @email, " +
-                    "Password = @Password", connection);
-                command.Parameters.AddWithValue("@email", user.Email);
-                command.Parameters.AddWithValue("@Password", user.Password);
-                connection.Open();
-                command.ExecuteNonQuery();
-                isUpdated = true;
+                userEntity = toUpdate;
+                Context.SaveChanges();
             }
-            return isUpdated;
+            return false;
         }
     }
 }

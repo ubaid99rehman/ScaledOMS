@@ -120,18 +120,20 @@
                 <Setter.Value>
                     <dxdo:Appearance>
                         <dxdo:Appearance.Normal>
-                            <dxdo:AppearanceObject TabBackgroundColor="{DynamicResource ScreenBackgroundColor}" 
+                            <dxdo:AppearanceObject TabBackgroundColor="Transparent" 
                                                    Background="{DynamicResource ScreenBackground}" 
                                                    Foreground="{DynamicResource TextForeground}"/>
                         </dxdo:Appearance.Normal>
                         <dxdo:Appearance.Active>
-                            <dxdo:AppearanceObject TabBackgroundColor="{DynamicResource TitleBarBackgroundColor}" Foreground="{DynamicResource TextForeground}"/>
+                            <dxdo:AppearanceObject TabBackgroundColor="{DynamicResource TitleBarBackgroundColor}" 
+                                                   Background="{DynamicResource TitleBarBackground}" 
+                                                   Foreground="{DynamicResource TextForeground}"/>
                         </dxdo:Appearance.Active>
                     </dxdo:Appearance>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
             <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
             <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
             <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
@@ -148,15 +150,21 @@
                 <Setter.Value>
                     <dxdo:Appearance>
                         <dxdo:Appearance.Normal>
-                            <dxdo:AppearanceObject Background="{DynamicResource ScreenBackground}" Foreground="{DynamicResource TextForeground}"/>
+                            <dxdo:AppearanceObject Background="{DynamicResource ScreenBackground}" 
+                                                   Foreground="{DynamicResource TextForeground}"/>
                         </dxdo:Appearance.Normal>
                         <dxdo:Appearance.Active>
-                            <dxdo:AppearanceObject Background="{DynamicResource TitleBarBackground}" Foreground="{DynamicResource TextForeground}"/>
+                            <dxdo:AppearanceObject Background="{DynamicResource TitleBarBackground}" 
+                                                   Foreground="{DynamicResource TextForeground}"/>
                         </dxdo:Appearance.Active>
                     </dxdo:Appearance>
                 </Setter.Value>
             </Setter>
             <Setter Property="Background" Value="{DynamicResource ScreenBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+            <Setter Property="FontSize" Value="{DynamicResource FontSize}"/>
+            <Setter Property="FontWeight" Value="{DynamicResource FontWeight}"/>
         </Style>
 
         <!--Common Controls-->

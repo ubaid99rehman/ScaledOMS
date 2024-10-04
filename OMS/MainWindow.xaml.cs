@@ -13,7 +13,7 @@ namespace OMS
         //Child Winodw Open Props
         bool isOrderOpen;
         bool isUserWindowOpen;
-        
+
         //Constructor
         public MainWindow()
         {
@@ -27,7 +27,7 @@ namespace OMS
             this.DataContext = model;
         }
 
-        #region Child Window Open Click
+        //Child Window Open Click
         private void InfoIcon_Click(object sender, RoutedEventArgs e)
         {
             InfoPopup.IsOpen = !InfoPopup.IsOpen;
@@ -57,10 +57,9 @@ namespace OMS
                 windo.Show();
                 isUserWindowOpen = true;
             }
-        } 
-        #endregion
+        }
 
-        #region Main Window Open/Close
+        //Main Window Open/Close
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (this.DataContext is MainViewModel model)
@@ -74,10 +73,9 @@ namespace OMS
             {
                 model.RestoreOpenedDocumentsState();
             }
-        } 
-        #endregion
+        }
 
-        #region Child Window Closed
+        //Child Window Closed
         private void OrderWindow_Closed(object sender, System.EventArgs e)
         {
             isOrderOpen = false;
@@ -85,7 +83,6 @@ namespace OMS
         private void UserWindow_Closed(object sender, EventArgs e)
         {
             isUserWindowOpen = false;
-        } 
-        #endregion
+        }
     }
 }

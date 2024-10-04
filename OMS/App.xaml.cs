@@ -22,7 +22,6 @@ namespace OMS
                 PreloadCategories.Ribbon);
         }
 
-        #region Methods
         //Startup Method
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -30,6 +29,8 @@ namespace OMS
             LoadMainWindow();
             base.OnStartup(e);
         }
+        
+        //Private Methods
         private void ApplyTheme()
         {
             //Applying Theme
@@ -45,8 +46,5 @@ namespace OMS
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingWindow>();
             mainWindow.Show();
         }
-
-      
-        #endregion
     }
 }

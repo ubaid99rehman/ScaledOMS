@@ -1,28 +1,24 @@
-﻿using OMS.Core.Models.Account;
-using OMS.Core.Models.Orders;
-using OMS.Enums;
+﻿using OMS.Core.Models.Trade;
+using OMS.Core.Models;
 using System;
-namespace OMS.Core.Models.Trade
+
+namespace OMS.Domain.Models.Trade
 {
-    public class Trade : BaseModel, ITrade
+    public class StockTrade : BaseModel, IStockTrade
     {
         #region Private Members
         private int _tradeID;
         private DateTime _tradeDate;
         private string _symbol;
+        private string _tradeType;
         private string _accountID;
         private decimal _price;
         private int _quantity;
         private decimal _total;
-        public int _orderID;
-        public IAccount _accounts;
-        public OrderType _order_Types;
-        public IOrder _orders;
-        int _tradeType;
         #endregion
 
-        public int TradeID 
-        { 
+        public int TradeID
+        {
             get => _tradeID;
             set
             {
@@ -43,6 +39,14 @@ namespace OMS.Core.Models.Trade
             set
             {
                 SetProperty(ref _symbol, value);
+            }
+        }
+        public string TradeType
+        {
+            get { return _tradeType; }
+            set
+            {
+                SetProperty(ref _tradeType, value);
             }
         }
         public string AccountID
@@ -75,46 +79,6 @@ namespace OMS.Core.Models.Trade
             set
             {
                 SetProperty(ref _total, value);
-            }
-        }
-        public int OrderID
-        {
-            get => _orderID;
-            set
-            {
-                SetProperty(ref _orderID, value);
-            }
-        }
-        public IAccount Accounts
-        {
-            get => _accounts;
-            set
-            {
-                SetProperty(ref _accounts, value);
-            }
-        }
-        public OrderType Order_Types
-        {
-            get => _order_Types;
-            set
-            {
-                SetProperty(ref _order_Types, value);
-            }
-        }
-        public IOrder Orders
-        {
-            get => _orders;
-            set
-            {
-                SetProperty(ref _orders, value);
-            }
-        }
-        public int TradeType
-        {
-            get => _tradeType;
-            set
-            {
-                SetProperty(ref _tradeType, value);
             }
         }
     }

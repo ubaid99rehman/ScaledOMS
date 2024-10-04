@@ -65,7 +65,7 @@ namespace OMS.ViewModels
         //Methods
         public async Task Login()
         {
-            await Task.Delay(3000);
+            await Task.Delay(1000);
             //Check Null/Empty User or Password
             if (string.IsNullOrWhiteSpace(Username))
             {
@@ -84,7 +84,8 @@ namespace OMS.ViewModels
         public void Authenticate()
         {
             Logger.LogInfo("Authenticating User: " + Username);
-            var user = AuthService.Authenticate(new UserCredentials(this.Username,this.Password));
+            UserCredentials credentials = new UserCredentials(this.Username, this.Password);
+            var user = AuthService.Authenticate(credentials);
             
             if (user != null)
             {

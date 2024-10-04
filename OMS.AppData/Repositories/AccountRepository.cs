@@ -24,7 +24,7 @@ namespace OMS.SqlData.Repositories
             var accountsList = Context.Accounts.ToList();
             if (accountsList.Count < 0 || accountsList == null)
             {
-               return new List<IAccount>();
+                return new List<IAccount>();
             }
             var mappedAccounts = accountsList.Select(a => Mapper.Map<IAccount>(a)).ToList();
             return mappedAccounts;

@@ -19,6 +19,7 @@ namespace OMS.SqlData.Model
         public System.DateTime AddedDate { get; set; }
         public int AddedBy { get; set; }
     
+        public virtual Accounts Accounts { get; set; }
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }
     }

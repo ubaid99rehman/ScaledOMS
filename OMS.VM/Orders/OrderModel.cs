@@ -234,7 +234,7 @@ namespace OMS.ViewModels
             isAdded = false;
             message = string.Empty;
             SelectedOrder.AccountID = SelectedAccount;
-            SelectedOrder.OrderType = OrderType;
+            SelectedOrder.OrderType = (int)OrderType;
             SelectedOrder.Symbol = SelectedStockSymbol;
             SelectedOrder.Quantity = (int)Quantity;
             SelectedOrder.Price = SelectedStock.LastPrice;
@@ -246,7 +246,7 @@ namespace OMS.ViewModels
             {
                 OrderID = 99945,
                 AccountID = SelectedAccount,
-                OrderType = OrderType,
+                OrderType = (int)OrderType,
                 Symbol = SelectedStockSymbol,
                 Quantity = (int)Quantity,
                 Price = SelectedStock.LastPrice,
@@ -278,8 +278,8 @@ namespace OMS.ViewModels
             message = "Cannot Update Order!";
             if (SelectedOrder.OrderID >= 0)
             {
-                if (SelectedOrder.Status != OrderStatus.Cancelled
-                    || SelectedOrder.Status != OrderStatus.Fulfilled)
+                if (SelectedOrder.Order_Statuses != OrderStatus.Cancelled
+                    || SelectedOrder.Order_Statuses != OrderStatus.Fulfilled)
                 {
                     OrderService.CancelOrder(SelectedOrder, out message);
                     if (message.Equals("Updated!"))

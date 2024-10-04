@@ -44,13 +44,19 @@
   <ItemGroup>
     <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\App\AppTime.cs" />
+    <Compile Include="Models\App\Screen.cs" />
     <Compile Include="Models\App\ThemeModel.cs" />
     <Compile Include="Models\Books\OrderBook.cs" />
     <Compile Include="Models\Books\TradeBook.cs" />
     <Compile Include="Models\Orders\Order.cs" />
+    <Compile Include="Models\Permissions\Permission.cs" />
+    <Compile Include="Models\Permissions\UserPermission.cs" />
+    <Compile Include="Models\Roles\Role.cs" />
+    <Compile Include="Models\Roles\UserRole.cs" />
     <Compile Include="Models\Stocks\Stock.cs" />
     <Compile Include="Models\Stocks\StockDetail.cs" />
     <Compile Include="Models\Stocks\StockTradingData.cs" />
+    <Compile Include="Models\Trade\StockTrade.cs" />
     <Compile Include="Models\Trade\Trade.cs" />
     <Compile Include="Models\User\SessionInfo.cs" />
     <Compile Include="Models\User\User.cs" />

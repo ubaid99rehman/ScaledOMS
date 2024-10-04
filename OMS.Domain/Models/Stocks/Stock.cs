@@ -9,7 +9,8 @@ namespace OMS.Core.Models
         private int _id;
         private string _symbol;
         private string _name;
-        private decimal _lastPrice; 
+        private decimal _lastPrice;
+        DateTime _addedDate;
         #endregion
 
         public int ID
@@ -31,6 +32,14 @@ namespace OMS.Core.Models
         {
             get => _lastPrice;
             set => SetProperty(ref _lastPrice, Math.Round(value, 3));
+        }
+        public DateTime AddedDate
+        {
+            get => _addedDate;
+            set
+            {
+                SetProperty(ref _addedDate, value);
+            }
         }
     }
 

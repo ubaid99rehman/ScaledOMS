@@ -54,16 +54,16 @@ namespace OMS.Services.AppServices
         public ObservableCollection<IOrder> GetOpenOrders()
         {
             var orders = GetAll();
-            var openOrders = orders.Where(order => order.Status == OrderStatus.New).ToObservableCollection<IOrder>();
+            var openOrders = orders.Where(order => order.Order_Statuses == OrderStatus.New).ToObservableCollection<IOrder>();
             return openOrders;
         }
         public ObservableCollection<IOrder> GetCancelledOrders()
         {
-            return GetAll().Where(order => order.Status == OrderStatus.Cancelled).ToObservableCollection<IOrder>();
+            return GetAll().Where(order => order.Order_Statuses == OrderStatus.Cancelled).ToObservableCollection<IOrder>();
         }
         public ObservableCollection<IOrder> GetFulfilledOrders()
         {
-            return GetAll().Where(order => order.Status == OrderStatus.Fulfilled).ToObservableCollection<IOrder>();
+            return GetAll().Where(order => order.Order_Statuses == OrderStatus.Fulfilled).ToObservableCollection<IOrder>();
         }
         public ObservableCollection<IOrder> GetOrdersByUser(int userId)
         {
@@ -79,7 +79,7 @@ namespace OMS.Services.AppServices
         }
         public ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol)
         {
-            return GetAll().Where(order => order.Status == OrderStatus.New).Where(o => o.Symbol == stockSymbol).ToObservableCollection<IOrder>();
+            return GetAll().Where(order => order.Order_Statuses == OrderStatus.New).Where(o => o.Symbol == stockSymbol).ToObservableCollection<IOrder>();
         }
         public IOrder GetLastOrderByUser()
         {
@@ -97,7 +97,7 @@ namespace OMS.Services.AppServices
         public void CancelOrder(IOrder selectedOrder, out string message)
         {
             message = string.Empty;
-            selectedOrder.Status = OrderStatus.Cancelled;
+            selectedOrder.Order_Statuses = OrderStatus.Cancelled;
             bool result = OrderRepository.Update(selectedOrder);
             if (result)
             {

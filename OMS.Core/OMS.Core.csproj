@@ -62,6 +62,7 @@
     <Compile Include="Models\Stocks\IStock.cs" />
     <Compile Include="Models\Stocks\IStockDetail.cs" />
     <Compile Include="Models\Stocks\IStockTradingData.cs" />
+    <Compile Include="Models\Trade\IStockTrade.cs" />
     <Compile Include="Models\Trade\ITrade.cs" />
     <Compile Include="Models\App\ISessionInfo.cs" />
     <Compile Include="Models\User\IUser.cs" />

@@ -40,8 +40,8 @@ namespace OMS
         {
             var services = new ServiceCollection();
             IMapper Mapper = InitializeMapper();
-            services.AddSingleton<IMapper>(sp => InitializeMapper());
 
+            services.AddSingleton<IMapper>(sp => InitializeMapper());
 
             #region Repositories
             //App Services

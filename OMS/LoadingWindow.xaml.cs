@@ -62,7 +62,6 @@ namespace OMS
             mainWindow.Show();
             this.Close();
         }
-
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             ShowPrgressBar();

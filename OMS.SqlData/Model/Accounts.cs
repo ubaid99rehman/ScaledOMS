@@ -19,6 +19,7 @@ namespace OMS.SqlData.Model
         {
             this.Orders = new HashSet<Orders>();
             this.Trades = new HashSet<Trades>();
+            this.UserAccounts = new HashSet<UserAccounts>();
         }
     
         public int AccountID { get; set; }
@@ -30,5 +31,7 @@ namespace OMS.SqlData.Model
         public virtual ICollection<Orders> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Trades> Trades { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserAccounts> UserAccounts { get; set; }
     }
 }

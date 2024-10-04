@@ -22,7 +22,6 @@ namespace OMS.SqlData.Model
     
         public int OrderID { get; set; }
         public System.DateTime OrderDate { get; set; }
-        public int StockID { get; set; }
         public int OrderType { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
@@ -33,11 +32,12 @@ namespace OMS.SqlData.Model
         public Nullable<System.DateTime> LastUpdatedDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<int> AddedBy { get; set; }
+        public string Symbol { get; set; }
+        public System.Guid OrderGuid { get; set; }
     
         public virtual Accounts Accounts { get; set; }
         public virtual Order_Statuses Order_Statuses { get; set; }
         public virtual Order_Types Order_Types { get; set; }
-        public virtual Stocks Stocks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Trades> Trades { get; set; }
     }

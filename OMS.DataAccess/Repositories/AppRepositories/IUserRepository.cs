@@ -1,11 +1,13 @@
 ﻿using OMS.Core.Models.User;
+using System.Collections.Generic;
 
 namespace OMS.DataAccess.Repositories.AppRepositories
 {
     public interface IUserRepository 
     {
         IUser GetById(int id);
-        bool AuthenticateUser(string username, string password, out string message, out int isDisabled, out int userID);
+        IEnumerable<IUser> GetAll();
+        IUser AuthenticateUser(UserCredentials credentials);
         bool UpdateUser(IUser user);
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace OMS.Core.Models.Roles
 {
-    public interface IUserRole
+    public class UserRole
     {
         int UserID { get; set; }
         int RoleID { get; set; }

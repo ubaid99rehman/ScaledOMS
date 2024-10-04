@@ -137,13 +137,13 @@ namespace OMS.ViewModels
             message = "Cannot Update Order!";
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
-                if (SelectedOrder.Status == OrderStatus.Cancelled)
+                if (SelectedOrder.Order_Statuses == OrderStatus.Cancelled)
                 {
                     isCancelled = false;
                     message = "Order is Already Cancelled!";
                 }
 
-                if (SelectedOrder.Status == OrderStatus.Fulfilled)
+                if (SelectedOrder.Order_Statuses == OrderStatus.Fulfilled)
                 {
                     isCancelled = false;
                     message = "Cannot Cancel Fulfilled Order";
@@ -169,13 +169,13 @@ namespace OMS.ViewModels
 
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
-                if (SelectedOrder.Status == OrderStatus.Cancelled)
+                if (SelectedOrder.Order_Statuses == OrderStatus.Cancelled)
                 {
                     isUpdated = false;
                     message = "Cannot Update Cancelled Order!";
                 }
 
-                if (SelectedOrder.Status == OrderStatus.Fulfilled)
+                if (SelectedOrder.Order_Statuses == OrderStatus.Fulfilled)
                 {
                     isUpdated = false;
                     message = "Cannot Update Fulfilled Order";
@@ -191,6 +191,5 @@ namespace OMS.ViewModels
                 }
             }
         }
-
     }
 }

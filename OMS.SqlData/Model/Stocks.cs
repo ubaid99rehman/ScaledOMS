@@ -14,22 +14,10 @@ namespace OMS.SqlData.Model
     
     public partial class Stocks
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Stocks()
-        {
-            this.Orders = new HashSet<Orders>();
-            this.Trades = new HashSet<Trades>();
-        }
-    
         public int StockID { get; set; }
         public string StockName { get; set; }
         public string StockSymbol { get; set; }
         public System.DateTime AddedDate { get; set; }
         public Nullable<decimal> LastPrice { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orders> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trades> Trades { get; set; }
     }
 }

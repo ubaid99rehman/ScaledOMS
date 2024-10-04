@@ -35,7 +35,7 @@
     <dx:ThemedWindow.HeaderItems>
         <dx:HeaderItemControl Click="InfoIcon_Click">
             <!-- Button with an Icon -->
-           <Grid Style="{StaticResource CustomGridStyle}">
+            <Grid Style="{StaticResource CustomGridStyle}">
                 <dx:SimpleButton Background="{DynamicResource ScreenBackground}"
                                  Foreground="Black"
                                  ToolTip="Shows Connection Information"
@@ -57,7 +57,7 @@
             </Grid>
         </dx:HeaderItemControl>
     </dx:ThemedWindow.HeaderItems>
-            
+
     <dx:DXDockPanel>
         <dxr:RibbonControl Name="NavControl" 
                            DockPanel.Dock="Top" 
@@ -85,6 +85,7 @@
                         <dxb:BarButtonItem Content="Market Watch" 
                                            Margin="5"
                                            Padding="5"
+                                           IsVisible="{Binding CanViewMarketWatch}" 
                                            Command="{Binding StockMarketCommand}"
                                            BarItemDisplayMode="ContentAndGlyph"
                                            AllowGlyphTheming="True"
@@ -101,6 +102,7 @@
                                            Padding="5"
                                            AllowGlyphTheming="True"
                                            ItemClick="NewOrder_Click"
+                                           IsVisible="{Binding CanViewAddOrder}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=59275}"
                                            Glyph="{dx:FontIconSource Glyph=59275}"  />
                     </dxr:RibbonPageGroup>
@@ -110,6 +112,7 @@
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
+                                           IsVisible="{Binding CanViewManageOrders}" 
                                            Command="{Binding ManageOrdersCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=59610}"
                                            Glyph="{dx:FontIconSource Glyph=59610}"/>
@@ -120,6 +123,7 @@
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
+                                           IsVisible="{Binding CanViewOrderHistory}" 
                                            Command="{Binding OrderHistoryCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=63289}"
                                            Glyph="{dx:FontIconSource Glyph=63289}"/>
@@ -200,7 +204,6 @@
                     </dxdo:DocumentGroup>
                 </dxdo:LayoutGroup>
             </dxdo:DockLayoutManager>
-
             <!--Shows Curren Time-->
             <TextBlock Grid.Row="1" Margin="0 0 5 5"
                        Text="{Binding CurrentTime.CurrentTime, StringFormat='MMMM dd, yyyy H:mm:ss'}"

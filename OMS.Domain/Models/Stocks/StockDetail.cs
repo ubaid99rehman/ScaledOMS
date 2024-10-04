@@ -13,7 +13,8 @@ namespace OMS.Core.Models
         private decimal _volume24H;
         private decimal _change24H;
         private decimal _high24H;
-        private decimal _low24H; 
+        private decimal _low24H;
+        DateTime _addedDate;
         #endregion
 
         public int ID
@@ -56,13 +57,21 @@ namespace OMS.Core.Models
             get => _low24H;
             set => SetProperty(ref _low24H, Math.Round(value, 3));
         }
+        public DateTime AddedDate 
+        { 
+            get => _addedDate;
+            set
+            {
+                SetProperty(ref _addedDate, value);
+            }
+        }
 
         #region Numeric Formatted Members
         public string FormattedLastPrice => FormatNumber(LastPrice);
         public string FormattedChange => FormatNumber(Change24H);
         public string FormattedVolume => FormatNumber(Volume24H);
         public string FormattedHigh => FormatNumber(High24H);
-        public string FormattedLow => FormatNumber(Low24H); 
+        public string FormattedLow => FormatNumber(Low24H);
         #endregion
     }
 }
