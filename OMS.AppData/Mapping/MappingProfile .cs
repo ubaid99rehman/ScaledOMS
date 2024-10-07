@@ -60,9 +60,13 @@ namespace OMS.SqlData.Mapping
            } ))
            .ReverseMap()
            .ForMember(dest => dest.Order_Statuses, opt => opt.MapFrom(src => new Order_Statuses { 
-                ID = (int)src.Order_Statuses }))
+                ID = (int)src.Order_Statuses,
+                Name = src.Order_Statuses.ToString()
+            }))
            .ForMember(dest => dest.Order_Types, opt => opt.MapFrom(src => new Order_Types{
-               ID = (int)src.Order_Types}))
+               ID = (int)src.Order_Types,
+               Name = src.Order_Types.ToString()
+            }))
            .ForMember(dest => dest.Accounts, opt => opt.MapFrom(src => new Accounts
            {
                AccountID = src.Account.AccountID,

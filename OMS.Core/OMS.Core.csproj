@@ -71,6 +71,7 @@
     <Compile Include="Services\AppServices\IAccountService.cs" />
     <Compile Include="Services\AppServices\IAppThemeService.cs" />
     <Compile Include="Services\AppServices\IAuthService.cs" />
+    <Compile Include="Services\AppServices\IPermissionService.cs" />
     <Compile Include="Services\AppServices\IUserService.cs" />
     <Compile Include="Services\AppServices\RealtimeServices\IAppTimerService.cs" />
     <Compile Include="Services\MarketServices\RealtimeServices\IMarketOrderService.cs" />

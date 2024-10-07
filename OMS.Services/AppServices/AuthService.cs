@@ -21,20 +21,12 @@ namespace OMS.Services.AppServices
             CacheService = cache;
         }
 
-        //Public Access Method Implementation
+        //Public Access Method
         public IUser Authenticate(UserCredentials credentials)
         {
             IUser user = UserAuth(credentials);
             if (user is IUser && user != null)
             {
-                CacheService.Set("CurrentUser", user);
-                ObservableCollection<IPermission> permissions = new ObservableCollection<IPermission>();
-                foreach(IUserRole userRole in user.UserRoles)
-                {
-                    ObservableCollection<IPermission> rolePermissions = userRole.Roles.Permissions.ToObservableCollection<IPermission>();
-                    rolePermissions.ForEach(p => permissions.Add(p));
-                }
-                CacheService.Set("UserPermissions", permissions);
                 return user;
             }
             return null;

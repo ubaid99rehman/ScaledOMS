@@ -12,6 +12,7 @@ namespace OMS
         {
             InitializeComponent();
             this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<AddOrderModel>();
+            //Visibilty
         }
 
         #region Button CLick Events

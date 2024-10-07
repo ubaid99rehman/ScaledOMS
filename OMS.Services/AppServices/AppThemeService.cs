@@ -86,7 +86,6 @@ namespace OMS.Services
             try
             {
                 var themeFilePath = Path.Combine(_themeDirectoryPath, $"{model.ThemeName}.xml");
-
                 var xmlContent = new XDocument(
                     new XDeclaration("1.0", "utf-8", "yes"),
                     new XElement("Theme",

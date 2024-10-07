@@ -5,6 +5,7 @@ using OMS.Core.Models.Orders;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -13,9 +14,10 @@ namespace OMS.ViewModels
     public class OrdersListModel : ViewModelBase
     {
         //Services
-        IOrderService OrderService;
-        IStockDataService StockDataService;
-        IAccountService AccountService;
+        private IOrderService OrderService;
+        private IStockDataService StockDataService;
+        private IAccountService AccountService;
+        private IPermissionService PermissionService;
 
         #region Private Members
         private decimal _quantity;
@@ -25,6 +27,8 @@ namespace OMS.ViewModels
         private ObservableCollection<int> _accounts;
         private ObservableCollection<IOrder> _orders;
         private IOrder _selectedOrder;
+        private bool _CanUpdateOrder;
+        private bool _CanCancelOrder;
         #endregion
 
         #region Public Members
@@ -88,22 +92,46 @@ namespace OMS.ViewModels
                     UpdateCurrentOrder();
                 }
             }
-        } 
+        }
+        public bool CanUpdateOrder
+        {
+            get => _CanUpdateOrder;
+            set
+            {
+                SetProperty(ref _CanUpdateOrder, value, nameof(CanUpdateOrder));
+            }
+        }
+        public bool CanCancelOrder
+        {
+            get => _CanCancelOrder;
+            set
+            {
+                SetProperty(ref _CanCancelOrder, value, nameof(CanCancelOrder));
+            }
+        }
         #endregion
 
         //Constructor
-        public OrdersListModel(IOrderService _orderService,
+        public OrdersListModel(IOrderService _orderService, IPermissionService permissionService,
             IStockDataService _stockDataService, IAccountService _accountService)
         {
             OrderService = _orderService;
             AccountService = _accountService;
             StockDataService = _stockDataService;
+            PermissionService = permissionService;
             SelectedOrder = new Order();
             _orders = new ObservableCollection<IOrder>();
             _accounts = new ObservableCollection<int>();
             //Loads Accounts and Orders List
             InitData();
             OrderService.DataUpdated += UpdateData;
+            SetPermissions();
+        }
+
+        private void SetPermissions()
+        {
+            CanUpdateOrder = PermissionService.HaveUserUpdatePermission("OpenOrdersView");
+            CanCancelOrder = PermissionService.HaveUserCancelPermission("OpenOrdersView");
         }
 
         //Private Methods
@@ -134,6 +162,7 @@ namespace OMS.ViewModels
         public void CancelOrder(out bool isCancelled, out string message)
         {
             isCancelled = false;
+            SelectedOrder.LasUpdatedDate = DateTime.Now;
             message = "Cannot Update Order!";
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
@@ -142,7 +171,6 @@ namespace OMS.ViewModels
                     isCancelled = false;
                     message = "Order is Already Cancelled!";
                 }
-
                 if (SelectedOrder.Order_Statuses == OrderStatus.Fulfilled)
                 {
                     isCancelled = false;
@@ -166,7 +194,7 @@ namespace OMS.ViewModels
             SelectedOrder.Price = StockCurrentPrice;
             SelectedOrder.Quantity = (int)OrderUpdatedQuantity;
             SelectedOrder.Total = OrderUpdatedTotal;
-
+            SelectedOrder.LasUpdatedDate = DateTime.Now;
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
                 if (SelectedOrder.Order_Statuses == OrderStatus.Cancelled)
@@ -174,7 +202,6 @@ namespace OMS.ViewModels
                     isUpdated = false;
                     message = "Cannot Update Cancelled Order!";
                 }
-
                 if (SelectedOrder.Order_Statuses == OrderStatus.Fulfilled)
                 {
                     isUpdated = false;

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AppServices\AccountService.cs" />
     <Compile Include="AppServices\AuthService.cs" />
+    <Compile Include="AppServices\PermissionService.cs" />
     <Compile Include="AppServices\RealtimeServices\AppTimerService.cs" />
     <Compile Include="AppServices\OrderService.cs" />
     <Compile Include="AppServices\RealtimeServices\SessionInfoService.cs" />

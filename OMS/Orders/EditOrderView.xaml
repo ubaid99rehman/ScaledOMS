@@ -42,10 +42,11 @@
             </StackPanel>
 
             <!--Account-->
-            <StackPanel Orientation="Horizontal" 
+            <StackPanel Orientation="Horizontal"
+                        IsEnabled="{Binding ShowUsers}"
                         Grid.Row="0" Grid.Column="1" Margin="20 10">
                 <TextBlock Text="Account:" Width="75"/>
-            <dxe:ComboBoxEdit SelectedItem="{Binding OrderUpdatedAccount, Mode=TwoWay}" 
+                <dxe:ComboBoxEdit SelectedItem="{Binding OrderUpdatedAccount, Mode=TwoWay}" 
                                   ItemsSource="{Binding AccountsList}"
                                   Width="120" Margin="10 0 0 0" />
             </StackPanel>
@@ -90,6 +91,7 @@
                     Grid.Row="3">
 
             <Button x:Name="btnUpdateOrder" 
+                    IsEnabled="{Binding CanUpdateOrder}"
                     Content="UPDATE ORDER" 
                     Width="120"
                     Margin="10, 0"
@@ -97,6 +99,7 @@
 
             <Button x:Name="btnCancelOrder" 
                     Content="CANCEL ORDER" 
+                    IsEnabled="{Binding CanCancelOrder}"
                     Width="120" 
                     Margin="10,0"
                     BorderThickness="1"

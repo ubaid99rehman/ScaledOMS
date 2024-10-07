@@ -1,8 +1,10 @@
 ﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using OMS.Core.Models;
 using OMS.Core.Models.Orders;
 using OMS.Core.Models.Stocks;
+using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
@@ -18,6 +20,8 @@ namespace OMS.ViewModels
         IStockDataService StockDataService;
         IOrderService OrderService;
         IAccountService AccountService;
+        private IUserService UserService;
+        private IPermissionService PermissionService;
 
         #region Private Members
         private StockDetailViewModel _stockDetailsModel;
@@ -33,6 +37,10 @@ namespace OMS.ViewModels
         private OrderType _orderType;
         private decimal _quantity;
         private decimal _total;
+        private bool _CanAddOrder;
+        private bool _CanUpdateOrder;
+        private bool _CanCancelOrder;
+        private IUser CurrentUser;
         #endregion
 
         #region Public Members
@@ -119,7 +127,6 @@ namespace OMS.ViewModels
                     if (!string.IsNullOrEmpty(SelectedStock.Symbol))
                     {
                         UpdateData();
-                        ClearFields();
                     }
                 }
             }
@@ -143,7 +150,10 @@ namespace OMS.ViewModels
                     SelectedOrder.Quantity = (int)value;
                     if ((int)value > 1)
                     {
-                        Total = (decimal)(SelectedOrder.Quantity*SelectedOrder.Price);
+                        if(SelectedStock !=null && SelectedStock.LastPrice > 0)
+                        {
+                            Total = (decimal)(SelectedOrder.Quantity*SelectedStock.LastPrice);
+                        }
                     }
                 }
 
@@ -155,24 +165,51 @@ namespace OMS.ViewModels
             set
             {
                 SetProperty(ref _total, value, nameof(Total));
-                SelectedOrder.Price = value;
+                SelectedOrder.Total = value;
             }
-        } 
+        }
+        public bool CanAddOrder
+        {
+            get => _CanAddOrder;
+            set
+            {
+                SetProperty(ref _CanAddOrder, value, nameof(CanAddOrder));
+            }
+        }
+        public bool CanUpdateOrder
+        {
+            get => _CanUpdateOrder;
+            set
+            {
+                SetProperty(ref _CanUpdateOrder, value, nameof(CanUpdateOrder));
+            }
+        }
+        public bool CanCancelOrder
+        {
+            get => _CanCancelOrder;
+            set
+            {
+                SetProperty(ref _CanCancelOrder, value, nameof(CanCancelOrder));
+            }
+        }
         #endregion
 
         //Constructor
-        public OrderModel(IStockDataService stockDataService, IOrderService orderService, IAccountService accountService)
+        public OrderModel(IStockDataService stockDataService, IOrderService orderService, 
+            IAccountService accountService, IUserService userService,
+            IPermissionService permissionService)
         {
 
             _stockDetailsModel = new StockDetailViewModel(stockDataService);
             SelectedOrder = new Order();
             SelectedStock = new Stock();
 
-
             #region Services Initialization
             StockDataService = stockDataService;
             AccountService = accountService;
             OrderService = orderService;
+            PermissionService = permissionService;
+            UserService  = userService;
             #endregion
             
             #region Initialized Collections
@@ -182,9 +219,10 @@ namespace OMS.ViewModels
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
             #endregion
-          
 
+            SetPermissions();
             InitData();
+            SetUser();
         }
 
         //Private Methods
@@ -209,23 +247,33 @@ namespace OMS.ViewModels
         {
             SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
             StockDetailsModel.Symbol = SelectedStockSymbol;
-
             LastOrder = OrderService.GetLastOrderByUser();
             StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
             Orders = OrderService.GetOpenOrders();
             SelectedOrder = new Order();
             SelectedOrder.Price = SelectedStock.LastPrice;
+            Total = SelectedStock.LastPrice;
         }
         private void ClearFields()
         {
             SelectedOrder = new Order();
-            Quantity = 0;
-            Total = 0;
+            Quantity = 1;
+            Total = SelectedStock.LastPrice;
             OrderType = OrderType.Buy;
         }
         private void UpdateTotal()
         {
             Total = SelectedStock.LastPrice * Quantity;
+        }
+        private void SetPermissions()
+        {
+            CanAddOrder = PermissionService.HaveUserCreatePermission("ManageOrderView");
+            CanUpdateOrder = PermissionService.HaveUserUpdatePermission("ManageOrderView");
+            CanCancelOrder = PermissionService.HaveUserCancelPermission("ManageOrderView");
+        }
+        private void SetUser()
+        {
+            CurrentUser = UserService.GetUser();
         }
 
         //Public Methods
@@ -244,17 +292,20 @@ namespace OMS.ViewModels
 
             var newOrder = new Order
             {
-                OrderID = 99945,
+                OrderGuid = Guid.NewGuid(),
                 AccountID = SelectedAccount,
+                AddedBy = CurrentUser.UserID,
                 OrderType = (int)OrderType,
+                Status = (int)OrderStatus.New,
                 Symbol = SelectedStockSymbol,
                 Quantity = (int)Quantity,
                 Price = SelectedStock.LastPrice,
                 Total = Total,
                 CreatedDate = DateTime.Now,
-                OrderDate = DateTime.Now
+                OrderDate = DateTime.Now,
+                LasUpdatedDate = DateTime.Now,
+                ExpirationDate = DateTime.Now
             };
-
             if (isValidOrder(newOrder))
             {
 
@@ -288,13 +339,9 @@ namespace OMS.ViewModels
                         UpdateData();
                     }
                 }
-                else
-                {
-
-                }
-                UpdateData();
             }
         }
+        [Command]
         public void ClearOrder()
         {
             ClearFields();

@@ -22,8 +22,8 @@ namespace OMS.Core.Models
         private int _status;
         private int? _accountID;
         private int? _addedBy;
-        private DateTime? _createdDate;
-        private DateTime? _lastupdatedDate;
+        private DateTime _createdDate;
+        private DateTime _lastupdatedDate;
         private DateTime _expirationDate;
         private Guid _orderGuid;
         private IAccount _account;
@@ -131,7 +131,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public DateTime? CreatedDate
+        public DateTime CreatedDate
         {
             get => _createdDate;
             set
@@ -143,7 +143,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public DateTime? LasUpdatedDate
+        public DateTime LasUpdatedDate
         {
             get => _lastupdatedDate;
             set

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Models\Account\Account.cs" />
     <Compile Include="Models\App\AppTime.cs" />
+    <Compile Include="Models\App\DocumentState.cs" />
     <Compile Include="Models\App\Screen.cs" />
     <Compile Include="Models\App\ThemeModel.cs" />
     <Compile Include="Models\Books\OrderBook.cs" />

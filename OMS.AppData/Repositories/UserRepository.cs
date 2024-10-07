@@ -65,9 +65,8 @@ namespace OMS.SqlData.Repositories
             var user = Mapper.Map<IUser>(userEntity);
             return user;
         }
-        public bool UpdateUser(IUser user)
+        public IUser UpdateUser(IUser user)
         {
-            bool isUpdated = false;
             var toUpdate = Mapper.Map<Users>(user);
             var userEntity = Context.Users.Where(u => u.UserID == user.UserID).FirstOrDefault();
             if (userEntity != null)
@@ -75,7 +74,7 @@ namespace OMS.SqlData.Repositories
                 userEntity = toUpdate;
                 Context.SaveChanges();
             }
-            return false;
+            return GetById(user.UserID);
         }
     }
 }

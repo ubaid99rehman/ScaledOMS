@@ -9,7 +9,6 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
-
     <DockPanel Margin="10">
         <!-- Top Section with Account Overview -->
         <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
@@ -68,24 +67,25 @@
                  ItemsSource="{Binding Orders}">
                     <dxg:GridControl.View>
                         <dxg:TableView AllowGrouping="False" 
-                           AutoWidth="True"
-                           ShowIndicator="False"
-                           IsColumnMenuEnabled="False"
-                           IsRowCellMenuEnabled="False"
-                           IsTotalSummaryMenuEnabled="False"
-                           ShowGroupPanel="False"
-                           IsGroupPanelMenuEnabled="False"
-                           IsGroupFooterMenuEnabled="False"
-                           IsGroupRowMenuEnabled="False">
+                                       AllowEditing="False"
+                                       AutoWidth="True"
+                                       ShowIndicator="False"
+                                       IsColumnMenuEnabled="False"
+                                       IsRowCellMenuEnabled="False"
+                                       IsTotalSummaryMenuEnabled="False"
+                                       ShowGroupPanel="False"
+                                       IsGroupPanelMenuEnabled="False"
+                                       IsGroupFooterMenuEnabled="False"
+                                       IsGroupRowMenuEnabled="False">
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
                     <dxg:GridColumn FieldName="ID" Header="ID" Visible="False"/>
-                    <dxg:GridColumn FieldName="Status" Header="Order Status" GroupIndex="0"  />
+                    <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status" GroupIndex="0"  />
                     <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
                     <dxg:GridColumn FieldName="OrderDate" Header="Order Date" />
                     <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
-                    <dxg:GridColumn FieldName="OrderType" Header="Order Type" />
+                    <dxg:GridColumn FieldName="Order_Types" Header="Order Type" />
                     <dxg:GridColumn FieldName="AccountID" Header="Account" />
                     <dxg:GridColumn FieldName="Price" Header="Price" />
                     <dxg:GridColumn FieldName="Quantity" Header="Quantity" />
@@ -103,8 +103,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <!-- Radio Buttons for Criteria Selection -->
-                   
                     <!-- Pie Chart -->
                     <dxc:ChartControl Grid.Row="1" Margin="10" 
                                       VerticalAlignment="Stretch">

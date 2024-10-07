@@ -18,13 +18,6 @@
         Foreground="{DynamicResource TextForeground}">
    <Grid Style="{StaticResource CustomGridStyle}">
         <StackPanel>
-            <!--<Canvas>
-                <dxe:ButtonClose x:Name="btnClearOrder" Content="Close" 
-                                 Canvas.Right="5"
-                                 Canvas.Top="5"
-                                 Click="BtnClose_Click"
-                                 BorderThickness="1"/>
-            </Canvas>-->
             <Grid HorizontalAlignment="Center" 
                       Margin="20 40"
                       VerticalAlignment="Top">
@@ -61,7 +54,7 @@
                 <!--Symbol-->
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 10">
                     <TextBlock Text="Order Type:" Width="75"/>
-                    <ComboBox SelectedItem="{Binding SelectedOrder.OrderType, Mode=TwoWay}" 
+                    <ComboBox SelectedItem="{Binding SelectedOrderType, Mode=TwoWay}" 
                                       ItemsSource="{Binding OrderTypes}"
                                       Width="120" Margin="10 0 0 0"/>
                 </StackPanel>
@@ -102,9 +95,10 @@
                         HorizontalAlignment="Center"
                         Grid.Row="3">
                 <Button x:Name="btnAddOrder" Content="ADD ORDER" 
-                            Width="120" 
-                            Margin="10, 0"
-                            Click="btnAddOrder_Click">
+                        IsEnabled="{Binding CanAddOrder}"
+                        Width="120" 
+                        Margin="10, 0"
+                        Click="btnAddOrder_Click">
                 </Button>
             </StackPanel>
 

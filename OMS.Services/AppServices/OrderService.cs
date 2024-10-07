@@ -16,13 +16,16 @@ namespace OMS.Services.AppServices
     {
         ICacheService CacheService;
         IOrderRepository OrderRepository;
+        IUserService UserService;
         public event Action DataUpdated;
 
         //Constructor
-        public OrderService(IOrderRepository accountRepository, ICacheService cacheService)
+        public OrderService(IOrderRepository accountRepository, IUserService userService,
+            ICacheService cacheService)
         {
             CacheService = cacheService;
             OrderRepository = accountRepository;
+            UserService = userService;
         }
 
         //Public Data Access Methods Implementation
@@ -75,7 +78,14 @@ namespace OMS.Services.AppServices
         }
         public ObservableCollection<IOrder> GetOrdersByStock(string stockSymbol)
         {
-            return GetAll().Where(order => order.Symbol == stockSymbol).ToObservableCollection<IOrder>();
+            IUser user = UserService.GetUser();
+            if (user == null)
+            {
+                user = new User();
+                user.UserID = 1;
+            }
+
+            return GetAll().Where(order => order.Symbol == stockSymbol && order.AddedBy == user.UserID).ToObservableCollection<IOrder>();
         }
         public ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol)
         {
@@ -83,7 +93,7 @@ namespace OMS.Services.AppServices
         }
         public IOrder GetLastOrderByUser()
         {
-            IUser user = CacheService.Get<IUser>("CurrentUser");
+            IUser user = UserService.GetUser();
             if (user == null)
             {
                 user = new User();
@@ -98,12 +108,13 @@ namespace OMS.Services.AppServices
         {
             message = string.Empty;
             selectedOrder.Order_Statuses = OrderStatus.Cancelled;
+            selectedOrder.Status = (int)OrderStatus.Cancelled;
             bool result = OrderRepository.Update(selectedOrder);
             if (result)
             {
-                FetchOrders();
+                FetchOrders(); 
                 DataUpdated?.Invoke();
-                message = "Cancelled";
+                message = "Order Cancelled Successfully!";
             }
         }
         public bool Add(IOrder entity)
@@ -116,12 +127,12 @@ namespace OMS.Services.AppServices
             }
             return result;
         } 
-        
 
         //Private Data Loading Methods
         private void FetchOrders()
         {
             ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
+            //Recent Orders After New Order
             CacheService.Set("Orders", Orders);
         }
     }

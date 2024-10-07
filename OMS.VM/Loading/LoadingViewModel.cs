@@ -13,8 +13,10 @@ namespace OMS.ViewModels
     public class LoadingViewModel : ViewModelBase
     {
         //Services
-        private IAuthService AuthService;
         private ILogHelper Logger;
+        private IAuthService AuthService;
+        private IUserService UserService;
+
         //Events
         public event Action AuthenticationCompleted;
 
@@ -55,11 +57,14 @@ namespace OMS.ViewModels
         }
 
         //Constructor
-        public LoadingViewModel(IAuthService authService, ILogHelper logHelper)
+        public LoadingViewModel(IAuthService authService, 
+            ILogHelper logHelper, 
+            IUserService userService)
         {
             Logger = logHelper;
             IsAuthenticated = false;
             AuthService = authService;
+            UserService = userService;
         }
 
         //Methods
@@ -85,12 +90,13 @@ namespace OMS.ViewModels
         {
             Logger.LogInfo("Authenticating User: " + Username);
             UserCredentials credentials = new UserCredentials(this.Username, this.Password);
-            var user = AuthService.Authenticate(credentials);
+            IUser user = AuthService.Authenticate(credentials);
             
             if (user != null)
             {
                 IsAuthenticated = true;
                 AuthMessage = "Authenticated!";
+                UserService.SetUser(user);
                 AuthenticationComplete();
                 Logger.LogInfo("User: " + Username + " Authenticated.");
             }

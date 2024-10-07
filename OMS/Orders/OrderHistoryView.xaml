@@ -10,10 +10,24 @@
              xmlns:Internal="clr-namespace:DevExpress.Xpf.Core.Internal;assembly=DevExpress.Xpf.Core.v24.1"              
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
-        
-    
-    <Grid Grid.Row="1">
+
+    <!--ShowUsers-->
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="UsersList" Orientation="Horizontal" 
+                    Grid.Row="0" Grid.Column="1" Margin="20 10">
+            <TextBlock Text="Users:" Width="75"/>
+            <dxe:ComboBoxEdit SelectedItem="{Binding SelectedUser, Mode=TwoWay}" 
+                              DisplayMember="UserName"
+                              ItemsSource="{Binding Users}"
+                              Width="120" Margin="10 0 0 0" />
+        </StackPanel>
         <dxg:GridControl Name="dataGrid" 
+                         Grid.Row="1"
                          AutoExpandAllGroups="True"
                          FontFamily="{DynamicResource FontFamily}"
                          FontWeight="{DynamicResource FontWeight}"
@@ -22,6 +36,7 @@
             <dxg:GridControl.View>
                     <dxg:TableView AllowGrouping="False" 
                                    AutoWidth="True"
+                                   AllowEditing="False"
                                    ShowIndicator="False"
                                    IsColumnMenuEnabled="False"
                                    IsRowCellMenuEnabled="False"
@@ -34,7 +49,7 @@
                 </dxg:GridControl.View>
 
             <dxg:GridColumn FieldName="ID" Header="ID" Visible="False"/>
-            <dxg:GridColumn FieldName="Status" Header="Order Status" GroupIndex="0"  />
+            <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status" GroupIndex="0"  />
             <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
             <dxg:GridColumn FieldName="OrderDate" Header="Order Date" />
             <dxg:GridColumn FieldName="Symbol" Header="Symbol" />

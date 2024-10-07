@@ -32,11 +32,11 @@
                                MouseDoubleClick="Show_EditForm"/>
             </dxg:GridControl.View>
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Status" Header="Order Status"/>
+                <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status"/>
                 <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
                 <dxg:GridColumn FieldName="OrderDate" Header="Order Date"/>
                 <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
-                <dxg:GridColumn FieldName="OrderType" Header="Order Type"/>
+                <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
                 <dxg:GridColumn FieldName="AccountID" Header="Account"/>
                 <dxg:GridColumn Name="priceCol" FieldName="Price" Header="Price">
                     <dxg:GridColumn.EditSettings>

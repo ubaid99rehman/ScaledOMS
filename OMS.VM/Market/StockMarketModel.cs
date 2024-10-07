@@ -99,16 +99,16 @@ namespace OMS.ViewModels
 
         //Constructor
         public StockMarketModel(IStockDataService stockDataService, IMarketOrderService marketOrderService,
-            IMarketTradeService marketTradeService,IStockTradeDataService stockTradeDataService,
-            IOrderService orderService,IAccountService accountService)
+            IMarketTradeService marketTradeService,IStockTradeDataService stockTradeDataService, IPermissionService permissionService,
+            IOrderService orderService,IAccountService accountService, IUserService userService)
         {
             _stockService = stockDataService;
             _orderBookModel = new OrderBookModel(marketOrderService);
             _tradeBookModel = new TradeBookModel(marketTradeService);
             _stockDetailsModel = new StockDetailViewModel(_stockService);
             _stockChartViewModel = new StockChartModel(stockTradeDataService);
-            _orderHistoryModel = new OrderHistoryViewModel(orderService);
-            _openOrdersModel = new OrdersListModel(orderService,stockDataService,accountService);
+            _orderHistoryModel = new OrderHistoryViewModel(orderService, userService, permissionService);
+            _openOrdersModel = new OrdersListModel(orderService,permissionService,stockDataService,accountService);
             _tradeModel = new TradeViewModel();
             InitData();
         }

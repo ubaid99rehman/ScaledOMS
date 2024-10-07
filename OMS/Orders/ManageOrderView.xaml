@@ -117,24 +117,27 @@
                             Margin="0,20,0,0">
 
                         <Button x:Name="btnAddOrder" Content="ADD ORDER" 
-                            Width="120" 
-                            Margin="10, 0"
-                            Style="{DynamicResource AddButtonStyle}"
-                            Click="btnAddOrder_Click">
+                                Width="120" 
+                                Margin="10, 0"
+                                IsEnabled="{Binding CanAddOrder}"
+                                Style="{DynamicResource AddButtonStyle}"
+                                Click="btnAddOrder_Click">
                         </Button>
 
                         <Button x:Name="btnUpdateOrder" Content="UPDATE ORDER" 
-                            Width="120"
-                            Margin="10, 0"
-                            Style="{DynamicResource UpdateButtonStyle}"
-                            Click="btnUpdateOrder_Click" >
+                                Width="120"
+                                Margin="10, 0"
+                                IsEnabled="{Binding CanUpdateOrder}"
+                                Style="{DynamicResource UpdateButtonStyle}"
+                                Click="btnUpdateOrder_Click" >
                         </Button>
 
                         <Button x:Name="btnCancelOrder" Content="CANCEL ORDER" 
-                            Width="120" 
-                            Margin="10,0"
-                            Style="{DynamicResource CancelButtonStyle}"
-                            Click="btnCancelOrder_Click" >
+                                Width="120" 
+                                Margin="10,0"
+                                IsEnabled="{Binding CanCancelOrder}"
+                                Style="{DynamicResource CancelButtonStyle}"
+                                Click="btnCancelOrder_Click" >
                         </Button>
 
                         <Button x:Name="btnClearOrder" Content="Clear Fields" 
@@ -267,11 +270,11 @@
                                    ShowSearchPanelMode="Always" AutoWidth="True"/>
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="Status" Header="Order Status"/>
+                    <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status"/>
                         <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
                         <dxg:GridColumn FieldName="OrderDate" Header="Order Date"/>
                         <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
-                        <dxg:GridColumn FieldName="OrderType" Header="Order Type"/>
+                        <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
                         <dxg:GridColumn FieldName="AccountID" Header="Account"/>
                         <dxg:GridColumn FieldName="Price" Header="Price"/>
                         <dxg:GridColumn FieldName="Quantity" Header="Quantity"/>

@@ -55,8 +55,39 @@ namespace OMS.SqlData.Repositories
         public bool Add(IOrder order)
         {
             Orders orderEntity = Mapper.Map<Orders>(order);
+            orderEntity.Accounts = Context.Accounts.Where(o => o.AccountID == order.AccountID).FirstOrDefault();
+            orderEntity.Order_Statuses = Context.Order_Statuses.Where(o => o.ID == order.Status).FirstOrDefault();
+            orderEntity.Order_Types = Context.Order_Types.Where(o => o.ID == order.OrderType).FirstOrDefault();
+
             Context.Orders.Add(orderEntity);
-            Context.SaveChanges();
+            try
+            {
+                Context.SaveChanges();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+            {
+                Exception raise = dbEx;
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}",
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        raise = new InvalidOperationException(message, raise);
+                    }
+                }
+                
+                throw raise;
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+            {
+                throw dbEx;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             Orders addedOrder = Context.Orders.Where(o => o.OrderGuid == order.OrderGuid).FirstOrDefault();
             if(addedOrder !=null)
             {
@@ -95,7 +126,6 @@ namespace OMS.SqlData.Repositories
                     isUpdated = true;
                 }
             }
-
             return isUpdated;
         }
         public bool Delete(IOrder order)

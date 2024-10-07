@@ -68,10 +68,9 @@
                            IsSimplified="True"
                            ToolbarShowMode="Hide">
             <dxr:RibbonDefaultPageCategory>
-
                 <!-- Home -->
                 <dxr:RibbonPage Caption="Home">
-                    <dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Name="DashboardBtn" IsVisible="{Binding CanViewDashboard}">
                         <dxb:BarButtonItem Content="Dashboard" 
                                            Margin="5"
                                            Padding="5"
@@ -81,11 +80,10 @@
                                            LargeGlyph="{dx:FontIconSource Glyph=59407}" 
                                            Glyph="{dx:FontIconSource Glyph=59407}" />
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup >
+                    <dxr:RibbonPageGroup Name="MarketBtn" IsVisible="{Binding CanViewMarketWatch}">
                         <dxb:BarButtonItem Content="Market Watch" 
                                            Margin="5"
                                            Padding="5"
-                                           IsVisible="{Binding CanViewMarketWatch}" 
                                            Command="{Binding StockMarketCommand}"
                                            BarItemDisplayMode="ContentAndGlyph"
                                            AllowGlyphTheming="True"
@@ -96,34 +94,31 @@
 
                 <!-- Orders -->
                 <dxr:RibbonPage Caption="Orders">
-                    <dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Name="AddOrderBtn" IsVisible="{Binding CanViewAddOrder}">
                         <dxb:BarButtonItem Content="New Order" 
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
                                            ItemClick="NewOrder_Click"
-                                           IsVisible="{Binding CanViewAddOrder}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=59275}"
                                            Glyph="{dx:FontIconSource Glyph=59275}"  />
                     </dxr:RibbonPageGroup>
-
-                    <dxr:RibbonPageGroup >
+                    <dxr:RibbonPageGroup Name="ManageOrderBtn" IsVisible="{Binding CanViewManageOrders}">
                         <dxb:BarButtonItem Content="Manage Orders" 
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
-                                           IsVisible="{Binding CanViewManageOrders}" 
+                                           
                                            Command="{Binding ManageOrdersCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=59610}"
                                            Glyph="{dx:FontIconSource Glyph=59610}"/>
                     </dxr:RibbonPageGroup>
-
-                    <dxr:RibbonPageGroup >
+                    <dxr:RibbonPageGroup Name="OrderHistoryBtn" IsVisible="{Binding CanViewOrderHistory}">
                         <dxb:BarButtonItem Content="Orders History" 
                                            Margin="5"
                                            Padding="5"
                                            AllowGlyphTheming="True"
-                                           IsVisible="{Binding CanViewOrderHistory}" 
+                                           
                                            Command="{Binding OrderHistoryCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=63289}"
                                            Glyph="{dx:FontIconSource Glyph=63289}"/>
@@ -131,8 +126,8 @@
                 </dxr:RibbonPage>
 
                 <!-- Portfolio -->
-                <dxr:RibbonPage Caption="Portfolio">
-                    <dxr:RibbonPageGroup>
+                <dxr:RibbonPage Caption="Portfolio" IsVisible="{Binding CanViewPortfolio}">
+                    <dxr:RibbonPageGroup Name="AccountPortfolioBtn" IsVisible="False">
                         <dxb:BarButtonItem Content="Portfolio" 
                                            Command="{Binding PortfolioCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=60165}"
@@ -155,7 +150,6 @@
                            LargeGlyph="{dx:FontIconSource Glyph=59384}"
                            Glyph="{dx:FontIconSource Glyph=59384}"/>
                     </dxr:RibbonPageGroup>
-
                 </dxr:RibbonPage>
 
             </dxr:RibbonDefaultPageCategory>

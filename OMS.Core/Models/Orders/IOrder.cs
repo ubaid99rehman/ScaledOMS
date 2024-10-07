@@ -17,8 +17,8 @@ namespace OMS.Core.Models.Orders
         int Status { get; set; }
         int? AccountID { get; set; }
         DateTime ExpirationDate { get; set; }
-        DateTime? LasUpdatedDate { get; set; }
-        DateTime? CreatedDate { get; set; }
+        DateTime LasUpdatedDate { get; set; }
+        DateTime CreatedDate { get; set; }
         int? AddedBy { get; set; }
         string Symbol { get; set; }
         Guid OrderGuid { get; set; }

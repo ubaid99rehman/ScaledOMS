@@ -8,6 +8,6 @@ namespace OMS.DataAccess.Repositories.AppRepositories
         IUser GetById(int id);
         IEnumerable<IUser> GetAll();
         IUser AuthenticateUser(UserCredentials credentials);
-        bool UpdateUser(IUser user);
+        IUser UpdateUser(IUser user);
     }
 }

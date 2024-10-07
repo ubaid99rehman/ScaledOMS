@@ -73,9 +73,10 @@ namespace OMS
             services.AddSingleton<IAppTimerService, AppTimerService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IPermissionService, PermissionService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserService, UserService>();
-            
+
             //MarketServices
             services.AddSingleton<IStockDataService, StockDataService>();
             services.AddSingleton<IStockTradeDataService, StockTradeDataService>();
@@ -123,7 +124,7 @@ namespace OMS
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<MappingProfile>(); // Add your mapping profiles here
+                cfg.AddProfile<MappingProfile>(); 
             });
 
             return config.CreateMapper();
