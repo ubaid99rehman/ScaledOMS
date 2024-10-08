@@ -15,8 +15,6 @@ namespace OMS.ViewModels
         private IOrderService OrderService;
         private IPermissionService PermissionService;
 
-        
-
         //Private Data Member
         private ObservableCollection<IOrder> orders;
         private ObservableCollection<IUser> users;
@@ -63,6 +61,7 @@ namespace OMS.ViewModels
         public OrderHistoryViewModel(IOrderService orderService, IUserService userService, IPermissionService permissionService)
         {
             OrderService = orderService;
+            OrderService.DataUpdated += FetchUpdatedOrders;
             _userService = userService;
             PermissionService = permissionService;
             LoadUsers();
@@ -87,7 +86,17 @@ namespace OMS.ViewModels
         }
         private void LoadOrders()
         {
-            Orders = OrderService.GetAll();
+            if(SelectedUser !=null && SelectedUser.UserID > 0)
+            {
+                Orders = OrderService.GetOrdersByUser(SelectedUser.UserID);
+            }
+        }
+        private void FetchUpdatedOrders(int id)
+        {
+            if (SelectedUser.UserID == id) 
+            { 
+                LoadOrders();
+            }
         }
     }
 }

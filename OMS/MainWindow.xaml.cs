@@ -13,7 +13,7 @@ namespace OMS
         //Child Winodw Open Props
         bool isOrderOpen;
         bool isUserWindowOpen;
-        private MainViewModel model;
+
         //Constructor
         public MainWindow()
         {
@@ -21,43 +21,10 @@ namespace OMS
             isOrderOpen = false;
             isUserWindowOpen = false;
             //Datacontext
-            model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
+            var model = AppServiceProvider.GetServiceProvider().GetRequiredService<MainViewModel>();
             //Binding Navigation Service
             documentManagerService = (TabbedDocumentUIService)model.DocumentManagerService;
             this.DataContext = model;
-            //MarketBtn.IsVisible = false;
-            //OrderHistoryBtn.IsVisible = false;
-            //AddOrderBtn.IsVisible = false;
-            //ManageOrderBtn.IsVisible = false;
-            //AccountPortfolioBtn.IsVisible = false;
-            //SetScreensVisibility();
-        }
-        private void SetScreensVisibility()
-        {
-            if (model.CanViewDashboard)
-            {
-                DashboardBtn.IsVisible = true;
-            }
-            if (model.CanViewMarketWatch)
-            {
-                MarketBtn.IsVisible = true;
-            }
-            if (model.CanViewOrderHistory)
-            {
-                OrderHistoryBtn.IsVisible = true;
-            }
-            if (model.CanViewAddOrder)
-            {
-                AddOrderBtn.IsVisible = true;
-            }
-            if (model.CanViewManageOrders)
-            {
-                ManageOrderBtn.IsVisible = true;
-            }
-            if (model.CanViewPortfolio)
-            {
-                AccountPortfolioBtn.IsVisible = true;
-            }
         }
 
         //Child Window Open Click

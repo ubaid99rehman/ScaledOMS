@@ -6,7 +6,7 @@ namespace OMS.Core.Services.AppServices
 {
     public interface IOrderService : IAppService<IOrder>
     {
-        event Action DataUpdated;
+        event Action<int> DataUpdated;
         void CancelOrder(IOrder selectedOrder, out string message);
         IOrder GetLastOrderByUser();
         

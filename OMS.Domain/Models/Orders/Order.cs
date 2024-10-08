@@ -10,18 +10,18 @@ namespace OMS.Core.Models
     public class Order : BaseModel, IOrder
     {
         #region Private Members
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public int ParentID { get; set; } = 0;
-        private int? _orderID;
-        private DateTime? _orderDate;
+        private int _orderID;
+        private DateTime _orderDate;
         private string _symbol;
         private int _orderType;
-        private int? _quantity;
-        private decimal? _price;
-        private decimal? _total;
+        private int _quantity;
+        private decimal _price;
+        private decimal _total;
         private int _status;
-        private int? _accountID;
-        private int? _addedBy;
+        private int _accountID;
+        private int _addedBy;
         private DateTime _createdDate;
         private DateTime _lastupdatedDate;
         private DateTime _expirationDate;
@@ -35,7 +35,7 @@ namespace OMS.Core.Models
         //Constructor
         public Order() { _orderID = -1; }
 
-        public int? OrderID
+        public int OrderID
         {
             get => _orderID;
             set
@@ -59,7 +59,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public int? Quantity
+        public int Quantity
         {
             get => _quantity;
             set
@@ -71,7 +71,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public decimal? Price
+        public decimal Price
         {
             get => _price;
             set
@@ -83,7 +83,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public decimal? Total
+        public decimal Total
         {
             get => _total;
             set
@@ -95,7 +95,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public DateTime? OrderDate
+        public DateTime OrderDate
         {
             get => _orderDate;
             set
@@ -107,7 +107,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public int? AccountID
+        public int AccountID
         {
             get => _accountID;
             set
@@ -119,7 +119,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public int? AddedBy
+        public int AddedBy
         {
             get => _addedBy;
             set

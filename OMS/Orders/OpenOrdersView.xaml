@@ -34,7 +34,7 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status"/>
                 <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
-                <dxg:GridColumn FieldName="OrderDate" Header="Order Date"/>
+                <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending"/>
                 <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
                 <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
                 <dxg:GridColumn FieldName="AccountID" Header="Account"/>

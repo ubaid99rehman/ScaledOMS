@@ -129,7 +129,7 @@ namespace OMS.ViewModels
             set
             {
                 SetProperty(ref _total, value, nameof(Total));
-                SelectedOrder.Price = value;
+                SelectedOrder.Total = value;
             }
         }
         public ObservableCollection<int> AccountsList
@@ -207,7 +207,8 @@ namespace OMS.ViewModels
         public void ClearFields()
         {
             SelectedOrder = new Order();
-            SelectedOrder.OrderType = -1;
+            SelectedOrder.AccountID = AccountsList.First();
+            SelectedOrder.OrderType = (int)OrderType.Buy;
             Quantity = 0;
             Total = 0;
         }
@@ -222,7 +223,8 @@ namespace OMS.ViewModels
             {
                 return false;
             }
-            if(SelectedOrder.Quantity <=0)
+           
+            if (SelectedOrder.Quantity <=0)
             {
                 return false; 
             }
@@ -238,13 +240,17 @@ namespace OMS.ViewModels
             {
                 return false;
             }
+            if(SelectedOrder.AccountID <= 0)
+            {
+                return false ;
+            }
             SelectedOrder.Symbol = SelectedStockSymbol;
             SelectedOrder.OrderGuid = Guid.NewGuid();
             SelectedOrder.Quantity = (int)Quantity;
             SelectedOrder.Price= StockPrice;
             SelectedOrder.Total = Quantity * StockPrice;
-            //SelectedOrder.OrderID = 010124;
             SelectedOrder.Status = (int)OrderStatus.New;
+            SelectedOrder.Order_Statuses = OrderStatus.New;
             SelectedOrder.OrderDate = DateTime.Now;
             SelectedOrder.CreatedDate = DateTime.Now;
             SelectedOrder.LasUpdatedDate = DateTime.Now;

@@ -1,6 +1,7 @@
 ﻿using OMS.Core.Services.AppServices;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
+using System.Threading.Tasks;
 
 namespace OMS
 {
@@ -23,22 +24,25 @@ namespace OMS
         }
 
         //Methods
-        public void LoadData()
+        public async Task LoadData()
         {
-            LoadAccountData();
-            LoadStocksData();
-            LoadOrdersData();
+            await LoadAccountData();
+            await LoadStocksData();
+            await LoadOrdersData();
         }
-        public void LoadOrdersData()
+        public async Task LoadOrdersData()
         {
+            await Task.Delay(4000);
             _cacheService.Set("Orders", _orderService.GetAll());
         }
-        public void LoadStocksData()
+        public async Task LoadStocksData()
         {
+            await Task.Delay(2000);
             _cacheService.Set("StockSymbols", _stockDataService.GetStockSymbols());
         }
-        public void LoadAccountData()
+        public async Task LoadAccountData()
         {
+            await Task.Delay(2000);
             _cacheService.Set("Accounts", _accountService.GetAll());
             _cacheService.Set("AccountsList", _accountService.GetAccountsList());
         }

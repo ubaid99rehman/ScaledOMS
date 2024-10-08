@@ -1,5 +1,4 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Core.Models.User;
 using OMS.Core.Models.Orders;
 using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
@@ -17,7 +16,7 @@ namespace OMS.Services.AppServices
         ICacheService CacheService;
         IOrderRepository OrderRepository;
         IUserService UserService;
-        public event Action DataUpdated;
+        public event Action<int> DataUpdated;
 
         //Constructor
         public OrderService(IOrderRepository accountRepository, IUserService userService,
@@ -44,29 +43,29 @@ namespace OMS.Services.AppServices
         {
             return GetAll().Where(o => o.OrderID == key).FirstOrDefault();
         }
-        public bool Update(IOrder entity)
-        {
-            bool result = OrderRepository.Update(entity);
-            if (result)
-            {
-                FetchOrders();
-                DataUpdated?.Invoke();
-            }
-            return result;
-        }
         public ObservableCollection<IOrder> GetOpenOrders()
         {
             var orders = GetAll();
-            var openOrders = orders.Where(order => order.Order_Statuses == OrderStatus.New).ToObservableCollection<IOrder>();
+            int id = GetUser().UserID;
+            var openOrders = orders.Where(order => order.Order_Statuses == OrderStatus.New && 
+            order.AddedBy == id).ToObservableCollection<IOrder>();
             return openOrders;
         }
         public ObservableCollection<IOrder> GetCancelledOrders()
         {
-            return GetAll().Where(order => order.Order_Statuses == OrderStatus.Cancelled).ToObservableCollection<IOrder>();
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var cancelledOrders = orders.Where(order => order.Order_Statuses == OrderStatus.Cancelled &&
+            order.AddedBy == id).ToObservableCollection<IOrder>();
+            return cancelledOrders;
         }
         public ObservableCollection<IOrder> GetFulfilledOrders()
         {
-            return GetAll().Where(order => order.Order_Statuses == OrderStatus.Fulfilled).ToObservableCollection<IOrder>();
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var cancelledOrders = orders.Where(order => order.Order_Statuses == OrderStatus.Fulfilled &&
+            order.AddedBy == id).ToObservableCollection<IOrder>();
+            return cancelledOrders;
         }
         public ObservableCollection<IOrder> GetOrdersByUser(int userId)
         {
@@ -78,14 +77,8 @@ namespace OMS.Services.AppServices
         }
         public ObservableCollection<IOrder> GetOrdersByStock(string stockSymbol)
         {
-            IUser user = UserService.GetUser();
-            if (user == null)
-            {
-                user = new User();
-                user.UserID = 1;
-            }
-
-            return GetAll().Where(order => order.Symbol == stockSymbol && order.AddedBy == user.UserID).ToObservableCollection<IOrder>();
+            int id= GetUser().UserID;
+            return GetAll().Where(order => order.Symbol == stockSymbol && order.AddedBy == id).ToObservableCollection<IOrder>();
         }
         public ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol)
         {
@@ -93,47 +86,72 @@ namespace OMS.Services.AppServices
         }
         public IOrder GetLastOrderByUser()
         {
-            IUser user = UserService.GetUser();
-            if (user == null)
-            {
-                user = new User();
-                user.UserID = 1;
-            }
-
-            return GetAll().Where(order => order.AddedBy == user.UserID)
+            int id = GetUser().UserID;
+            return GetAll().Where(order => order.AddedBy == id)
                 .OrderByDescending(order => order.CreatedDate)
                 .FirstOrDefault();
+        }
+        public bool Add(IOrder entity)
+        {
+            GetAll().Add(entity);
+            IOrder order = OrderRepository.Add(entity);
+            if (order !=null && order.OrderID > 0)
+            {
+                int id = GetUser().UserID;
+                IOrder newOrder = GetAll().Where(o => o.OrderGuid == entity.OrderGuid).First();
+                if(order != null && order.OrderID > 0)
+                {
+                    newOrder.OrderID = order.OrderID;
+                }
+                else
+                {
+                    GetAll().Remove(entity);
+                }
+                DataUpdated?.Invoke(id);
+                return true;
+            }
+            return false;
+        }
+        public bool Update(IOrder entity)
+        {
+            IOrder updatedOrder = GetAll().Where(o => o.OrderID == entity.OrderID).First();
+            updatedOrder.LasUpdatedDate = DateTime.Now;
+            updatedOrder.Quantity = entity.Quantity;
+            updatedOrder.Total = entity.Total;
+            updatedOrder.AccountID = entity.AccountID;
+
+            IOrder order = OrderRepository.Update(updatedOrder);
+            if (order != null && order.OrderID > 0)
+            {
+                int id = GetUser().UserID;
+                DataUpdated?.Invoke(id);
+                return true;
+            }
+            return false;
         }
         public void CancelOrder(IOrder selectedOrder, out string message)
         {
             message = string.Empty;
             selectedOrder.Order_Statuses = OrderStatus.Cancelled;
             selectedOrder.Status = (int)OrderStatus.Cancelled;
-            bool result = OrderRepository.Update(selectedOrder);
-            if (result)
+
+            IOrder cancelledOrder = GetAll().Where(o=> o.OrderID == selectedOrder.OrderID).First();
+            cancelledOrder.Order_Statuses = OrderStatus.Cancelled;
+            cancelledOrder.Status = (int)OrderStatus.Cancelled;
+
+            IOrder order = OrderRepository.Update(cancelledOrder);
+            if (order != null && order.Status == (int)OrderStatus.Cancelled)
             {
-                FetchOrders(); 
-                DataUpdated?.Invoke();
+                //FetchOrders(); 
+                int id = GetUser().UserID;
+                DataUpdated?.Invoke(id);
                 message = "Order Cancelled Successfully!";
             }
         }
-        public bool Add(IOrder entity)
-        {
-            bool result = OrderRepository.Add(entity);
-            if (result)
-            {
-                FetchOrders();
-                DataUpdated?.Invoke();
-            }
-            return result;
-        } 
 
-        //Private Data Loading Methods
-        private void FetchOrders()
-        {
-            ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
-            //Recent Orders After New Order
-            CacheService.Set("Orders", Orders);
+        private IUser GetUser()
+        { 
+            return UserService.GetUser();
         }
     }
 }

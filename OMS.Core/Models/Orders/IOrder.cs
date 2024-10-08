@@ -8,18 +8,18 @@ namespace OMS.Core.Models.Orders
 {
     public interface IOrder
     {
-        int? OrderID { get; set; }
-        DateTime? OrderDate { get; set; }
+        int OrderID { get; set; }
+        DateTime OrderDate { get; set; }
         int OrderType { get; set; }
-        int? Quantity { get; set; }
-        decimal? Price { get; set; }
-        decimal? Total { get; set; }
+        int Quantity { get; set; }
+        decimal Price { get; set; }
+        decimal Total { get; set; }
         int Status { get; set; }
-        int? AccountID { get; set; }
+        int AccountID { get; set; }
         DateTime ExpirationDate { get; set; }
         DateTime LasUpdatedDate { get; set; }
         DateTime CreatedDate { get; set; }
-        int? AddedBy { get; set; }
+        int AddedBy { get; set; }
         string Symbol { get; set; }
         Guid OrderGuid { get; set; }
 

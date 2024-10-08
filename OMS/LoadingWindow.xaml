@@ -29,7 +29,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <dx:DXImage x:Name="PART_Logo" Source="/Images/VS_Logo.png" 
+            <dx:DXImage x:Name="PART_Logo" Source="/Resources/Images/VS_Logo.png" 
                         Width="150" Height="150" Stretch="Fill"
                         HorizontalAlignment="Center" Margin="0 20"/>
             <TextBlock x:Name="PART_Title" 
@@ -52,8 +52,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <!--Login Form-->
             <StackPanel Orientation="Horizontal" 
                         Grid.Row="0" Margin="0 5"
                         HorizontalAlignment="Center" 
@@ -70,7 +68,6 @@
                          FontSize="12" 
                          BorderThickness="3"/>
             </StackPanel>
-
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1" Margin="0 5"
                         HorizontalAlignment="Center" 
@@ -86,7 +83,6 @@
                              FontSize="12"
                              BorderThickness="3" />
             </StackPanel>
-
             <Button x:Name="btnLogin" 
                     Grid.Row="2"
                     Margin="65 10 0 0"

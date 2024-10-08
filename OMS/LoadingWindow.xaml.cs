@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OMS.Core.Logging;
-using OMS.Logging;
 using OMS.ViewModels;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace OMS
@@ -10,7 +11,8 @@ namespace OMS
     {
         IBootStrapper BootStrapper;
         ILogHelper Logger;
-        
+        LoadingViewModel model;
+
         //Constructor
         public LoadingWindow(IBootStrapper bootStrapper, ILogHelper logHelper)
         {
@@ -18,60 +20,70 @@ namespace OMS
             InitializeComponent();
             BootStrapper = bootStrapper;
             //Adding Datacontext
-            this.DataContext = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingViewModel>();
+            model = AppServiceProvider.GetServiceProvider().GetRequiredService<LoadingViewModel>();
+            this.DataContext = model;
             ((LoadingViewModel)this.DataContext).AuthenticationCompleted += LoadingWindow_AuthenticationCompleted;
         }
 
-        private void LoadingWindow_AuthenticationCompleted()
+        //Methods
+        private async void LoadingWindow_AuthenticationCompleted()
         {
-            if (this.DataContext is LoadingViewModel viewModel)
+            if (model.IsAuthenticated)
             {
-                if (viewModel.IsAuthenticated)
-                {
-                    LoadServices(); 
-                    NavigateMainWindow();
-                }
-                else
-                {
-                    MessageBox.Show(viewModel.AuthMessage, "Login Failure", MessageBoxButton.OK);
-                    ShowLogin();
-                }
+                PART_Status.Text = "Loading Services....";
+                await ShowPrgressBar();
+                await LoadServices();
+                PART_Status.Text = "Loading Window....";
+                await Task.Delay(100);
+                NavigateMainWindow();
+            }
+            else
+            {
+                MessageBox.Show(model.AuthMessage, "Login Failure", MessageBoxButton.OK);
+                await ShowLogin();
             }
         }
-        private void ShowPrgressBar()
+        private async Task LoadServices()
         {
-            LoginPanel.Visibility = Visibility.Collapsed;
-            LoadingPanel.Visibility = Visibility.Visible;
-        }
-        private void ShowLogin()
-        {
-            LoginPanel.Visibility = Visibility.Visible;
-            LoadingPanel.Visibility = Visibility.Collapsed;
-        } 
-        private void LoadServices()
-        {
-            PART_Status.Text = "Loading Services....";
             Logger.LogInfo("Loading Services Data....");
-            BootStrapper.LoadData();
+            await BootStrapper.LoadData();
             Logger.LogInfo("Services Data Loaded.");
         }
         private void NavigateMainWindow()
         {
             var mainWindow = AppServiceProvider.GetServiceProvider().GetRequiredService<MainWindow>();
-            this.Visibility = Visibility.Hidden;
             mainWindow.Show();
             this.Close();
         }
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async Task ShowPrgressBar()
         {
-            ShowPrgressBar();
-            if (this.DataContext is LoadingViewModel viewModel)
-            {
-                viewModel.Username = txtUsername.Text;
-                viewModel.Password = txtPassword.Password.ToString();
-                
-                viewModel.Login();
-            }
+            LoginPanel.Visibility = Visibility.Collapsed;
+            LoadingPanel.Visibility = Visibility.Visible;
+            await Task.Delay(100);
+        }
+        private async Task ShowLogin()
+        {
+            LoginPanel.Visibility = Visibility.Visible;
+            LoadingPanel.Visibility = Visibility.Collapsed;
+            txtPassword.IsEnabled = true;
+            txtUsername.IsEnabled = true;
+            btnLogin.IsEnabled = true;  
+            await Task.Delay(100); 
         } 
+        //Login Button Click 
+        private async void Login_Click(object sender, RoutedEventArgs e)
+        {
+            //await ShowPrgressBar();
+            model.Username = txtUsername.Text;
+            model.Password = txtPassword.Password.ToString();
+            txtPassword.IsEnabled = false;
+            txtUsername.IsEnabled = false;
+            btnLogin.IsEnabled = false;
+            await Task.Delay(100);
+            App.Current.Dispatcher.Invoke((Action)(() => 
+            {
+                model.Login().GetAwaiter(); 
+            }));
+        }
     }
 }

@@ -124,7 +124,8 @@ namespace OMS.ViewModels
             _accounts = new ObservableCollection<int>();
             //Loads Accounts and Orders List
             InitData();
-            OrderService.DataUpdated += UpdateData;
+            OrderService.DataUpdated += FetchOrders;
+            //Set Permissions
             SetPermissions();
         }
 
@@ -150,10 +151,15 @@ namespace OMS.ViewModels
         private void InitData()
         {
             AccountsList = AccountService.GetAccountsList();
-            UpdateData();
-            SelectedOrder = Orders.FirstOrDefault();
+            FetchOrders(0);
+            IOrder order =Orders.OrderByDescending(o=>o.OrderDate).First();
+            if (order != null) 
+            {
+                SelectedOrder = order;
+            }
+            SelectedOrder = new Order();
         }
-        private void UpdateData()
+        private void FetchOrders(int id)
         {
             Orders = OrderService.GetOpenOrders();
         }

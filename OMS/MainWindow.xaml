@@ -126,8 +126,8 @@
                 </dxr:RibbonPage>
 
                 <!-- Portfolio -->
-                <dxr:RibbonPage Caption="Portfolio" IsVisible="{Binding CanViewPortfolio}">
-                    <dxr:RibbonPageGroup Name="AccountPortfolioBtn" IsVisible="False">
+                <dxr:RibbonPage Caption="Portfolio">
+                    <dxr:RibbonPageGroup Name="AccountPortfolioBtn" IsVisible="{Binding CanViewPortfolio}">
                         <dxb:BarButtonItem Content="Portfolio" 
                                            Command="{Binding PortfolioCommand}" 
                                            LargeGlyph="{dx:FontIconSource Glyph=60165}"

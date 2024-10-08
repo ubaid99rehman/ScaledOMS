@@ -1,10 +1,12 @@
-﻿namespace OMS
+﻿using System.Threading.Tasks;
+
+namespace OMS
 {
     public interface IBootStrapper
     {
-        void LoadData();
-        void LoadOrdersData();
-        void LoadStocksData();
-        void LoadAccountData();
+        Task LoadData();
+        Task LoadOrdersData();
+        Task LoadStocksData();
+        Task LoadAccountData();
     }
 }

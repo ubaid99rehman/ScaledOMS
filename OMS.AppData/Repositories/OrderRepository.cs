@@ -52,13 +52,22 @@ namespace OMS.SqlData.Repositories
             var order = Mapper.Map<IOrder>(orderEntity);
             return order;
         }
-        public bool Add(IOrder order)
+        public IOrder GetByGuid(Guid guid)
+        {
+            Orders orderEntity = Context.Orders.Where(o => o.OrderGuid == guid).FirstOrDefault();
+            if (orderEntity == null)
+            {
+                return new Order();
+            }
+            var order = Mapper.Map<IOrder>(orderEntity);
+            return order;
+        }
+        public IOrder Add(IOrder order)
         {
             Orders orderEntity = Mapper.Map<Orders>(order);
             orderEntity.Accounts = Context.Accounts.Where(o => o.AccountID == order.AccountID).FirstOrDefault();
             orderEntity.Order_Statuses = Context.Order_Statuses.Where(o => o.ID == order.Status).FirstOrDefault();
             orderEntity.Order_Types = Context.Order_Types.Where(o => o.ID == order.OrderType).FirstOrDefault();
-
             Context.Orders.Add(orderEntity);
             try
             {
@@ -88,63 +97,72 @@ namespace OMS.SqlData.Repositories
             {
                 throw ex;
             }
-            Orders addedOrder = Context.Orders.Where(o => o.OrderGuid == order.OrderGuid).FirstOrDefault();
+            IOrder addedOrder = GetByGuid(order.OrderGuid);
             if(addedOrder !=null)
             {
-                return true;
+                return addedOrder;
             }
-            return false;
+            return null;
         }
-        public bool Update(IOrder order)
+        public IOrder Update(IOrder order)
         {
-            bool isUpdated = false;
-            Orders toUpdate;
-            try
-            {
-                toUpdate = Mapper.Map<Orders>(order);
-            }
-            catch(Exception ex)
-            {
-                throw ex; 
-            }
-            var userEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
+            Orders userEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
             if (userEntity != null)
             {
-                // Manually update properties
-                userEntity.Quantity = toUpdate.Quantity;
-                userEntity.Total = toUpdate.Total;
-                userEntity.Status = toUpdate.Status;
-                userEntity.AccountID = toUpdate.AccountID;
-                //userEntity.Accounts = toUpdate.Accounts;
-                userEntity.ExpirationDate = toUpdate.ExpirationDate;
-                userEntity.LastUpdatedDate = toUpdate.LastUpdatedDate;
+                userEntity.Quantity = order.Quantity;
+                userEntity.Total = order.Total;
+                userEntity.Status = order.Status;
+                userEntity.AccountID = order.AccountID;
+                userEntity.ExpirationDate = order.ExpirationDate;
+                userEntity.LastUpdatedDate = order.LasUpdatedDate;
 
-                // Save changes
                 int result = Context.SaveChanges();
                 if(result > 0)
                 {
-                    isUpdated = true;
+                    return order;
                 }
             }
-            return isUpdated;
+            return null;
         }
-        public bool Delete(IOrder order)
+        public IEnumerable<IOrder> GetUserOrders(int id)
         {
-            bool isDeleted = false;
-            //Remove Order
-            Orders orderEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
-            if (orderEntity != null)
+            var ordersList = Context.Orders.Where(order => order.AddedBy == id).ToList();
+            if (ordersList.Count < 0 || ordersList == null)
             {
-                Context.Orders.Remove(orderEntity);
-                Context.SaveChanges();
+                return new List<IOrder>();
             }
-            //Check if Order is removed
-            orderEntity = Context.Orders.Where(o => o.OrderID == order.OrderID).FirstOrDefault();
-            if (orderEntity == null)
+            ICollection<IOrder> orders = new List<IOrder>();
+            try
             {
-                isDeleted = true;
+                orders = ordersList.Select(o => Mapper.Map<IOrder>(o)).ToList();
             }
-            return isDeleted;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return orders;
+        }
+        public IEnumerable<IOrder> GetRecentOrders(int orderID)
+        {
+            var ordersList = Context.Orders.Where(order => order.OrderID > orderID).ToList();
+            if (ordersList.Count < 0 || ordersList == null)
+            {
+                return new List<IOrder>();
+            }
+            ICollection<IOrder> orders = new List<IOrder>();
+            try
+            {
+                orders = ordersList.Select(o => Mapper.Map<IOrder>(o)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return orders;
+        }
+        public IOrder CancelOrder(IOrder entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

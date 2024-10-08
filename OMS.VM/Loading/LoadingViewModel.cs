@@ -2,11 +2,8 @@
 using OMS.Core.Logging;
 using OMS.Core.Models.User;
 using OMS.Core.Services.AppServices;
-using OMS.Logging;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace OMS.ViewModels
 {
@@ -70,7 +67,6 @@ namespace OMS.ViewModels
         //Methods
         public async Task Login()
         {
-            await Task.Delay(1000);
             //Check Null/Empty User or Password
             if (string.IsNullOrWhiteSpace(Username))
             {
@@ -85,6 +81,7 @@ namespace OMS.ViewModels
                 AuthenticationComplete();
             }
             Authenticate();
+            
         }
         public void Authenticate()
         {

@@ -199,7 +199,6 @@ namespace OMS.ViewModels
             IAccountService accountService, IUserService userService,
             IPermissionService permissionService)
         {
-
             _stockDetailsModel = new StockDetailViewModel(stockDataService);
             SelectedOrder = new Order();
             SelectedStock = new Stock();
@@ -208,10 +207,10 @@ namespace OMS.ViewModels
             StockDataService = stockDataService;
             AccountService = accountService;
             OrderService = orderService;
+            OrderService.DataUpdated += FetchUpdatedOrders;
             PermissionService = permissionService;
             UserService  = userService;
             #endregion
-            
             #region Initialized Collections
             Accounts = new ObservableCollection<int>();
             Orders = new ObservableCollection<IOrder>();
@@ -219,13 +218,23 @@ namespace OMS.ViewModels
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
             #endregion
-
             SetPermissions();
             InitData();
             SetUser();
         }
 
         //Private Methods
+        private void FetchUpdatedOrders(int id)
+        {
+            if(id == CurrentUser.UserID)
+            {
+                Orders = OrderService.GetOpenOrders();
+            }
+        }
+        private void FetchOrders()
+        {
+            Orders = OrderService.GetOpenOrders();
+        }
         private void InitData()
         {
             //Stocks related Data
@@ -240,7 +249,7 @@ namespace OMS.ViewModels
             //Orders
             LastOrder = OrderService.GetLastOrderByUser();
             StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
-            Orders = OrderService.GetOpenOrders();
+            FetchOrders();
 
         }
         private void UpdateData()
@@ -249,7 +258,7 @@ namespace OMS.ViewModels
             StockDetailsModel.Symbol = SelectedStockSymbol;
             LastOrder = OrderService.GetLastOrderByUser();
             StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
-            Orders = OrderService.GetOpenOrders();
+            FetchOrders();
             SelectedOrder = new Order();
             SelectedOrder.Price = SelectedStock.LastPrice;
             Total = SelectedStock.LastPrice;
@@ -281,15 +290,6 @@ namespace OMS.ViewModels
         {
             isAdded = false;
             message = string.Empty;
-            SelectedOrder.AccountID = SelectedAccount;
-            SelectedOrder.OrderType = (int)OrderType;
-            SelectedOrder.Symbol = SelectedStockSymbol;
-            SelectedOrder.Quantity = (int)Quantity;
-            SelectedOrder.Price = SelectedStock.LastPrice;
-            SelectedOrder.Total = Total;
-            SelectedOrder.CreatedDate = DateTime.Now;
-            SelectedOrder.OrderDate = DateTime.Now;
-
             var newOrder = new Order
             {
                 OrderGuid = Guid.NewGuid(),
@@ -297,6 +297,8 @@ namespace OMS.ViewModels
                 AddedBy = CurrentUser.UserID,
                 OrderType = (int)OrderType,
                 Status = (int)OrderStatus.New,
+                Order_Types = OrderType,
+                Order_Statuses = OrderStatus.New,
                 Symbol = SelectedStockSymbol,
                 Quantity = (int)Quantity,
                 Price = SelectedStock.LastPrice,
@@ -308,7 +310,6 @@ namespace OMS.ViewModels
             };
             if (isValidOrder(newOrder))
             {
-
                 isAdded = OrderService.Add(newOrder);
                 if (isAdded)
                 {
@@ -348,13 +349,8 @@ namespace OMS.ViewModels
         }
         public bool isValidOrder(IOrder SelectedOrder)
         {
-            if (
-               SelectedOrder != null &&
-               !string.IsNullOrEmpty(SelectedOrder.Symbol) &&
-               SelectedOrder.Quantity > 0 &&
-               SelectedOrder.Price > 0 &&
-               SelectedOrder.AccountID != 0
-               )
+            if (SelectedOrder != null && !string.IsNullOrEmpty(SelectedOrder.Symbol) &&
+               SelectedOrder.Quantity > 0 && SelectedOrder.Price > 0 && SelectedOrder.AccountID != 0)
             {
                 return true;
             }
