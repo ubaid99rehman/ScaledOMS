@@ -1,7 +1,6 @@
 ﻿using OMS.Core.Models;
 using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
-using OMS.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +42,6 @@ namespace OMS.MarketData
             }
             return null;
         } 
-
         private IStockDetail GenerateDetails(IStock stock)
         {
             var stockDetail = new StockDetail();

@@ -1,7 +1,6 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
-using OMS.Core.Services;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
@@ -10,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace OMS.Services.MarketServices.RealtimeServices
 {
@@ -21,12 +21,13 @@ namespace OMS.Services.MarketServices.RealtimeServices
         IStockRepository StockRepository;
         IStockTradeDataRepository StockTradeDataRepository;
         IStockDataService StockDataService;
-        ICacheService CacheService; 
+        ICacheService CacheService;
         #endregion
 
-        bool FetchData = false;
+        private readonly DispatcherTimer _timer;
+        private const int TickInterval = 61000;
 
-        public StockTradeDataService(IStockRepository stockRepository, ITimerService timerService, 
+        public StockTradeDataService(IStockRepository stockRepository,
             IStockTradeDataRepository stockTradeDataRepository, 
             IStockDataService stockDataService,
             ICacheService cacheService)
@@ -36,8 +37,13 @@ namespace OMS.Services.MarketServices.RealtimeServices
             StockDataService = stockDataService;
             CacheService = cacheService;
 
-            timerService.Tick += OnTimerTick; 
-            timerService.Start();
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(TickInterval)
+            };
+            _timer.Tick += OnTimerTick;
+            
+            _timer.Start();
         }
 
         //Public Access Methods Implementation
@@ -63,11 +69,6 @@ namespace OMS.Services.MarketServices.RealtimeServices
         }
         public ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
         {
-            if(!FetchData)
-            {
-                FetchData = true;
-            }
-
             if(startTime == null)
             {
                 startTime = DateTime.Now;

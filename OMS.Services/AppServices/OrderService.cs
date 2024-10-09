@@ -129,7 +129,6 @@ namespace OMS.Services.AppServices
         public ICollectionView GetOrdersByUser(int userId)
         {
             var orders = GetAll();
-            int id = GetUser().UserID;
             var collectionViewSource = new CollectionViewSource { Source = orders };
             ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
             if (liveShapingView != null)
@@ -138,14 +137,14 @@ namespace OMS.Services.AppServices
                 {
                     liveShapingView.IsLiveSorting = true;
                     liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                    collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
                 }
 
                 collectionViewSource.View.Filter = o =>
                 {
                     var order = o as IOrder;
-                    return order != null && order.AddedBy == id;
+                    return order != null && order.AddedBy == userId;
                 };
-                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
             }
             return collectionViewSource.View;
         }
