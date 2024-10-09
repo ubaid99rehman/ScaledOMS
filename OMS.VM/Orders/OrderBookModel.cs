@@ -3,6 +3,7 @@ using OMS.Core.Models;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Threading;
 
@@ -12,115 +13,43 @@ namespace OMS.ViewModels
     {
         //Service
         IMarketOrderService MarketOrderService;
-        //Max Visible Trades
-        const int MaxVisibleOrders = 100;
 
-        //Private Members
         private string _selectedStockSymbol;
-        private ObservableCollection<OrderBook> _stockBuyingOrders;
-        private ObservableCollection<OrderBook> _stockSellingOrders;
-
-        //Public Members
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
             set
             {
-                if (_selectedStockSymbol != value)
+                if (SetProperty(ref _selectedStockSymbol, value, nameof(SelectedStockSymbol)))
                 {
-                    if (SetProperty(ref _selectedStockSymbol, value, nameof(SelectedStockSymbol)))
+                    // Fetch the updated orders when the symbol changes
+                    if (!string.IsNullOrEmpty(SelectedStockSymbol))
                     {
-                        AddStockOrders();
+                        StockSellingOrders = MarketOrderService.GetSellOrders(_selectedStockSymbol);
+                        StockBuyingOrders = MarketOrderService.GetBuyOrders(_selectedStockSymbol);
                     }
                 }
             }
         }
-        public ObservableCollection<OrderBook> StockBuyingOrders
+
+        private ICollectionView _stockBuyingOrders;
+        public ICollectionView StockBuyingOrders
         {
-            get { return _stockBuyingOrders; }
-            set
-            {
-                _stockBuyingOrders = value;
-            }
+            get => _stockBuyingOrders;
+            set => SetProperty(ref _stockBuyingOrders, value, nameof(StockBuyingOrders)); 
         }
-        public ObservableCollection<OrderBook> StockSellingOrders
+
+        private ICollectionView _stockSellingOrders;
+        public ICollectionView StockSellingOrders
         {
-            get { return _stockSellingOrders; }
-            set
-            {
-                _stockSellingOrders = value;
-            }
+            get => _stockSellingOrders;
+            set => SetProperty(ref _stockSellingOrders, value, nameof(StockSellingOrders)); 
         }
-        
+
         //Constructor
         public OrderBookModel(IMarketOrderService marketOrderService)
         {
-            StockBuyingOrders = new ObservableCollection<OrderBook>();
-            StockSellingOrders = new ObservableCollection<OrderBook>();
             MarketOrderService = marketOrderService;
-            MarketOrderService.DataUpdated += OnDataUpdated;
-        }
-
-        //Methods
-        private void AddStockOrders()
-        {
-            if (!string.IsNullOrEmpty(SelectedStockSymbol))
-            {
-                var buyOrders = MarketOrderService.GetBuyOrders(SelectedStockSymbol);
-                var sellOrders = MarketOrderService.GetSellOrders(SelectedStockSymbol);
-
-                StockBuyingOrders.Clear();
-                StockSellingOrders.Clear();
-
-                foreach (var order in buyOrders)
-                {
-                    StockBuyingOrders.Add((OrderBook)order);
-                }
-
-                foreach (var order in sellOrders)
-                {
-                    StockSellingOrders.Add((OrderBook)order);
-                }
-            }
-        }
-        private void OnDataUpdated(string symbol)
-        {
-            if (symbol == SelectedStockSymbol)
-            {
-                UpdateStockOrders();
-            }
-        }
-        private void UpdateStockOrders()
-        {
-            if (!string.IsNullOrEmpty(SelectedStockSymbol))
-            {
-                var buyOrders = MarketOrderService.GetBuyOrders(SelectedStockSymbol);
-                var sellOrders = MarketOrderService.GetSellOrders(SelectedStockSymbol);
-
-                if(sellOrders.Any())
-                {
-                    foreach (var trade in buyOrders.Reverse())
-                    {
-                        if (StockSellingOrders.Count >= MaxVisibleOrders)
-                        {
-                            StockSellingOrders.RemoveAt(0);
-                        }
-                        StockSellingOrders.Add((OrderBook)trade);
-                    }
-                }
-    
-                if (buyOrders.Any())
-                {
-                    foreach (var trade in sellOrders.Reverse())
-                    {
-                        if (StockBuyingOrders.Count >= MaxVisibleOrders)
-                        {
-                            StockBuyingOrders.RemoveAt(sellOrders.Count - 1);
-                        }
-                        StockBuyingOrders.Insert(0, (OrderBook)trade);
-                    }
-                }
-            }
         }
     }
 }

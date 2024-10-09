@@ -1,5 +1,4 @@
 ﻿using DevExpress.Mvvm;
-using DevExpress.Mvvm.DataAnnotations;
 using OMS.Core.Models;
 using OMS.Core.Models.Orders;
 using OMS.Core.Services.AppServices;
@@ -7,6 +6,7 @@ using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace OMS.ViewModels
@@ -70,10 +70,9 @@ namespace OMS.ViewModels
             get { return _accounts; }
             set { SetProperty(ref _accounts, value, nameof(AccountsList)); }
         }
-        public ObservableCollection<IOrder> Orders
+        public ICollectionView Orders
         {
             get { return OrderService.GetOpenOrders(); }
-            set { SetProperty(ref _orders, value, nameof(Orders)); }
 
         }
         public IOrder SelectedOrder
@@ -124,9 +123,11 @@ namespace OMS.ViewModels
             _accounts = new ObservableCollection<int>();
             //Loads Accounts and Orders List
             InitData();
-            OrderService.DataUpdated += FetchOrders;
+            //OrderService.DataUpdated += FetchOrders;
             //Set Permissions
             SetPermissions();
+            ICollectionView openOrdersView = OrderService.GetOpenOrders();
+            int filteredCount = openOrdersView.Cast<IOrder>().Count();
         }
 
         private void SetPermissions()
@@ -152,7 +153,8 @@ namespace OMS.ViewModels
         {
             AccountsList = AccountService.GetAccountsList();
             FetchOrders(0);
-            IOrder order =Orders.OrderByDescending(o=>o.OrderDate).First();
+            IOrder order = Orders?.Cast<IOrder>().FirstOrDefault();
+
             if (order != null) 
             {
                 SelectedOrder = order;
@@ -161,7 +163,7 @@ namespace OMS.ViewModels
         }
         private void FetchOrders(int id)
         {
-            Orders = OrderService.GetOpenOrders();
+            //Orders = OrderService.GetOpenOrders();
         }
 
         //Public Methods
@@ -184,11 +186,18 @@ namespace OMS.ViewModels
                 }
                 else
                 {
-                    OrderService.CancelOrder(SelectedOrder, out message);
-                    if (message.Equals("Updated!"))
+                    bool result = OrderService.CancelOrder(SelectedOrder);
+                    if (result)
                     {
+                        message = "Order Cabcelled Successfully!";
                         isCancelled = true;
                     }
+                    else
+                    {
+                        isCancelled = false;
+                        message = "Problem Occured While Cancelling Order!";
+                    }
+
                 }
             }
         }

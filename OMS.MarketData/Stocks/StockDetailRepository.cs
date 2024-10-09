@@ -6,63 +6,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OMS.MarketData.Stocks
+namespace OMS.MarketData
 {
     public class StockDetailRepository : IStockDetailRepository
     {
-        #region Constants
+        #region Constant Volume Limits
         const long volumeLow =  1000000000;
         const long volumeHigh = 1000000000000;
         #endregion
 
-        private readonly string _connectionString;
         IStockRepository StockRepository;
-        IEnumerable<IStock> _stocks;
         Random _random;
         
         //Constructor
         public StockDetailRepository(IStockRepository stockRepository) 
         {
             _random = new Random();
-            _connectionString = DbHelper.Connection;
             StockRepository = stockRepository;
         }
         
-        #region Public Data Access Methods
         public IEnumerable<IStockDetail> GetAll()
         {
-            FetchStocks();
             List<IStockDetail> stockDetails = new List<IStockDetail>();
-            foreach (Stock stock in _stocks)
+            foreach (IStock stock in FetchStocks())
             {
                 stockDetails.Add(GenerateDetails(stock));
             }
             return stockDetails;
         }
-        public IStockDetail GetById(int id)
-        {
-            FetchStocks();
-            var stock = _stocks.Where(s => s.ID == id).FirstOrDefault();
-
-            if (stock != null)
-            {
-                return GenerateDetails(stock);
-            }
-            return null;
-        }
         public IStockDetail GetBySymbol(string symbol)
         {
-            FetchStocks();
-            var stock = _stocks.Where(s => s.Symbol == symbol).FirstOrDefault();
+            var stock = FetchStocks().Where(s => s.Symbol == symbol).FirstOrDefault();
             if (stock != null)
             {
                 return GenerateDetails(stock);
             }
             return null;
         } 
-        #endregion
 
-        #region Private Data Loading Methods
         private IStockDetail GenerateDetails(IStock stock)
         {
             var stockDetail = new StockDetail();
@@ -78,13 +59,9 @@ namespace OMS.MarketData.Stocks
 
             return stockDetail;
         }
-        private void FetchStocks()
+        private IEnumerable<IStock> FetchStocks()
         {
-            if (_stocks == null || _stocks.Count() < 1)
-            {
-                _stocks = StockRepository.GetAll();
-            }
+            return StockRepository.GetAll();
         } 
-        #endregion
     }
 }

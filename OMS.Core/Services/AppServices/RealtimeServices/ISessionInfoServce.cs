@@ -2,7 +2,7 @@
 
 namespace OMS.Core.Services.AppServices.RealtimeServices
 {
-    public interface ISessionInfoServce : IRealtimeService
+    public interface ISessionInfoServce
     {
         ISessionInfo GetSessionInfo();
     }

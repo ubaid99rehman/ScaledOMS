@@ -7,17 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OMS.MarketData.Stocks
+namespace OMS.MarketData
 {
     public class StockTradeDataRepository : IStockTradeDataRepository
     {
-        #region Constants
+        #region Constants Volume Limits
         const long volumeLow = 1000000000;
         const long volumeHigh = 1000000000000;
         #endregion
 
-        List<string> StockSymbols;
-        List<IStock> Stocks;
         IStockRepository StockRepository;
         Random random;
         private Dictionary<string, Dictionary<TradeTimeInterval, List<IStockTradingData>>> tradesCache;
@@ -28,79 +26,15 @@ namespace OMS.MarketData.Stocks
             tradesCache = new Dictionary<string, Dictionary<TradeTimeInterval, List<IStockTradingData>>>();
             StockRepository = stockRepository;
             random = new Random();
-            StockSymbols = new List<string>();
-            Stocks = new List<IStock>();
             LoadTradeData();
         }
-
-        #region Public Data Access Methods
-        public IEnumerable<IStockTradingData> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-        public IStockTradingData GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public async Task<IStockTradingData> GetTradeData(string symbol, int time, TradeTimeInterval interval)
-        {
-            var lastPrice = GetLastPriceForSymbol(symbol, interval);
-            return Load(symbol, lastPrice, time, interval);
-        }
-        public async Task<IEnumerable<IStockTradingData>> GetTradingData(string symbol, DateTime startTime, int points, TradeTimeInterval interval)
-        {
-            //Time period
-            if (startTime == null)
-            {
-                startTime = DateTime.Now;
-            }
-            DateTime endTime = startTime;
-            DateTime fromTime = DateTimeHelper.GetStartTime(interval, points, startTime);
-
-            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
-            {
-                var cachedTrades = tradesCache[symbol][interval]
-                    .Where(trade => trade.RecordedTime >= fromTime && trade.RecordedTime <= startTime)
-                    .ToList();
-
-                if (cachedTrades.Count >= points)
-                {
-                    return cachedTrades.Take(points).ToList();
-                }
-            }
-
-            var lastPrice = GetLastPriceForSymbol(symbol, interval, startTime);
-            LazyLoad(symbol, lastPrice, points, interval, startTime);
-
-            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
-            {
-                return tradesCache[symbol][interval]
-                    .Where(trade => trade.RecordedTime < startTime).Take(points).ToList();
-            }
-            return new List<IStockTradingData>();
-        }
-
-        #endregion
-
-        #region Private Data Loading Methods
+        
+        //Initial Data
         private void LoadTradeData()
         {
-            //Loads Symbols and Stock Prices
-            FetchStockData();
-            foreach (var symbol in StockSymbols)
+            foreach (var symbol in FetchStockSymbols())
             {
-                AddInitialTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-            }
-        }
-        private void FetchStockData()
-        {
-            if (StockSymbols == null || StockSymbols.Count < 1)
-            {
-                StockSymbols = StockRepository.GetStockSymbols().ToList<string>();
-            }
-            if (Stocks == null || Stocks.Count < 1)
-            {
-                Stocks = StockRepository.GetAll().ToList<IStock>();
+                AddInitialTrades(FetchStocks().Where(s => s.Symbol == symbol).FirstOrDefault());
             }
         }
         private void AddInitialTrades(IStock stock)
@@ -140,13 +74,15 @@ namespace OMS.MarketData.Stocks
             recentTrades[TradeTimeInterval.Minute] = trades;
             tradesCache[stock.Symbol] = recentTrades;
         }
-        private StockTradingData Load(string symbol, decimal lastPrice,
-            int time, TradeTimeInterval interval)
+
+        //Single Point Data
+        public async Task<IStockTradingData> GetLastTradeData(string symbol)
         {
-
-            DateTime startTime = DateTimeHelper.GetStartTime(interval, time, DateTime.Now);
-            DateTime endTime = DateTime.Now;
-
+            var lastPrice = GetLastPriceForSymbol(symbol, TradeTimeInterval.Minute);
+            return Load(symbol, lastPrice);
+        }
+        private StockTradingData Load(string symbol, decimal lastPrice)
+        {
             var priceChange = (decimal)(random.NextDouble() * 2 - 1);
             var openPrice = lastPrice + priceChange;
             var high = openPrice + (decimal)(random.NextDouble() * 2);
@@ -169,12 +105,46 @@ namespace OMS.MarketData.Stocks
                 RecordedTime = DateTime.Now
             };
 
-            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
+            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(TradeTimeInterval.Minute))
             {
-                tradesCache[symbol][interval].Add(trade);
+                tradesCache[symbol][TradeTimeInterval.Minute].Add(trade);
             }
             return trade;
         }
+
+        //MultiPoint Data
+        public async Task<IEnumerable<IStockTradingData>> GetTradingData(string symbol, DateTime startTime, int points, TradeTimeInterval interval)
+        {
+            if (startTime == null)
+            {
+                startTime = DateTime.Now;
+            }
+            DateTime endTime = startTime;
+            DateTime fromTime = DateTimeHelper.GetStartTime(interval, points, startTime);
+
+            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
+            {
+                var cachedTrades = tradesCache[symbol][interval]
+                    .Where(trade => trade.RecordedTime >= fromTime && trade.RecordedTime <= startTime)
+                    .ToList();
+
+                if (cachedTrades.Count >= points)
+                {
+                    return cachedTrades.Take(points).ToList();
+                }
+            }
+
+            var lastPrice = GetLastPriceForSymbol(symbol, interval, startTime);
+            LazyLoad(symbol, lastPrice, points, interval, startTime);
+
+            if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
+            {
+                return tradesCache[symbol][interval]
+                    .Where(trade => trade.RecordedTime < startTime).Take(points).ToList();
+            }
+            return new List<IStockTradingData>();
+        }
+
         private void LazyLoad(string symbol, decimal lastPrice, int points, TradeTimeInterval interval, DateTime toTime)
         {
             List<StockTradingData> trades = new List<StockTradingData>();
@@ -224,6 +194,8 @@ namespace OMS.MarketData.Stocks
             tradesCache[symbol][interval].AddRange(trades.Where(t => !tradesCache[symbol][interval]
                                                        .Any(cachedTrade => cachedTrade.RecordedTime == t.RecordedTime)));
         }
+        
+        
         private decimal GetLastPriceForSymbol(string symbol)
         {
             return tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(TradeTimeInterval.Minute)
@@ -245,7 +217,15 @@ namespace OMS.MarketData.Stocks
             }
 
             return (decimal)(100 + new Random().NextDouble() * 10);
-        } 
-        #endregion
+        }
+
+        private IEnumerable<IStock> FetchStocks()
+        {
+            return StockRepository.GetAll();
+        }
+        private IEnumerable<string> FetchStockSymbols()
+        {
+            return StockRepository.GetStockSymbols();
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace OMS.Core.Services.MarketServices.RealtimeServices
 {
-    public interface IStockDataService : IRealtimeService
+    public interface IStockDataService
     {
         event Action DataUpdated;
         IStock GetStock(string symbol);

@@ -11,29 +11,31 @@ namespace OMS.DataAccess.Repositories.MarketRepositories
     public interface IMarketRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        T GetById(int id);
+        T GetBySymbol(string symbol);
     }
     
+    //Stocks
     public interface IStockRepository : IMarketRepository<IStock>
     {
         IEnumerable<string> GetStockSymbols();
-        IStock GetBySymbol(string symbol);
     }
     public interface IStockDetailRepository : IMarketRepository<IStockDetail>
     {
-        IStockDetail GetBySymbol(string symbol);
     }
-    public interface IStockTradeDataRepository : IMarketRepository<IStockTradingData>
+
+    //Trading Data
+    public interface IMarketOrderRepository
     {
-        Task<IEnumerable<IStockTradingData>> GetTradingData(string symbol, DateTime startTime, int points,TradeTimeInterval interval);
-        Task<IStockTradingData> GetTradeData(string symbol, int time, TradeTimeInterval interval);
+        IEnumerable<BookBase> GetOrdersBySymbol(string symbol);
     }
-    public interface IMarketOrderRepository : IMarketRepository<BookBase>
+    public interface IMarketTradeRepository 
     {
-        IEnumerable<BookBase> GetAll(string symbol);
+        IEnumerable<BookBase> GetTradesBySymbol(string symbol);
     }
-    public interface IMarketTradeRepository : IMarketRepository<BookBase>
+    public interface IStockTradeDataRepository
     {
-        IEnumerable<BookBase> GetAll(string symbol);
+        Task<IEnumerable<IStockTradingData>> GetTradingData(string symbol, DateTime startTime, 
+            int points,TradeTimeInterval interval);
+        Task<IStockTradingData> GetLastTradeData(string symbol);
     }
 }

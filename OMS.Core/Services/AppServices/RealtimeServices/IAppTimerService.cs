@@ -2,7 +2,7 @@
 
 namespace OMS.Core.Services.AppServices.RealtimeServices
 {
-    public interface IAppTimerService : IRealtimeService
+    public interface IAppTimerService
     {
         IAppTime GetCurrentDateTime();
     }

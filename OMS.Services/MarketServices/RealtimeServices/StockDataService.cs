@@ -2,43 +2,47 @@
 using System;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
-using System.Windows.Threading;
 using System.Linq;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Core.Models.Stocks;
+using OMS.Core.Services;
 
 namespace OMS.Services.AppServices
 {
     public class StockDataService : IStockDataService
     {
-        #region Constants
-        const int Tick = 500;
+
+        #region Constant Volume Limits
         const int volumeMinLow = 30000000;
         const int volumeMaxLow = 60000000;
         const int volumeMinHigh = 1000000000;
-        const int volumeMaxHigh = 2000000000;
+        const int volumeMaxHigh = 2000000000; 
         #endregion
+
+        #region Services
         IStockRepository StockRepository;
         IStockDetailRepository StockDetailRepository;
-        ICacheService CacheService;
+        ICacheService CacheService; 
+        #endregion
+
         public event Action DataUpdated;
-        readonly DispatcherTimer updateTimer;
         bool FetchData;
 
         //Cnstructor
-        public StockDataService(ICacheService cacheService, IStockRepository stockRepository, IStockDetailRepository stockDetailRepository)
+        public StockDataService(ICacheService cacheService, ITimerService timerService,
+            IStockRepository stockRepository, IStockDetailRepository stockDetailRepository)
         {
             FetchData = false;
             CacheService = cacheService;
             StockDetailRepository = stockDetailRepository;
             StockRepository = stockRepository;
-            updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            InitTimer();
+
+            timerService.Tick += OnTimerTick;
+            timerService.Start();
         }
 
-        //Public Access Methods Implementation
         public IStock GetStock(string symbol)
         {
             var stocks = GetStocks();
@@ -85,22 +89,11 @@ namespace OMS.Services.AppServices
             return CacheService.Get<ObservableCollection<IStockDetail>>("StockDetails");
 
         }
-        public void Refresh(object sender, EventArgs e)
+
+        private void OnTimerTick(object sender, EventArgs e)
         {
             UpdateStockDetails();
             DataUpdated?.Invoke();
-
-        }
-        public void StartSession()
-        {
-            updateTimer.Start();
-        }
-
-        #region Private Methods
-        private void InitTimer()
-        {
-            updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
-            updateTimer.Tick += new EventHandler(Refresh);
         }
         private void FetchStockDetails()
         {
@@ -115,7 +108,7 @@ namespace OMS.Services.AppServices
             }
             if (!FetchData)
             {
-                StartSession();
+                FetchData = true;
             }
         }
         private void UpdateStockDetails()
@@ -132,9 +125,8 @@ namespace OMS.Services.AppServices
 
             if (!FetchData)
             {
-                StartSession();
+                FetchData = true;
             }
         } 
-        #endregion
     }
 }

@@ -1,57 +1,91 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Core.Core.Models.Books;
 using OMS.Core.Models;
+using OMS.Core.Models.Orders;
+using OMS.Core.Services;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Windows.Threading;
+using System.Windows.Data;
 
 namespace OMS.Services.MarketServices.RealtimeServices
 {
     public class MarketTradeService : IMarketTradeService
     {
-        const int Tick = 2000;
         private readonly string cacheKeyPrefix = "MarketTrades_";
+        int MaxTradeCount = 100;
         public event Action<string> DataUpdated;
-        readonly DispatcherTimer updateTimer;
+
+        #region Services
         IMarketTradeRepository marketTradeRepository;
         IStockDataService StockDataService;
-        ICacheService CacheService;
+        ICacheService CacheService; 
+        #endregion
 
         //Constructor
-        public MarketTradeService(IMarketTradeRepository marketTradeRepository, ICacheService cacheService, IStockDataService stockDataService)
+        public MarketTradeService(IMarketTradeRepository tradeRepository, 
+            ITimerService timerService, ICacheService cacheService, 
+            IStockDataService stockDataService)
         {
             StockDataService = stockDataService;
-            this.marketTradeRepository = marketTradeRepository;
+            marketTradeRepository = tradeRepository;
             CacheService = cacheService;
-            
-            updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            InitTimer();
+
+            timerService.Tick += OnTimerTick; 
+            timerService.Start();
         }
 
-        //Public Access Methods Implementation
-        public ObservableCollection<BookBase> GetAllBySymbol(string symbol)
+        public ICollectionView GetAll(string symbol)
         {
-            StartSession();
-            var cacheKey = cacheKeyPrefix + symbol;
+            string cacheKey = cacheKeyPrefix + symbol;
             if (CacheService.ContainsKey(cacheKey))
             {
-                return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
+                return GetCollectionView(GetTradesFromCache(symbol));
             }
-
-            var trades = marketTradeRepository.GetAll(symbol).ToObservableCollection();
-            CacheService.Set(cacheKey, trades);
-            return trades;
+            LoadTrades(symbol);
+            return GetCollectionView(GetTradesFromCache(symbol));
         }
-        public BookBase GetById(int key)
+        private ICollectionView GetCollectionView(ObservableCollection<BookBase> collection)
         {
-            return marketTradeRepository.GetById(key);
+            if (collection == null)
+            {
+                collection = new ObservableCollection<BookBase>();
+            }
+            var collectionViewSource = new CollectionViewSource { Source = collection };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.
+                View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                    collectionViewSource.SortDescriptions.Add(new SortDescription("Timestamp", ListSortDirection.Descending));
+                }
+            }
+            return collectionViewSource.View;
+            
         }
-        public void Refresh(object sender, EventArgs e)
+        private void LoadTrades(string symbol)
+        {
+            string cacheKey = cacheKeyPrefix + symbol;
+            var trades = FetchTrades(symbol);
+            if(trades !=null && trades.Count > 0)
+            {
+                CacheService.Set(cacheKey, trades);
+            }
+            else
+            {
+                CacheService.Set(cacheKey, new ObservableCollection<BookBase>());
+            }
+        }
+        
+        private void OnTimerTick(object sender, EventArgs e)
         {
             foreach (var symbol in GetTrackedSymbols())
             {
@@ -59,33 +93,51 @@ namespace OMS.Services.MarketServices.RealtimeServices
                 DataUpdated?.Invoke(symbol); 
             }
         }
-        public void StartSession()
-        {
-            updateTimer.Start();
-        }
-        public ObservableCollection<BookBase> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        #region Private Methods
-        private void InitTimer()
-        {
-            updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
-            updateTimer.Tick += new EventHandler(Refresh);
-        }
         private void UpdateTradeRecords(string symbol)
         {
             var cacheKey = cacheKeyPrefix + symbol;
-            var latestTrades = marketTradeRepository.GetAll(symbol).Take(100).ToList();
-
-            var tradeCollection = latestTrades.ToObservableCollection();
-            CacheService.Set(cacheKey, tradeCollection);
+            var trades = GetTradesFromCache(symbol);
+            if(trades == null)
+            {
+                trades = new ObservableCollection<BookBase>();
+            }
+            ObservableCollection<BookBase> latestTrades = FetchTrades(symbol);
+            if (latestTrades.Any())
+            {
+                int Count = trades.Count + latestTrades.Count;
+                if (Count > MaxTradeCount)
+                {
+                    for (int i = 0; i < Count-MaxTradeCount; i++)
+                    {
+                        trades.RemoveAt(i);
+                    }
+                }
+                foreach(BookBase trade in latestTrades)
+                {
+                    trades.Add(trade);
+                }
+            }
+            CacheService.Set(cacheKey, trades);
         }
+        
         private IEnumerable<string> GetTrackedSymbols()
         {
-            return CacheService.Get<ObservableCollection<string>>("StockSymbols") ?? StockDataService.GetStockSymbols();
+            return StockDataService.GetStockSymbols();
         } 
-        #endregion
+        
+        private ObservableCollection<BookBase> FetchTrades(string symbol)
+        {
+            ObservableCollection<BookBase> trades = marketTradeRepository.GetTradesBySymbol(symbol).ToObservableCollection();
+            if (trades != null && trades.Count > 0)
+            {
+                return trades;
+            }
+            return new ObservableCollection<BookBase>();
+        }
+        private ObservableCollection<BookBase> GetTradesFromCache(string symbol)
+        {
+            string cacheKey = cacheKeyPrefix + symbol;
+            return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
+        }
     }
 }

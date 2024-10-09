@@ -1,12 +1,10 @@
 ﻿using OMS.Core.Models;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using OMS.DataAccess.Repositories.AppRepositories;
 using OMS.Core.Models.Orders;
 using OMS.SqlData.Model;
 using System.Linq;
 using AutoMapper;
-using OMS.Core.Core.Models.User;
 using System;
 
 namespace OMS.SqlData.Repositories

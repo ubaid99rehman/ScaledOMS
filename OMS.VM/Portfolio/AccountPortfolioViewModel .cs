@@ -3,6 +3,7 @@ using OMS.Core.Models.Account;
 using OMS.Core.Models.Orders;
 using OMS.Core.Services.AppServices;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace OMS.ViewModels
@@ -50,10 +51,10 @@ namespace OMS.ViewModels
             get { return _accounts; }
             set { SetProperty(ref _accounts, value, nameof(Accounts)); }
         }
-        public ObservableCollection<IOrder> Orders
+        public ICollectionView Orders
         {
-            get { return _orders; }
-            set { SetProperty(ref _orders, value, nameof(Orders)); }
+            get { return OrderService.GetOrdersByAccount(SelectedAccount.AccountID); }
+            //set { SetProperty(ref _orders, value, nameof(Orders)); }
         }
         public ObservableCollection<StockHolding> StockHoldingsData { get; set; }
 
@@ -100,12 +101,8 @@ namespace OMS.ViewModels
                 SelectedAccount = account;
             }
             //Fetch Account related Orders
-            var orders = OrderService.GetOrdersByAccount(SelectedAccount.AccountID);
-            if(orders == null || orders.Count < 1)
-            {
-                orders = new ObservableCollection<IOrder>();
-            }
-            Orders = orders;
+            
+            //Orders = OrderService.GetOrdersByAccount(SelectedAccount.AccountID);
         }
     }
 }

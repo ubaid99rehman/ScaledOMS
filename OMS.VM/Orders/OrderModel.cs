@@ -10,6 +10,7 @@ using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
 namespace OMS.ViewModels
@@ -57,15 +58,13 @@ namespace OMS.ViewModels
                 SetProperty(ref _accounts, value, nameof(Accounts));
             }
         }
-        public ObservableCollection<IOrder> Orders
+        public ICollectionView Orders
         {
-            get { return _orders; }
-            set { SetProperty(ref _orders, value, nameof(Orders)); }
+            get { return OrderService.GetOpenOrders(); }
         }
-        public ObservableCollection<IOrder> StockOrders
+        public ICollectionView StockOrders
         {
-            get { return _stockOrders; }
-            set { SetProperty(ref _stockOrders, value, nameof(StockOrders)); }
+            get { return OrderService.GetOrdersByStock(SelectedStockSymbol); }
         }
         public ObservableCollection<string> StockSymbols
         {
@@ -207,13 +206,13 @@ namespace OMS.ViewModels
             StockDataService = stockDataService;
             AccountService = accountService;
             OrderService = orderService;
-            OrderService.DataUpdated += FetchUpdatedOrders;
+            //OrderService.DataUpdated += FetchUpdatedOrders;
             PermissionService = permissionService;
             UserService  = userService;
             #endregion
             #region Initialized Collections
             Accounts = new ObservableCollection<int>();
-            Orders = new ObservableCollection<IOrder>();
+            //Orders = new ObservableCollection<IOrder>();
             StockSymbols = new ObservableCollection<string>();
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
@@ -228,12 +227,12 @@ namespace OMS.ViewModels
         {
             if(id == CurrentUser.UserID)
             {
-                Orders = OrderService.GetOpenOrders();
+                //Orders = OrderService.GetOpenOrders();
             }
         }
         private void FetchOrders()
         {
-            Orders = OrderService.GetOpenOrders();
+           // Orders = OrderService.GetOpenOrders();
         }
         private void InitData()
         {
@@ -247,8 +246,8 @@ namespace OMS.ViewModels
             //Accounts Data
             Accounts = AccountService.GetAccountsList();
             //Orders
-            LastOrder = OrderService.GetLastOrderByUser();
-            StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
+            //LastOrder = OrderService.GetLastOrderByUser();
+            //StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
             FetchOrders();
 
         }
@@ -257,7 +256,7 @@ namespace OMS.ViewModels
             SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
             StockDetailsModel.Symbol = SelectedStockSymbol;
             LastOrder = OrderService.GetLastOrderByUser();
-            StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
+            //StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
             FetchOrders();
             SelectedOrder = new Order();
             SelectedOrder.Price = SelectedStock.LastPrice;
@@ -327,16 +326,17 @@ namespace OMS.ViewModels
         public void CancelOrder(out bool isCancelled, out string message)
         {
             isCancelled = false;
-            message = "Cannot Update Order!";
+            message = "Cannot Cancell Order!";
             if (SelectedOrder.OrderID >= 0)
             {
                 if (SelectedOrder.Order_Statuses != OrderStatus.Cancelled
                     || SelectedOrder.Order_Statuses != OrderStatus.Fulfilled)
                 {
-                    OrderService.CancelOrder(SelectedOrder, out message);
-                    if (message.Equals("Updated!"))
+                    bool result = OrderService.CancelOrder(SelectedOrder);
+                    if (result)
                     {
                         isCancelled = true;
+                        message = "Order Cancelled Successfully!";
                         UpdateData();
                     }
                 }

@@ -6,7 +6,6 @@ using System;
 using OMS.Services.AppServices;
 using OMS.Core.Services.AppServices;
 using OMS.SqlData.Repositories;
-using OMS.MarketData.Stocks;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
@@ -19,6 +18,8 @@ using OMS.Core.Logging;
 using OMS.Logging;
 using AutoMapper;
 using OMS.SqlData.Mapping;
+using OMS.Core.Services;
+using OMS.MarketData;
 
 namespace OMS
 {
@@ -69,6 +70,7 @@ namespace OMS
 
             #region Services
             //App Services
+            services.AddSingleton<ITimerService, TimerService>();
             services.AddSingleton<ISessionInfoServce, SessionInfoService>();
             services.AddSingleton<IAppTimerService, AppTimerService>();
             services.AddSingleton<IOrderService, OrderService>();

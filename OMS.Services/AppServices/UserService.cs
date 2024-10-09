@@ -4,28 +4,58 @@ using OMS.Core.Services.AppServices;
 using OMS.Core.Services.Cache;
 using OMS.DataAccess.Repositories.AppRepositories;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace OMS.Services.AppServices
 {
     public class UserService : IUserService
     {
-        //Services
+        #region Services
         ICacheService CacheService;
         IPermissionService PermissionService;
         IUserRepository UserRepository;
+        #endregion
 
-        //Constructor
-        public UserService(ICacheService cacheService, IUserRepository userRepository, IPermissionService permissionService) 
+        #region Constructor
+        public UserService(ICacheService cacheService, IUserRepository userRepository,
+            IPermissionService permissionService)
         {
             CacheService = cacheService;
             UserRepository = userRepository;
             PermissionService = permissionService;
+        } 
+        #endregion
+
+        public bool LoadUsers()
+        {
+            ObservableCollection<IUser> Users = UserRepository.GetAll().ToObservableCollection<IUser>();
+            if (Users != null && Users.Count > 0)
+            {
+                CacheService.Set("Users", Users);
+                return true;
+            }
+            return false;
         }
-        
-        //Public Data Access Methods Implementation
+        public ObservableCollection<IUser> GetAll()
+        {
+            if (CacheService.ContainsKey("Users"))
+            {
+                return CacheService.Get<ObservableCollection<IUser>>("Users");
+            }
+            bool usersLoaded = LoadUsers();
+            if (usersLoaded)
+            {
+                return CacheService.Get<ObservableCollection<IUser>>("Users");
+            }
+            return new ObservableCollection<IUser>();
+        }
+        public IUser GetById(int key)
+        {
+            return GetAll().Where(u => u.UserID == key).FirstOrDefault();
+        }
+
         public IUser SetUser(IUser user)
         {
-            //Set User, Roles and Permissions
             CacheService.Set("CurrentUser", user);
             PermissionService.SetRolesAndPermissions(user);
             return GetUser();
@@ -38,14 +68,19 @@ namespace OMS.Services.AppServices
             }
             return null;
         }
-        public IUser UpdateUser(IUser user)
-        {
-            return UserRepository.UpdateUser(user);
-        }
 
-        public ObservableCollection<IUser> GetUsers()
+        public bool Update(IUser user)
         {
-            return UserRepository.GetAll().ToObservableCollection<IUser>();
+            IUser updatedUser = UserRepository.UpdateUser(user);
+            if (updatedUser != null && updatedUser.Email == user.Email)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool Add(IUser entity)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

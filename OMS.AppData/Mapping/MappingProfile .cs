@@ -42,7 +42,14 @@ namespace OMS.SqlData.Mapping
             }));
             CreateMap<Roles,IRole>().ReverseMap();
             CreateMap<Screens, IScreen>().ReverseMap();
-            CreateMap<Stocks,IStock>().ReverseMap();
+            CreateMap<Stocks, IStock>()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.StockID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.StockName))
+                .ForMember(dest => dest.Symbol, opt => opt.MapFrom(src => src.StockSymbol))
+                .ReverseMap()
+                .ForMember(dest => dest.StockID, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dest => dest.StockName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.StockSymbol, opt => opt.MapFrom(src => src.Symbol));
             CreateMap<Trades,ITrade>().ReverseMap();
             CreateMap<UserAccounts, IUserAccount>().ReverseMap();
             CreateMap<UserPermissions, IUserPermission>().ReverseMap();

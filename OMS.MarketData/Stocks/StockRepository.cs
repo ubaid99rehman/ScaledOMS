@@ -1,112 +1,56 @@
-﻿using OMS.Core.Models;
-using OMS.Core.Models.Stocks;
+﻿using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
-using OMS.Helpers;
+using OMS.SqlData.Model;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Linq;
+using AutoMapper;
+using System;
 
-namespace OMS.MarketData.Stocks
+namespace OMS.MarketData
 {
     public class StockRepository : IStockRepository
     {
-        private readonly string _connectionString;
+        OMSContext Context;
+        IMapper Mapper;
+
         //Constructor
-        public StockRepository()
+        public StockRepository(IMapper mapper)
         {
-            _connectionString = DbHelper.Connection;
+            Context = new OMSContext();
+            Mapper = mapper;
         }
+
         //Public Data Access Methods
         public IEnumerable<IStock> GetAll()
         {
-            var stocks = new List<Stock>();
-
-            using (var connection = new SqlConnection(_connectionString))
+            var stocks = Context.Stocks.ToList();
+            if (stocks.Count < 0 || stocks == null)
             {
-                var command = new SqlCommand("SELECT * FROM STOCKS", connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        stocks.Add(new Stock
-                        {
-                            ID = (int)reader["StockID"],
-                            Name= (string)reader["StockName"],
-                            Symbol = (string)reader["StockSymbol"],
-                            LastPrice = (decimal)reader["LastPrice"]
-                        });
-                    }
-                }
+                return new List<IStock>();
             }
-            return stocks;
-        }
-        public IStock GetById(int id)
-        {
-            IStock stock = null;
 
-            using (var connection = new SqlConnection(_connectionString))
+            ICollection<IStock> stocksList = new List<IStock>();
+            try
             {
-                var command = new SqlCommand("SELECT * FROM STCKS WHERE STOCKID = @ID", connection);
-                command.Parameters.AddWithValue("@ID", id);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        stock = new Stock
-                        {
-                            ID = (int)reader["StockID"],
-                            Name = (string)reader["StockName"],
-                            Symbol = (string)reader["StockSymbol"],
-                            LastPrice = (decimal)reader["LastPrice"]
-                        };
-                    }
-                }
+                stocksList = stocks.Select(o => Mapper.Map<IStock>(o)).ToList();
             }
-            return stock;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return stocksList;
         }
         public IStock GetBySymbol(string symbol)
         {
-            IStock stock = null;
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var command = new SqlCommand("SELECT * FROM STOCKS WHERE StockSymbol = @Symbol", connection);
-                command.Parameters.AddWithValue("@Symbol", symbol);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        stock = new Stock
-                        {
-                            ID = (int)reader["StockID"],
-                            Name = (string)reader["StockName"],
-                            Symbol = (string)reader["StockSymbol"],
-                            LastPrice = (decimal)reader["LastPrice"]
-                        };
-                    }
-                }
-            }
+            Stocks stockEntity = Context.Stocks.Where(s=> s.StockSymbol == symbol).FirstOrDefault();
+            IStock stock = Mapper.Map<IStock>(stockEntity);
             return stock;
         }
         public IEnumerable<string> GetStockSymbols()
         {
-            var stocks = new List<string>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var command = new SqlCommand("SELECT StockSymbol FROM STOCKS", connection);
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        stocks.Add(reader["StockSymbol"].ToString());
-                    }
-                }
-            }
-            return stocks;
+            var list = GetAll().Select(s => s.Symbol).ToList();
+            return list;
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using DevExpress.Mvvm;
 using OMS.Core.Services.AppServices;
 using System.Collections.ObjectModel;
-using OMS.Core.Models.Orders;
 using OMS.Core.Models.User;
 using OMS.Core.Models.Roles;
 using System.Linq;
+using System.ComponentModel;
 
 namespace OMS.ViewModels
 {
@@ -16,14 +16,14 @@ namespace OMS.ViewModels
         private IPermissionService PermissionService;
 
         //Private Data Member
-        private ObservableCollection<IOrder> orders;
+        private ICollectionView orders;
         private ObservableCollection<IUser> users;
         private bool _ShowUsers;
         private IUser _SelectedUser;
 
-        public ObservableCollection<IOrder> Orders
+        public ICollectionView Orders
         {
-            get => orders ?? (orders = new ObservableCollection<IOrder>());
+            get => OrderService.GetOrdersByUser(SelectedUser.UserID);
             set
             {
                 SetProperty(ref orders, value, nameof(Orders));
@@ -58,10 +58,10 @@ namespace OMS.ViewModels
         }
 
         //Constructor
-        public OrderHistoryViewModel(IOrderService orderService, IUserService userService, IPermissionService permissionService)
+        public OrderHistoryViewModel(IOrderService orderService, 
+            IUserService userService, IPermissionService permissionService)
         {
             OrderService = orderService;
-            OrderService.DataUpdated += FetchUpdatedOrders;
             _userService = userService;
             PermissionService = permissionService;
             LoadUsers();
@@ -79,7 +79,7 @@ namespace OMS.ViewModels
                 if(role.RoleID ==3)
                 {
                     ShowUsers = true;
-                    Users = _userService.GetUsers();
+                    Users = _userService.GetAll();
                     SelectedUser = Users.FirstOrDefault();
                 }
             }
@@ -89,13 +89,6 @@ namespace OMS.ViewModels
             if(SelectedUser !=null && SelectedUser.UserID > 0)
             {
                 Orders = OrderService.GetOrdersByUser(SelectedUser.UserID);
-            }
-        }
-        private void FetchUpdatedOrders(int id)
-        {
-            if (SelectedUser.UserID == id) 
-            { 
-                LoadOrders();
             }
         }
     }

@@ -7,63 +7,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OMS.MarketData.Stocks
+namespace OMS.MarketData
 {
     public class MarketOrderRepository : IMarketOrderRepository
     {
-        Random random;
-        List<string> StockSymbols;
-        List<IStock> Stocks;
         IStockRepository StockRepository;
+        Random random;
+
+        int sellOrdersCount;
+        int buyOrdersCount;
+
         //Constructor
         public MarketOrderRepository(IStockRepository stockRepository)
         {
             StockRepository = stockRepository;
-            StockSymbols = new List<string>();
-            Stocks = new List<IStock>();
             random = new Random();
-            FetchStockData();
-        }
-        //Public Data Access Methods
-        public IEnumerable<BookBase> GetAll(string symbol)
-        {
-            return AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-        }
-        public IEnumerable<BookBase> GetAll()
-        {
-            Dictionary<string, IEnumerable<OrderBook>> tradesDictionary = new Dictionary<string, IEnumerable<OrderBook>>();
-            foreach (var symbol in StockSymbols)
-            {
-                if (!tradesDictionary.ContainsKey(symbol))
-                {
-                    AddOrders(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-                }
-            }
-            return tradesDictionary.Values.SelectMany(t => t);
-        }
-        public BookBase GetById(int id)
-        {
-            IStock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
-            return AddOrders(stock).FirstOrDefault();
-        }
-        //Private Data Loading Methods
-        void FetchStockData()
-        {
-            if (StockSymbols == null || StockSymbols.Count < 1)
-            {
-                StockSymbols = StockRepository.GetStockSymbols().ToList<string>();
-            }
-            if (Stocks == null || Stocks.Count < 1)
-            {
-                Stocks = StockRepository.GetAll().ToList<IStock>();
-            }
-        }
-        private IEnumerable<BookBase> AddOrders(IStock stock)
-        {
-            int sellOrdersCount = random.Next(1, 5);
-            int buyOrdersCount = random.Next(1, 5);
-            List<BookBase> orders = new List<BookBase>();
+            sellOrdersCount = random.Next(1, 5);
+            buyOrdersCount = random.Next(1, 5);        }
 
+        public IEnumerable<BookBase> GetOrdersBySymbol(string symbol)
+        {
+            return AddTrades(symbol);
+        }
+        private IEnumerable<BookBase> AddTrades(string symbol)
+        {
+            IStock stock = StockRepository.GetBySymbol(symbol);
+            if (stock == null)
+            {
+                return new List<BookBase>();
+            }
+            List<BookBase> orders = new List<BookBase>();
             for (int i = 0; i < sellOrdersCount; i++)
             {
                 int qty = random.Next(1, 1000);
@@ -79,7 +52,6 @@ namespace OMS.MarketData.Stocks
                 trade.Total = trade.Price * trade.Quantity;
                 orders.Add(trade);
             }
-
             for (int i = 0; i < buyOrdersCount; i++)
             {
                 int qty = random.Next(1, 1000);
@@ -95,7 +67,6 @@ namespace OMS.MarketData.Stocks
                 trade.Total = trade.Price * trade.Quantity;
                 orders.Add(trade);
             }
-
             return orders;
         }
     }

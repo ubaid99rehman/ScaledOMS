@@ -7,64 +7,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OMS.MarketData.Stocks
+namespace OMS.MarketData
 {
     public class MarketTradeRepository : IMarketTradeRepository
     {
         Random random;
-        List<string> StockSymbols;
-        List<IStock> Stocks;
+        int tradeCount;
         IStockRepository StockRepository;
+
         //Constructor
         public MarketTradeRepository(IStockRepository stockRepository)
         {
             StockRepository = stockRepository;
             random = new Random();
-            Stocks = new List<IStock>();
-            StockSymbols = new List<string>();
+            tradeCount= random.Next(1, 11);
         }
-        //Public Data Access Methods
-        public IEnumerable<BookBase> GetAll(string symbol)
+
+        public IEnumerable<BookBase> GetTradesBySymbol(string symbol)
         {
-            FetchStockData();
-            return AddTrades(Stocks.Where(s=> s.Symbol==symbol).FirstOrDefault());
+            return AddTrades(symbol);
         }
-        public IEnumerable<BookBase> GetAll()
+        private IEnumerable<BookBase> AddTrades(string symbol)
         {
-            FetchStockData();
-            var tradesDictionary = new  List<BookBase>();
-            foreach (var symbol in StockSymbols)
+            IStock stock = StockRepository.GetBySymbol(symbol);
+            if (stock == null)
             {
-               tradesDictionary.AddRange(AddTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault()));
+                return new List<BookBase>();
             }
-            return tradesDictionary;
-        }
-        public BookBase GetById(int id)
-        {
-            FetchStockData();
-            IStock stock = Stocks.Where(s => s.ID == id).FirstOrDefault();
-            return AddTrades(stock).FirstOrDefault();
-            
-        }
-        //Private Data Loading Methods
-        void FetchStockData()
-        {
-            if(StockSymbols == null || StockSymbols.Count < 1)
-            {
-                StockSymbols = StockRepository.GetStockSymbols().ToList<string>();
-            }
-            if(Stocks == null || Stocks.Count < 1)
-            {
-                Stocks = StockRepository.GetAll().ToList<IStock>();
-            }
-            foreach (var symbol in StockSymbols) 
-            {
-                AddTrades(Stocks.Where(s => s.Symbol == symbol).FirstOrDefault());
-            }
-        }
-        private IEnumerable<BookBase> AddTrades(IStock stock)
-        {
-            int tradeCount = random.Next(1, 11);
+
             List<BookBase> trades = new List<BookBase>();
             for (int i = 0; i < tradeCount; i++)
             {
@@ -81,7 +51,6 @@ namespace OMS.MarketData.Stocks
                 trade.Total = trade.Price * trade.Quantity;
                 trades.Add(trade);
             }
-
             return trades;
         }
     }

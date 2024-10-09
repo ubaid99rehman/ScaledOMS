@@ -1,25 +1,14 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Core.Models;
 using OMS.Core.Services.MarketServices.RealtimeServices;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace OMS.ViewModels
 {
-    public class TradeBookModel : ViewModelBase, IDisposable
+    public class TradeBookModel : ViewModelBase
     {
-        //Service
         private readonly IMarketTradeService _marketTradeService;
-        //Max Visible Trades 
-        private const int MaxTradeCount = 100;
 
-        //Private Members
         private string _selectedStockSymbol;
-        private ObservableCollection<TradeBook> _stockTrades;
-
-        //Public Members
         public string SelectedStockSymbol
         {
             get => _selectedStockSymbol;
@@ -27,72 +16,28 @@ namespace OMS.ViewModels
             {
                 if(_selectedStockSymbol != value)
                 {
-                    if (SetProperty(ref _selectedStockSymbol, value, nameof(SelectedStockSymbol)))
+                    if(SetProperty(ref _selectedStockSymbol, value, nameof(SelectedStockSymbol)))
                     {
-                        AddStockTrades();
+                        if (!string.IsNullOrEmpty(SelectedStockSymbol))
+                        {
+                            StockTrades = _marketTradeService.GetAll(SelectedStockSymbol);
+                        }
                     }
-
                 }
             }
         }
-        public ObservableCollection<TradeBook> StockTrades
+
+        private ICollectionView _stockTrades;
+        public ICollectionView StockTrades
         {
             get => _stockTrades;
-            private set => SetProperty(ref _stockTrades, value,nameof(StockTrades));
+            set => SetProperty(ref _stockTrades, value, nameof(StockTrades));
         }
         
         //Constructor
         public TradeBookModel(IMarketTradeService marketTradeService)
         {
             _marketTradeService = marketTradeService;
-            _stockTrades = new ObservableCollection<TradeBook>();
-
-            _marketTradeService.DataUpdated += OnDataUpdated;
-        }
-
-        //Methods
-        private void AddStockTrades()
-        {
-            if (!string.IsNullOrEmpty(SelectedStockSymbol))
-            {
-                var trades = _marketTradeService.GetAllBySymbol(SelectedStockSymbol);
-                
-                StockTrades.Clear();
-                foreach (var trade in trades)
-                {
-                    StockTrades.Add((TradeBook)trade);
-                }
-            }
-        }
-        private void OnDataUpdated(string symbol)
-        {
-            if (symbol == SelectedStockSymbol)
-            {
-                UpdateStockTrades();
-            }
-        }
-        private void UpdateStockTrades()
-        {
-            if (!string.IsNullOrEmpty(SelectedStockSymbol))
-            {
-                var trades = _marketTradeService.GetAllBySymbol(SelectedStockSymbol);
-
-                if (trades.Any())
-                {
-                    foreach (var trade in trades.Reverse())
-                    {
-                        if (StockTrades.Count >= MaxTradeCount)
-                        {
-                            StockTrades.RemoveAt(StockTrades.Count - 1);
-                        }
-                        StockTrades.Insert(0, (TradeBook)trade);
-                    }
-                }
-            }
-        }
-        public void Dispose()
-        {
-            _marketTradeService.DataUpdated -= OnDataUpdated;
         }
     }
 }

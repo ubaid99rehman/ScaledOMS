@@ -1,13 +1,12 @@
-﻿using OMS.Core.Core.Models.Books;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace OMS.Core.Services.MarketServices.RealtimeServices
 {
-    public interface IMarketOrderService :  IMarketService<BookBase>, IRealtimeService
+    public interface IMarketOrderService 
     {
         event Action<string> DataUpdated;
-        ObservableCollection<BookBase> GetBuyOrders(string symbol);
-        ObservableCollection<BookBase> GetSellOrders(string symbol);
+        ICollectionView GetBuyOrders(string symbol);
+        ICollectionView GetSellOrders(string symbol);
     }
 }

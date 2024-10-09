@@ -43,6 +43,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\IContextMenuHelper.cs" />
@@ -78,10 +79,10 @@
     <Compile Include="Services\MarketServices\RealtimeServices\IMarketTradeService.cs" />
     <Compile Include="Services\MarketServices\RealtimeServices\IStockDataService.cs" />
     <Compile Include="Services\MarketServices\RealtimeServices\IStockTradeDataService.cs" />
-    <Compile Include="Services\AppServices\BaseService\IAppService.cs" />
+    <Compile Include="Services\IAppService.cs" />
     <Compile Include="Cache\ICacheManager.cs" />
     <Compile Include="Cache\ICacheService.cs" />
-    <Compile Include="Services\MarketServices\BaseService\IMarketService.cs" />
+    <Compile Include="Services\IReadonlyService.cs" />
     <Compile Include="Services\AppServices\IOrderService.cs" />
     <Compile Include="Services\IRealtimeService.cs" />
     <Compile Include="Services\AppServices\RealtimeServices\ISessionInfoServce.cs" />

@@ -6,6 +6,7 @@ using OMS.Core.Logging;
 using OMS.Core.Models.App;
 using OMS.Core.Models.Permissions;
 using OMS.Core.Models.User;
+using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.Cache;
@@ -123,27 +124,20 @@ namespace OMS.ViewModels
         #endregion
 
         //Constructor
-        public MainViewModel(IAppTimerService timerService, ICacheService cacheService, 
+        public MainViewModel(IAppTimerService appTimerService, ICacheService cacheService, ITimerService timerService,  
             ILogHelper logHelper, IPermissionService permissionService, IUserService userService )
         {
             Logger = logHelper;
             filePath = ConfigurationManager.AppSettings["LayoutFilePath"];
             landingPageLoaded = false;
+            Title = "OMS";
+            
+            timerService.Start();
             CacheService = cacheService;
-            AppTimerService = timerService;
+            AppTimerService = appTimerService;
             PermissionService  = permissionService;
             UserService = userService;
             CurrentUser = UserService.GetUser();
-            AppTimerService.StartSession();
-            Title = "OMS";
-            //Permissions
-            CanViewDashboard = false;
-            CanViewMarketWatch = false;
-            CanViewPortfolio = false;
-            CanViewOrderHistory = false;
-            CanViewManageOrders = false;
-            CanViewAddOrder = false;
-            CanViewEditOrder = false;
 
             SetRolePermissions();
         }
@@ -200,6 +194,16 @@ namespace OMS.ViewModels
         //View Changed Event Handler
         private void SetRolePermissions()
         {
+
+            //Permissions
+            CanViewDashboard = false;
+            CanViewMarketWatch = false;
+            CanViewPortfolio = false;
+            CanViewOrderHistory = false;
+            CanViewManageOrders = false;
+            CanViewAddOrder = false;
+            CanViewEditOrder = false;
+
             ObservableCollection<IPermission> userPermissions = PermissionService.GetUserViewPermissions();
             foreach (IPermission permission in userPermissions)
             {

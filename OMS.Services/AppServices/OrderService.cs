@@ -7,27 +7,41 @@ using OMS.DataAccess.Repositories.AppRepositories;
 using OMS.Enums;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 
 namespace OMS.Services.AppServices
 {
     public class OrderService : IOrderService
     {
+        #region Services
         ICacheService CacheService;
-        IOrderRepository OrderRepository;
         IUserService UserService;
-        public event Action<int> DataUpdated;
+        IOrderRepository OrderRepository;
+        #endregion
 
-        //Constructor
-        public OrderService(IOrderRepository accountRepository, IUserService userService,
+        #region Constructor
+        public OrderService(IOrderRepository orderRepository, IUserService userService,
             ICacheService cacheService)
         {
             CacheService = cacheService;
-            OrderRepository = accountRepository;
+            OrderRepository = orderRepository;
             UserService = userService;
         }
+        #endregion
 
-        //Public Data Access Methods Implementation
+        //Cached Orders
+        public bool LoadOrders()
+        {
+            ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
+            if (Orders != null && Orders.Count > 0) 
+            {
+                CacheService.Set("Orders", Orders);
+                return true;
+            }
+            return false;
+        }
         public ObservableCollection<IOrder> GetAll()
         {
             if (CacheService.ContainsKey("Orders"))
@@ -35,54 +49,156 @@ namespace OMS.Services.AppServices
                 return CacheService.Get<ObservableCollection<IOrder>>("Orders");
             }
 
-            ObservableCollection<IOrder> Orders = OrderRepository.GetAll().ToObservableCollection<IOrder>();
-            CacheService.Set("Orders", Orders);
-            return Orders;
+            bool ordersLoaded = LoadOrders();
+            if (ordersLoaded)
+            {
+                return CacheService.Get<ObservableCollection<IOrder>>("Orders");
+            }
+            return new ObservableCollection<IOrder>();
         }
+        //Get Orders
+        public ICollectionView GetOpenOrders()
+        {
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate)); 
+                    collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.Status == (int)OrderStatus.New && order.AddedBy == id;
+                };
+            }
+            return collectionViewSource.View;
+        }
+        public ICollectionView GetCancelledOrders()
+        {
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.Status == (int)OrderStatus.Cancelled && order.AddedBy == id;
+                };
+                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            }
+            return collectionViewSource.View;
+        }
+        public ICollectionView GetFulfilledOrders()
+        {
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.Status == (int)OrderStatus.Fulfilled && order.AddedBy == id;
+                };
+                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            }
+            return collectionViewSource.View;
+        }
+        public ICollectionView GetOrdersByUser(int userId)
+        {
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.AddedBy == id;
+                };
+                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            }
+            return collectionViewSource.View;
+        }
+        public ICollectionView GetOrdersByAccount(int accountId)
+        {
+            var orders = GetAll();
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.AccountID == accountId;
+                };
+                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            }
+            return collectionViewSource.View;
+        }
+        public ICollectionView GetOrdersByStock(string stockSymbol)
+        {
+            var orders = GetAll();
+            int id = GetUser().UserID;
+            var collectionViewSource = new CollectionViewSource { Source = orders };
+            ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;
+            if (liveShapingView != null)
+            {
+                if (liveShapingView.CanChangeLiveSorting)
+                {
+                    liveShapingView.IsLiveSorting = true;
+                    liveShapingView.LiveSortingProperties.Add(nameof(IOrder.OrderDate));
+                }
+
+                collectionViewSource.View.Filter = o =>
+                {
+                    var order = o as IOrder;
+                    return order != null && order.Symbol == stockSymbol && order.AddedBy == id;
+                };
+                collectionViewSource.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            }
+            return collectionViewSource.View;
+        }
+        
+        //Single Order
         public IOrder GetById(int key)
         {
             return GetAll().Where(o => o.OrderID == key).FirstOrDefault();
-        }
-        public ObservableCollection<IOrder> GetOpenOrders()
-        {
-            var orders = GetAll();
-            int id = GetUser().UserID;
-            var openOrders = orders.Where(order => order.Order_Statuses == OrderStatus.New && 
-            order.AddedBy == id).ToObservableCollection<IOrder>();
-            return openOrders;
-        }
-        public ObservableCollection<IOrder> GetCancelledOrders()
-        {
-            var orders = GetAll();
-            int id = GetUser().UserID;
-            var cancelledOrders = orders.Where(order => order.Order_Statuses == OrderStatus.Cancelled &&
-            order.AddedBy == id).ToObservableCollection<IOrder>();
-            return cancelledOrders;
-        }
-        public ObservableCollection<IOrder> GetFulfilledOrders()
-        {
-            var orders = GetAll();
-            int id = GetUser().UserID;
-            var cancelledOrders = orders.Where(order => order.Order_Statuses == OrderStatus.Fulfilled &&
-            order.AddedBy == id).ToObservableCollection<IOrder>();
-            return cancelledOrders;
-        }
-        public ObservableCollection<IOrder> GetOrdersByUser(int userId)
-        {
-            return GetAll().Where(order => order.AddedBy == userId).ToObservableCollection<IOrder>();
-        }
-        public ObservableCollection<IOrder> GetOrdersByAccount(int accountId)
-        {
-            return GetAll().Where(order => order.AccountID == accountId).ToObservableCollection<IOrder>();
-        }
-        public ObservableCollection<IOrder> GetOrdersByStock(string stockSymbol)
-        {
-            int id= GetUser().UserID;
-            return GetAll().Where(order => order.Symbol == stockSymbol && order.AddedBy == id).ToObservableCollection<IOrder>();
-        }
-        public ObservableCollection<IOrder> GetOpenOrdersByStock(string stockSymbol)
-        {
-            return GetAll().Where(order => order.Order_Statuses == OrderStatus.New).Where(o => o.Symbol == stockSymbol).ToObservableCollection<IOrder>();
         }
         public IOrder GetLastOrderByUser()
         {
@@ -91,15 +207,17 @@ namespace OMS.Services.AppServices
                 .OrderByDescending(order => order.CreatedDate)
                 .FirstOrDefault();
         }
+
+        #region Orders Uodate Methods 
         public bool Add(IOrder entity)
         {
             GetAll().Add(entity);
             IOrder order = OrderRepository.Add(entity);
-            if (order !=null && order.OrderID > 0)
+            if (order != null && order.OrderID > 0)
             {
                 int id = GetUser().UserID;
                 IOrder newOrder = GetAll().Where(o => o.OrderGuid == entity.OrderGuid).First();
-                if(order != null && order.OrderID > 0)
+                if (order != null && order.OrderID > 0)
                 {
                     newOrder.OrderID = order.OrderID;
                 }
@@ -107,7 +225,6 @@ namespace OMS.Services.AppServices
                 {
                     GetAll().Remove(entity);
                 }
-                DataUpdated?.Invoke(id);
                 return true;
             }
             return false;
@@ -123,32 +240,29 @@ namespace OMS.Services.AppServices
             IOrder order = OrderRepository.Update(updatedOrder);
             if (order != null && order.OrderID > 0)
             {
-                int id = GetUser().UserID;
-                DataUpdated?.Invoke(id);
                 return true;
             }
             return false;
         }
-        public void CancelOrder(IOrder selectedOrder, out string message)
+        public bool CancelOrder(IOrder selectedOrder)
         {
-            message = string.Empty;
             selectedOrder.Order_Statuses = OrderStatus.Cancelled;
             selectedOrder.Status = (int)OrderStatus.Cancelled;
 
-            IOrder cancelledOrder = GetAll().Where(o=> o.OrderID == selectedOrder.OrderID).First();
+            IOrder cancelledOrder = GetAll().Where(o => o.OrderID == selectedOrder.OrderID).First();
             cancelledOrder.Order_Statuses = OrderStatus.Cancelled;
             cancelledOrder.Status = (int)OrderStatus.Cancelled;
 
             IOrder order = OrderRepository.Update(cancelledOrder);
             if (order != null && order.Status == (int)OrderStatus.Cancelled)
             {
-                //FetchOrders(); 
-                int id = GetUser().UserID;
-                DataUpdated?.Invoke(id);
-                message = "Order Cancelled Successfully!";
+                return true;
             }
-        }
+            return false;
+        } 
+        #endregion
 
+        //Current User 
         private IUser GetUser()
         { 
             return UserService.GetUser();

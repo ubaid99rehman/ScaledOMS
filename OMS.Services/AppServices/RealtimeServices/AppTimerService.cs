@@ -1,46 +1,32 @@
 ﻿using OMS.Core.Models;
 using OMS.Core.Models.App;
+using OMS.Core.Services;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using System;
-using System.Windows.Threading;
 
 
 namespace OMS.Services.AppServices
 {
     public class AppTimerService : IAppTimerService
     {
-        public IAppTime CurrentTime;
-        public const int Tick = 500;
-        readonly DispatcherTimer updateTimer;
-        readonly Random _random;
-
+        public IAppTime CurrentTime { get; }
+        
         //Constructor
-        public AppTimerService() 
+        public AppTimerService(ITimerService timerService)
         {
             CurrentTime = new AppTime();
-            _random = new Random();
-            updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            InitTimer();
+            timerService.Tick += OnTimerTick;
+            timerService.Start();
         }
         
-        //Public Access Methods
-        public void Refresh(object sender, EventArgs e)
-        {
-            CurrentTime.CurrentTime = DateTime.Now;
-        }
-        public void StartSession() 
-        {
-            updateTimer.Start();
-        }
         public IAppTime GetCurrentDateTime()
         {
             return CurrentTime;
         }
-        //Private Method
-        void InitTimer()
+        private void OnTimerTick(object sender, EventArgs e)
         {
-            updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
-            updateTimer.Tick += new EventHandler(Refresh);
+            CurrentTime.CurrentTime = DateTime.Now;
         }
     }
+
 }

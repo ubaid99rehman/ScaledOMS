@@ -103,10 +103,10 @@ namespace OMS.ViewModels
             IOrderService orderService,IAccountService accountService, IUserService userService)
         {
             _stockService = stockDataService;
-            _orderBookModel = new OrderBookModel(marketOrderService);
-            _tradeBookModel = new TradeBookModel(marketTradeService);
             _stockDetailsModel = new StockDetailViewModel(_stockService);
             _stockChartViewModel = new StockChartModel(stockTradeDataService);
+            _orderBookModel = new OrderBookModel(marketOrderService);
+            _tradeBookModel = new TradeBookModel(marketTradeService);
             _orderHistoryModel = new OrderHistoryViewModel(orderService, userService, permissionService);
             _openOrdersModel = new OrdersListModel(orderService,permissionService,stockDataService,accountService);
             _tradeModel = new TradeViewModel();
@@ -123,8 +123,8 @@ namespace OMS.ViewModels
         {
             if (SelectedStockSymbol != null)
             {
-                StockChartViewModel.SelectedStockSymbol = SelectedStockSymbol;
                 StockDetailsModel.Symbol = SelectedStockSymbol;
+                StockChartViewModel.SelectedStockSymbol = SelectedStockSymbol;
                 OrderBookModel.SelectedStockSymbol = SelectedStockSymbol;
                 TradeBookModel.SelectedStockSymbol = SelectedStockSymbol;
             }

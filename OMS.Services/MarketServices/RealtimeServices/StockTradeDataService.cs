@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
+using OMS.Core.Services;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
@@ -9,22 +10,23 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace OMS.Services.MarketServices.RealtimeServices
 {
     public class StockTradeDataService : IStockTradeDataService
     {
         public event Action DataUpdated;
+
+        #region Services
         IStockRepository StockRepository;
         IStockTradeDataRepository StockTradeDataRepository;
         IStockDataService StockDataService;
-        ICacheService CacheService;
-        int Tick = 60000;
-        readonly DispatcherTimer updateTimer;
+        ICacheService CacheService; 
+        #endregion
+
         bool FetchData = false;
 
-        public StockTradeDataService(IStockRepository stockRepository, 
+        public StockTradeDataService(IStockRepository stockRepository, ITimerService timerService, 
             IStockTradeDataRepository stockTradeDataRepository, 
             IStockDataService stockDataService,
             ICacheService cacheService)
@@ -33,8 +35,9 @@ namespace OMS.Services.MarketServices.RealtimeServices
             StockTradeDataRepository = stockTradeDataRepository;
             StockDataService = stockDataService;
             CacheService = cacheService;
-            updateTimer = new DispatcherTimer(DispatcherPriority.ApplicationIdle);
-            InitTimer();
+
+            timerService.Tick += OnTimerTick; 
+            timerService.Start();
         }
 
         //Public Access Methods Implementation
@@ -56,13 +59,12 @@ namespace OMS.Services.MarketServices.RealtimeServices
                 return data.LastOrDefault();
             }
 
-            return StockTradeDataRepository.GetTradeData(symbol, 1, interval).GetAwaiter().GetResult();
+            return StockTradeDataRepository.GetLastTradeData(symbol).GetAwaiter().GetResult();
         }
         public ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
         {
             if(!FetchData)
             {
-                StartSession();
                 FetchData = true;
             }
 
@@ -109,25 +111,20 @@ namespace OMS.Services.MarketServices.RealtimeServices
             CacheService.Set(cacheKey, resultData);
             return resultData;
         }
-        public void Refresh(object sender, EventArgs e)
+        
+        private void OnTimerTick(object sender, EventArgs e)
         {
             FetchTradeData();
             DataUpdated?.Invoke();
         }
-        public void StartSession()
-        {
-            updateTimer.Start();
-        }
-
-        #region Private Methods
-        void FetchTradeData()
+        private void FetchTradeData()
         {
             TradeTimeInterval interval = TradeTimeInterval.Minute;
             var symbols = StockDataService.GetStockSymbols();
 
             foreach (var symbol in symbols)
             {
-                var data = StockTradeDataRepository.GetTradeData(symbol, 1, interval).GetAwaiter().GetResult();
+                var data = StockTradeDataRepository.GetLastTradeData(symbol).GetAwaiter().GetResult();
                 string cacheKey = $"{symbol}_{interval}";
                 if (CacheService.ContainsKey(cacheKey))
                 {
@@ -139,11 +136,5 @@ namespace OMS.Services.MarketServices.RealtimeServices
                 }
             }
         }
-        void InitTimer()
-        {
-            updateTimer.Interval = TimeSpan.FromMilliseconds(Tick);
-            updateTimer.Tick += new EventHandler(Refresh);
-        } 
-        #endregion
     }
 }

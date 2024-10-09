@@ -3,7 +3,7 @@
 
 namespace OMS.Core.Services
 {
-    public interface IMarketService<T>
+    public interface IReadonlyService<T>
     {
         T GetById(int key);
         ObservableCollection<T> GetAll();

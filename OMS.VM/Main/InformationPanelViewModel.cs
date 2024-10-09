@@ -19,7 +19,6 @@ namespace OMS.ViewModels
         public InformationPanelViewModel(ISessionInfoServce infoServce) 
         {
             SessionInfoServce = infoServce;
-            SessionInfoServce.StartSession();
         }
     }
 }

@@ -59,8 +59,8 @@ namespace OMS.VM.Settings
         {
             _user.Password = Password;
             _user.Email = Email;
-            IUser user = UserService.UpdateUser(_user);
-            if(user !=null && user.Password== _user.Password && user.Email ==_user.Email)
+            bool isUpdated = UserService.Update(_user);
+            if(isUpdated)
             {
                 message = "User Updated!";
                 return true;
