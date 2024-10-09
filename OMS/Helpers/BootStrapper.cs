@@ -32,17 +32,17 @@ namespace OMS
         }
         public async Task LoadOrdersData()
         {
-            await Task.Delay(4000);
+            await Task.Delay(100);
             _cacheService.Set("Orders", _orderService.GetAll());
         }
         public async Task LoadStocksData()
         {
-            await Task.Delay(2000);
+            await Task.Delay(100);
             _cacheService.Set("StockSymbols", _stockDataService.GetStockSymbols());
         }
         public async Task LoadAccountData()
         {
-            await Task.Delay(2000);
+            await Task.Delay(100);
             _cacheService.Set("Accounts", _accountService.GetAll());
             _cacheService.Set("AccountsList", _accountService.GetAccountsList());
         }

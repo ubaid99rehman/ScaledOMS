@@ -2,21 +2,21 @@
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
+using OMS.Common.Helper;
 using OMS.Core.Logging;
 using OMS.Core.Models.App;
 using OMS.Core.Models.Permissions;
-using OMS.Core.Models.User;
 using OMS.Core.Services;
 using OMS.Core.Services.AppServices;
 using OMS.Core.Services.AppServices.RealtimeServices;
 using OMS.Core.Services.Cache;
-using OMS.Domain.Models.App;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OMS.ViewModels
@@ -29,6 +29,7 @@ namespace OMS.ViewModels
         private ICacheService CacheService;
         private IUserService UserService;
         private IPermissionService PermissionService;
+        private IDocumentStateService DocumentStateService;
 
         //Navigation Service
         [ServiceProperty(Key = "documentManagerService")]
@@ -52,11 +53,9 @@ namespace OMS.ViewModels
         private bool _CanViewAddOrder;
         private bool _CanViewEditOrder;
         private bool _CanViewOpenOrders;
-        //Theme Layout File
-        private string filePath;
+        
         //Landing Page Displayed 
         private bool landingPageLoaded;
-        private IUser CurrentUser;
         #endregion
 
         #region Public Members
@@ -125,21 +124,31 @@ namespace OMS.ViewModels
 
         //Constructor
         public MainViewModel(IAppTimerService appTimerService, ICacheService cacheService, ITimerService timerService,  
-            ILogHelper logHelper, IPermissionService permissionService, IUserService userService )
+            IDocumentStateService documentStateService, ILogHelper logHelper, IPermissionService permissionService, IUserService userService )
         {
             Logger = logHelper;
-            filePath = ConfigurationManager.AppSettings["LayoutFilePath"];
             landingPageLoaded = false;
             Title = "OMS";
-            
+
             timerService.Start();
             CacheService = cacheService;
             AppTimerService = appTimerService;
             PermissionService  = permissionService;
+            DocumentStateService = documentStateService;
             UserService = userService;
-            CurrentUser = UserService.GetUser();
-
+            LoadLayoutFile();
             SetRolePermissions();
+        }
+
+        private void LoadLayoutFile()
+        {
+            int id = UserService.GetUser().UserID;
+            if(id > 0)
+            {
+                string filePath = ConfigurationHelper.GetAppSetting("LayoutFilePath");
+                string fileName = Path.Combine(filePath, $"{id}.xml");
+                DocumentStateService.LoadFile(fileName);    
+            }
         }
 
         #region Navigation Commands
@@ -247,7 +256,7 @@ namespace OMS.ViewModels
             }
         }
 
-        //Open Views Layout Method
+        //Layouts
         public IEnumerable<IDocument> GetOpenedDocuments()
         {
             return DocumentManagerService.Documents;
@@ -255,40 +264,28 @@ namespace OMS.ViewModels
         public void SaveOpenedDocumentsState()
         {
             var documentStates = GetOpenedDocuments().Select(doc =>
-            new AppScreen
+            new ScreenState
             {
                 ViewName = ((DockingDocumentUIServiceBase<DocumentPanel, DocumentGroup>.Document)doc).DocumentType,
                 Title = doc.Title.ToString()
             }).ToList();
-            var serializer = new XmlSerializer(typeof(List<AppScreen>));
-
-            string fileName = Path.Combine(filePath, $"{CurrentUser.UserID}.xml");
-            using (var writer = new StreamWriter(fileName))
-            {
-                serializer.Serialize(writer, documentStates);
-            }
+           
+            DocumentStateService.SaveDocumentStates(documentStates);
         }
         public void RestoreOpenedDocumentsState()
         {
-            string fileName = Path.Combine(filePath, $"{CurrentUser.UserID}.xml");
-            if (File.Exists(fileName))
+            var documentStates = DocumentStateService.GetDocumentStates();
+            if (documentStates != null && documentStates.Count >= 1)
             {
-                var serializer = new XmlSerializer(typeof(List<AppScreen>));
-                List<AppScreen> documentStates = new List<AppScreen>();
-                using (var reader = new StreamReader(fileName))
+                foreach (var doc in documentStates)
                 {
-                    documentStates = (List<AppScreen>)serializer.Deserialize(reader);
-                }
-                if (documentStates != null && documentStates.Count >= 1)
-                {
-                    foreach (var doc in documentStates)
-                    {
-                        AddView(doc.ViewName, doc.Title);
-                    }
+                    AddView(doc.ViewName, doc.Title);
                 }
             }
+
             landingPageLoaded = true;
             DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
         } 
+
     }
 }

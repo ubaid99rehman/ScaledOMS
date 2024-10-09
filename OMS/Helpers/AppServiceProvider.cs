@@ -71,6 +71,7 @@ namespace OMS
             #region Services
             //App Services
             services.AddSingleton<ITimerService, TimerService>();
+            services.AddSingleton<IDocumentStateService, DocumentStateService>();
             services.AddSingleton<ISessionInfoServce, SessionInfoService>();
             services.AddSingleton<IAppTimerService, AppTimerService>();
             services.AddSingleton<IOrderService, OrderService>();

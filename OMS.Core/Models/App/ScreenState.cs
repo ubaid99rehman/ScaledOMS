@@ -1,7 +1,7 @@
 ﻿
-namespace OMS.Domain.Models.App
+namespace OMS.Core.Models.App
 {
-    public class AppScreen
+    public class ScreenState
     {
         public string Title { get; set; }
         public string ViewName { get; set; }

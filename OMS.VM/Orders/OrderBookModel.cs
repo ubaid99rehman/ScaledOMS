@@ -1,11 +1,6 @@
 ﻿using DevExpress.Mvvm;
-using OMS.Core.Models;
 using OMS.Core.Services.MarketServices.RealtimeServices;
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows.Threading;
 
 namespace OMS.ViewModels
 {

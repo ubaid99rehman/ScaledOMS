@@ -80,31 +80,34 @@ namespace OMS.ViewModels
                 IsAuthenticated = false;
                 AuthenticationComplete();
             }
-            Authenticate();
-            
+            await AuthenticateAsync();
         }
-        public void Authenticate()
+        public async Task AuthenticateAsync()
         {
             Logger.LogInfo("Authenticating User: " + Username);
             UserCredentials credentials = new UserCredentials(this.Username, this.Password);
-            IUser user = AuthService.Authenticate(credentials);
-            
+
+            // Run authentication in a background task to avoid blocking the UI thread.
+            var user = await Task.Run(() => AuthService.Authenticate(credentials));
+
             if (user != null)
             {
                 IsAuthenticated = true;
                 AuthMessage = "Authenticated!";
                 UserService.SetUser(user);
-                AuthenticationComplete();
                 Logger.LogInfo("User: " + Username + " Authenticated.");
             }
             else
             {
                 IsAuthenticated = false;
                 AuthMessage = "User or Password Not Matched!";
-                AuthenticationComplete();
                 Logger.LogInfo("User: " + Username + " is not Authenticated.");
             }
-        } 
+
+            // Notify authentication completion
+            AuthenticationComplete();
+        }
+
         public void AuthenticationComplete()
         {
             AuthenticationCompleted?.Invoke();   
