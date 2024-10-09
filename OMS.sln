@@ -30,8 +30,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{C1CA578E-AD8C-4F36-B88A-4A60D8818032}"
 	ProjectSection(SolutionItems) = preProject
 		DB_Scripts\OMS.Data.sql = DB_Scripts\OMS.Data.sql
+		NEW_ORDERS.sql = NEW_ORDERS.sql
 		DB_Scripts\OMS.Scripts.sql = DB_Scripts\OMS.Scripts.sql
-		orders.sql = orders.sql
 	EndProjectSection
 EndProject
 Global
