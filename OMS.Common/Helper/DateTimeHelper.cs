@@ -35,6 +35,7 @@ namespace OMS.Common.Helper
                 default: return TimeSpan.FromMinutes(1);
             }
         }
+        //Devexpress
         public static TimeSpan GetTimeSpan(ChartIntervalItem interval, int intervalsCount)
         {
             return GetTimeSpan(interval.MeasureUnit, interval.MeasureUnitMultiplier * intervalsCount);

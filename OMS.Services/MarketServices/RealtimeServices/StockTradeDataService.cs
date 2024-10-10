@@ -10,14 +10,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace OMS.Services.MarketServices.RealtimeServices
 {
     public class StockTradeDataService : IStockTradeDataService
     {
-        public event Action DataUpdated;
-
         #region Services
         IStockRepository StockRepository;
         IStockTradeDataRepository StockTradeDataRepository;
@@ -34,9 +31,8 @@ namespace OMS.Services.MarketServices.RealtimeServices
             StockTradeDataRepository = stockTradeDataRepository;
             StockDataService = stockDataService;
             CacheService = cacheService;
-            timerService.MinuteTick += OnTimerTick;
-            
-            
+            timerService.MinuteTick += OnMinuteTimerTick;
+            timerService.HourTick += OnHourTimerTick;
         }
 
         //Public Access Methods Implementation
@@ -65,8 +61,7 @@ namespace OMS.Services.MarketServices.RealtimeServices
             
             if (CacheService.ContainsKey(cacheKey))
             {
-            var cachedData = CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey);
-
+                var cachedData = CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey);
                 var tradeData = cachedData.Where(trade => trade.RecordedTime >= fromTime && trade.RecordedTime < startTime)
                     .ToList();
 
@@ -85,7 +80,6 @@ namespace OMS.Services.MarketServices.RealtimeServices
                         {
                             cachedData.Add(trade);
                         }
-                        
                     }
                     CacheService.Set(cacheKey, cachedData);
                     return moreData;
@@ -99,14 +93,35 @@ namespace OMS.Services.MarketServices.RealtimeServices
             return resultData;
         }
         
-        private void OnTimerTick(object sender, EventArgs e)
+        private void OnMinuteTimerTick(object sender, EventArgs e)
         {
-            FetchTradeData();
-            DataUpdated?.Invoke();
+            FetchMinuteTradeData();
         }
-        private void FetchTradeData()
+        private void OnHourTimerTick(object sender, EventArgs e)
+        {
+            FetchHourTradeData();
+        }
+        private void FetchMinuteTradeData()
         {
             TradeTimeInterval interval = TradeTimeInterval.Minute;
+            var symbols = StockDataService.GetStockSymbols();
+            foreach (var symbol in symbols)
+            {
+                var data = StockTradeDataRepository.GetLastTradeData(symbol).GetAwaiter().GetResult();
+                string cacheKey = $"{symbol}_{interval}";
+                if (CacheService.ContainsKey(cacheKey))
+                {
+                    CacheService.Get<ObservableCollection<IStockTradingData>>(cacheKey).Add(data);
+                }
+                else
+                {
+                    CacheService.Set(cacheKey, new ObservableCollection<IStockTradingData> { data });
+                }
+            }
+        }
+        private void FetchHourTradeData()
+        {
+            TradeTimeInterval interval = TradeTimeInterval.Hour;
             var symbols = StockDataService.GetStockSymbols();
             foreach (var symbol in symbols)
             {

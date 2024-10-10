@@ -19,7 +19,6 @@ namespace OMS.ViewModels
         private IAccount _selectedAccount;
         private ObservableCollection<int> _accountsList;
         private ObservableCollection<IAccount> _accounts;
-        private ObservableCollection<IOrder> _orders;
 
         //Public Members
         public int Account

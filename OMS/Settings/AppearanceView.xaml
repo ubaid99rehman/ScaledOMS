@@ -94,17 +94,17 @@
                     <!--Font-->
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Family:"/>
-                        <ComboBox Name="FontFamily" HorizontalAlignment="Left" 
+                        <ComboBox Name="FontFamilySelector" HorizontalAlignment="Left" 
                                   ItemsSource="{Binding FontFamilyOptions}" SelectedItem="{Binding SelectedTheme.FontFamily, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Size:"/>
-                        <ComboBox Name="FontSize" HorizontalAlignment="Left" 
+                        <ComboBox Name="FontSizeSelector" HorizontalAlignment="Left" 
                                   ItemsSource="{Binding FontSizeOptions}" SelectedItem="{Binding SelectedTheme.FontSize, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Center">
                         <Label HorizontalAlignment="Left" Content="Font Weight:"/>
-                        <ComboBox Name="FontWeight" HorizontalAlignment="Left"
+                        <ComboBox Name="FontWeightSelector" HorizontalAlignment="Left"
                                   ItemsSource="{Binding FontWeightOptions}" SelectedItem="{Binding SelectedTheme.FontWeight, Mode=TwoWay}" Width="150"/>
                     </StackPanel>
                     

@@ -54,7 +54,6 @@
     <Compile Include="Enums\TradeTimeInterval.cs" />
     <Compile Include="Helper\ConfigurationHelper.cs" />
     <Compile Include="Helper\DateTimeHelper.cs" />
-    <Compile Include="Helper\DbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

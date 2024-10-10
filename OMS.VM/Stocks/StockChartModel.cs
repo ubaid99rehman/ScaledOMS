@@ -14,21 +14,18 @@ namespace OMS.ViewModels
 {
     public class StockChartModel : ViewModelBase
     {
+        //Visible Chart Data Points
+        const int maxVisiblePointsCount = 180;
+
         //Service
         IStockTradeDataService StockTradeDataService;
 
-        //Visible Chart Data Points
-        const int maxVisiblePointsCount = 360;
-
         //Private Members
-        private bool initRange = false;
         private ChartIntervalItem _selectedInterval;
         private string selectedStockSymbol;
         private ObservableCollection<IStockTradingData> stockTradingData;
-        private Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>> tradesCache;
-
+        
         //Public Members
-        public virtual object MinVisibleDate { get; set; }
         public ObservableCollection<IStockTradingData> StockTradingData
         {
             get => stockTradingData;
@@ -70,13 +67,11 @@ namespace OMS.ViewModels
         //Constructor
         public StockChartModel(IStockTradeDataService stockTradeDataService)
         {
-            tradesCache = new Dictionary<TradeTimeInterval, ObservableCollection<IStockTradingData>>();
             StockTradingData = new ObservableCollection<IStockTradingData>();
             IntervalsSource = new List<ChartIntervalItem>();
             InitIntervals();
             SelectedInterval = IntervalsSource[0];
             StockTradeDataService = stockTradeDataService;
-            stockTradeDataService.DataUpdated += OnDataUpdated;
         }
         
         [Command]
@@ -93,21 +88,19 @@ namespace OMS.ViewModels
                     {
                         if(SelectedInterval.MeasureUnit != DateTimeMeasureUnit.Year)
                         {
-                            tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, lastItem.RecordedTime, 10, interval );
+                            tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, lastItem.RecordedTime, 60, interval );
                         }
                     }
                     else
                     {
-                        tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, DateTime.Now, 180, interval );
+                        //tradingData = StockTradeDataService.GetTradingData(selectedStockSymbol, DateTime.Now, 25, interval );
                     }
-                     
-                    foreach (var trade in tradingData)
+                    if(tradingData.Any())
                     {
-                        tradesCache[interval].Add(trade);
-                    }
-                    foreach(var trade in tradingData)
-                    {
-                        StockTradingData.Add(trade);
+                        foreach (var trade in tradingData)
+                        {
+                            StockTradingData.Add(trade);
+                        }
                     }
                 }
             }
@@ -131,7 +124,6 @@ namespace OMS.ViewModels
         //Private Methods 
         private void GetTradeData()
         {
-            StockTradingData.Clear();
             TradeTimeInterval interval = GetTradeTimeInterval(SelectedInterval.MeasureUnit);
             if (interval == TradeTimeInterval.Year)
             {
@@ -144,30 +136,12 @@ namespace OMS.ViewModels
                 ChangeChartSourceData(interval, Data);
             }
         }
-        private void OnDataUpdated()
+        private void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<IStockTradingData> tradingData)
         {
-            var tradeData = StockTradeDataService.GetBySymbol(selectedStockSymbol);
-            TradeTimeInterval interval = TradeTimeInterval.Minute;
-
-            if (!tradesCache.ContainsKey(interval))
-            {
-                tradesCache.Add(interval, new ObservableCollection<IStockTradingData> { tradeData });
-            }
-            else
-            {
-                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
-                {
-                    tradesCache[interval] = new ObservableCollection<IStockTradingData> { tradeData };
-                }
-                else
-                {
-                    lock (tradesCache)
-                    {
-                        tradesCache[interval].Add(tradeData);
-                    }
-                }
-            }
+            StockTradingData.Clear();
+            StockTradingData = tradingData;
         }
+
         private void InitIntervals()
         {
             IntervalsSource.Add(new ChartIntervalItem() { Caption = "Minute", MeasureUnit = DateTimeMeasureUnit.Minute, MeasureUnitMultiplier = 1 });
@@ -176,32 +150,7 @@ namespace OMS.ViewModels
             IntervalsSource.Add(new ChartIntervalItem() { Caption = "Month", MeasureUnit = DateTimeMeasureUnit.Month, MeasureUnitMultiplier = 1 });
             IntervalsSource.Add(new ChartIntervalItem() { Caption = "Year", MeasureUnit = DateTimeMeasureUnit.Year, MeasureUnitMultiplier = 1 });
         }
-        private void ChangeChartSourceData(TradeTimeInterval interval, ObservableCollection<IStockTradingData> tradingData)
-        {
-            if (!tradesCache.ContainsKey(interval))
-            {
-                tradesCache.Add(interval, tradingData);
-            }
-            else
-            {
-                if (tradesCache[interval].Count < 1 || tradesCache[interval] == null)
-                {
-                    tradesCache[interval] = tradingData;
-                }
-                else
-                {
-                    lock (tradesCache) 
-                    {
-                        foreach (var trade in tradingData)
-                        {
-                            tradesCache[interval].Add(trade);
-                        }
-                    }
-                }
-            }
-            StockTradingData.Clear();
-            StockTradingData = tradesCache[interval];
-        }
+
         private TradeTimeInterval GetTradeTimeInterval(DateTimeMeasureUnit item)
         {
             switch (item)
@@ -220,6 +169,5 @@ namespace OMS.ViewModels
                     return TradeTimeInterval.Minute;
             }
         }
-
     }
 }

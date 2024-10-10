@@ -23,6 +23,7 @@ namespace OMS.Orders
         }
 
         //Grid Custom Context Menu 
+        //Grid Custom Context Menu 
         private void ShowMenu_Click(object sender, DevExpress.Xpf.Grid.GridMenuEventArgs e)
         {
             RemoveDefaultActions(e);

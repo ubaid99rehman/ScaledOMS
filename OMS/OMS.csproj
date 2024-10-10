@@ -119,7 +119,6 @@
     </Compile>
     <Compile Include="Helpers\AppServiceProvider.cs" />
     <Compile Include="Helpers\AppThemeHelper.cs" />
-    <Compile Include="Helpers\BootStrapper.cs" />
     <Compile Include="Helpers\ContextMenuHelper.cs" />
     <Compile Include="Home\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>

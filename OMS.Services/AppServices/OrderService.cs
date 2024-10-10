@@ -172,7 +172,8 @@ namespace OMS.Services.AppServices
         }
         public ICollectionView GetOrdersByStock(string stockSymbol)
         {
-            var orders = GetAll();
+            var orders = GetAll().Where(o=> o.Order_Statuses == OrderStatus.New && 
+            o.Symbol ==stockSymbol).OrderByDescending(o=> o.OrderDate).Take(100);
             int id = GetUser().UserID;
             var collectionViewSource = new CollectionViewSource { Source = orders };
             ICollectionViewLiveShaping liveShapingView = collectionViewSource.View as ICollectionViewLiveShaping;

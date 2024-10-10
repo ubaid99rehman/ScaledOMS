@@ -437,17 +437,17 @@ namespace OMS
                 ((TableView)dataGrid.View).ShowAutoFilterRow = true;
                 isFilterEnabled = !isFilterEnabled;
                
-                if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
+                if(AllMenuItems != null && AllMenuItems.Count > 0)
                 {
-                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
+                    var menuItem = AllMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.IsEnabled = true;
                     }
                 }
-                else
+                else if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
                 {
-                    var menuItem = AllMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
+                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.IsEnabled = true;
@@ -466,17 +466,17 @@ namespace OMS
                 }
                 ((TableView)dataGrid.View).ShowAutoFilterRow = false;
                
-                if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
+                if (AllMenuItems != null && AllMenuItems.Count > 0)
                 {
-                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
+                    var menuItem = AllMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.IsEnabled = false;
                     }
                 }
-                else
+                else if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
                 {
-                    var menuItem = AllMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
+                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Clear Filter").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.IsEnabled = false;
@@ -503,17 +503,18 @@ namespace OMS
                 dataGrid.View.HideSearchPanel();
                 isSearchEnabled = !isSearchEnabled;
                 
-                if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
+                
+                if (AllMenuItems != null && AllMenuItems.Count > 0)
                 {
-                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Close Search Panel").FirstOrDefault();
+                    var menuItem = AllMenuItems.Where(item => item.Content == "Close Search Panel").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.Content = "Search Panel";
                     }
                 }
-                else
+                else if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
                 {
-                    var menuItem = AllMenuItems.Where(item => item.Content == "Close Search Panel").FirstOrDefault();
+                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Close Search Panel").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.Content = "Search Panel";
@@ -524,17 +525,18 @@ namespace OMS
             {
                 dataGrid.View.ShowSearchPanel(true);
                 isSearchEnabled = !isSearchEnabled;
-                if(SearchFilterMenuItems != null && SearchFilterMenuItems.Count >0)
+                
+                if(AllMenuItems != null && AllMenuItems.Count > 0)
                 {
-                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Search Panel").FirstOrDefault();
+                    var menuItem = AllMenuItems.Where(item => item.Content == "Search Panel").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.Content = "Close Search Panel";
                     }
                 }
-                else
+                else if (SearchFilterMenuItems != null && SearchFilterMenuItems.Count > 0)
                 {
-                    var menuItem = AllMenuItems.Where(item => item.Content == "Search Panel").FirstOrDefault();
+                    var menuItem = SearchFilterMenuItems.Where(item => item.Content == "Search Panel").FirstOrDefault();
                     if (menuItem != null)
                     {
                         menuItem.Content = "Close Search Panel";

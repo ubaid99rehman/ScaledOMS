@@ -26,6 +26,11 @@
                 <dxb:BarManager.Bars>
                     <dxb:Bar x:Name="ExportGroup"
                              Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=BarPrintAndExportGroup}}">
+                        <dxb:BarEditItem EditValue="{Binding SelectedInterval}" EditWidth="100">
+                            <dxb:BarEditItem.EditSettings>
+                                <dxe:ComboBoxEditSettings DisplayMember="Caption" IsTextEditable="False" ItemsSource="{Binding IntervalsSource}"/>
+                            </dxb:BarEditItem.EditSettings>
+                        </dxb:BarEditItem>
                         <dxb:BarSubItem x:Name="ExportItem" 
                                     Style="{DynamicResource {dxct:ChartToolbarThemeKey ResourceKey=ExportItem}}">
                             <dxb:BarButtonItem x:Name="ExportToCsvItem" 

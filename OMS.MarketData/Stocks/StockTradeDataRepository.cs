@@ -78,9 +78,10 @@ namespace OMS.MarketData
         //Single Point Data
         public async Task<IStockTradingData> GetLastTradeData(string symbol)
         {
-            var lastPrice = GetLastPriceForSymbol(symbol, TradeTimeInterval.Minute);
-            return Load(symbol, lastPrice);
+            var lastPrice = await Task.Run(() => GetLastPriceForSymbol(symbol, TradeTimeInterval.Minute));
+            return await Task.Run(() => Load(symbol, lastPrice));
         }
+
         private StockTradingData Load(string symbol, decimal lastPrice)
         {
             var priceChange = (decimal)(random.NextDouble() * 2 - 1);
@@ -134,8 +135,8 @@ namespace OMS.MarketData
                 }
             }
 
-            var lastPrice = GetLastPriceForSymbol(symbol, interval, startTime);
-            LazyLoad(symbol, lastPrice, points, interval, startTime);
+            var lastPrice = await Task.Run(() => GetLastPriceForSymbol(symbol, interval, startTime));
+            await Task.Run(() => LazyLoad(symbol, lastPrice, points, interval, startTime));
 
             if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
             {
@@ -144,6 +145,7 @@ namespace OMS.MarketData
             }
             return new List<IStockTradingData>();
         }
+
         private void LazyLoad(string symbol, decimal lastPrice, int points, TradeTimeInterval interval, DateTime toTime)
         {
             List<StockTradingData> trades = new List<StockTradingData>();
@@ -204,8 +206,18 @@ namespace OMS.MarketData
         {
             if (tradesCache.ContainsKey(symbol) && tradesCache[symbol].ContainsKey(interval))
             {
-                var trade = tradesCache[symbol][interval].Where(x => x.RecordedTime == time).FirstOrDefault().Open;
-                return trade;
+                var trade = tradesCache[symbol][interval].Where(x => x.RecordedTime == time).FirstOrDefault();
+                if(trade == null)
+                {
+                    trade = tradesCache[symbol][interval].First();
+                    if(trade == null)
+                    {
+                        return (decimal)(100 + new Random().NextDouble() * 10);
+                    }
+                }
+                var openPrice = trade.Open;
+
+                return openPrice;
             }
 
             return (decimal)(100 + new Random().NextDouble() * 10);

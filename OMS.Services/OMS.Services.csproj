@@ -61,6 +61,7 @@
     <Compile Include="MarketServices\RealtimeServices\StockDataService.cs" />
     <Compile Include="MarketServices\RealtimeServices\StockTradeDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartupServices\BootStrapper.cs" />
     <Compile Include="TimerService.cs" />
   </ItemGroup>
   <ItemGroup />

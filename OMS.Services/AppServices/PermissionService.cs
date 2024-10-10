@@ -1,5 +1,4 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Models.App;
 using OMS.Core.Models.Permissions;
 using OMS.Core.Models.Roles;
 using OMS.Core.Models.User;
@@ -11,9 +10,6 @@ namespace OMS.Services.AppServices
 {
     public class PermissionService : IPermissionService
     {
-        //Services
-        private IUserService _userService;
-        
         //Private Members
         private ObservableCollection<IUserRole> _UserRoles { get; set; }
         private ObservableCollection<IPermission> _UserPermissions { get; set; }

@@ -44,7 +44,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AppRepositories\IAccountRepository.cs" />
     <Compile Include="Repositories\AppRepositories\IAppReadRepository.cs" />
-    <Compile Include="Repositories\AppRepositories\IAppRepository.cs" />
     <Compile Include="Repositories\AppRepositories\IOrderRepository.cs" />
     <Compile Include="Repositories\AppRepositories\IUserRepository.cs" />
     <Compile Include="Repositories\MarketRepositories\IMarketRepository.cs" />

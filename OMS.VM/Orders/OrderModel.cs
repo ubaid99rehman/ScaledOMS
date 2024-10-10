@@ -12,6 +12,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 
 namespace OMS.ViewModels
 {
@@ -27,8 +28,6 @@ namespace OMS.ViewModels
         #region Private Members
         private StockDetailViewModel _stockDetailsModel;
         private ObservableCollection<int> _accounts;
-        private ObservableCollection<IOrder> _orders;
-        private ObservableCollection<IOrder> _stockOrders;
         private ObservableCollection<string> _stockSymbols;
         private int _selectedAccount;
         private IOrder _selectedOrder;
@@ -42,6 +41,8 @@ namespace OMS.ViewModels
         private bool _CanUpdateOrder;
         private bool _CanCancelOrder;
         private IUser CurrentUser;
+        private ICollectionView orders;
+        private ICollectionView stockOrders;
         #endregion
 
         #region Public Members
@@ -60,11 +61,14 @@ namespace OMS.ViewModels
         }
         public ICollectionView Orders
         {
-            get { return OrderService.GetOpenOrders(); }
+            get => orders;
+            private set => SetProperty(ref orders, value, nameof(Orders));
         }
         public ICollectionView StockOrders
         {
-            get { return OrderService.GetOrdersByStock(SelectedStockSymbol); }
+
+            get => orders;
+            private set => SetProperty(ref stockOrders, value, nameof(StockOrders));
         }
         public ObservableCollection<string> StockSymbols
         {
@@ -210,6 +214,7 @@ namespace OMS.ViewModels
             PermissionService = permissionService;
             UserService  = userService;
             #endregion
+
             #region Initialized Collections
             Accounts = new ObservableCollection<int>();
             //Orders = new ObservableCollection<IOrder>();
@@ -217,6 +222,7 @@ namespace OMS.ViewModels
             OrderTypes = Enum.GetValues(typeof(OrderType)).Cast<OrderType>().Select(e =>
             e.ToString()).ToObservableCollection();
             #endregion
+
             SetPermissions();
             InitData();
             SetUser();
@@ -242,18 +248,29 @@ namespace OMS.ViewModels
         }
         private void UpdateData()
         {
+            //User Open Orders
+            var ordersList = OrderService.GetOpenOrders();
+            ordersList.SortDescriptions.Clear();
+            ordersList.SortDescriptions.Add(new SortDescription("OrderDate", ListSortDirection.Descending));
+            Orders = ordersList;
+            LastOrder = OrderService.GetLastOrderByUser();
+
+            //Changes StockOrders
+            
+            StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
+
+            //StockDetails
             SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
             StockDetailsModel.Symbol = SelectedStockSymbol;
-            LastOrder = OrderService.GetLastOrderByUser();
-            SelectedOrder = new Order();
-            SelectedOrder.Price = SelectedStock.LastPrice;
-            Total = SelectedStock.LastPrice;
+
+            ClearFields();
         }
         private void ClearFields()
         {
             SelectedOrder = new Order();
-            Quantity = 1;
+            SelectedOrder.Price = SelectedStock.LastPrice;
             Total = SelectedStock.LastPrice;
+            Quantity = 1;
             OrderType = OrderType.Buy;
         }
         private void UpdateTotal()

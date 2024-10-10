@@ -3,7 +3,7 @@ using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using System.Threading.Tasks;
 
-namespace OMS
+namespace OMS.Services.StartupServices
 {
     public class BootStrapper : IBootStrapper
     {

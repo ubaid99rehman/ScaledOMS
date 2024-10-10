@@ -203,8 +203,7 @@
                              Margin="0 10 0 0"
                              ItemsSource="{Binding StockOrders}"
                              ShowBorder="False"
-                             dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                             dx:DXSerializer.SerializationID="gridSellID">
+                             dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
                             <dxg:GridColumn.EditSettings>
@@ -265,9 +264,19 @@
                 <dxg:GridControl Name="dataGrid" ItemsSource="{Binding Orders}" 
                          SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
                     <dxg:GridControl.View>
-                        <dxg:TableView TotalSummaryPosition="Bottom" AllowEditing="False" 
-                                   ShowCriteriaInAutoFilterRow="False" ShowIndicator="False" 
-                                   ShowSearchPanelMode="Always" AutoWidth="True"/>
+                    <dxg:TableView AutoWidth="True"
+                                   AllowEditing="False" 
+                                   ShowIndicator="False" 
+                                   AllowColumnFiltering="False"
+                                   AllowColumnMoving="False"
+                                   IsGroupFooterMenuEnabled="False"
+                                   IsGroupRowMenuEnabled="False"
+                                   IsGroupPanelMenuEnabled="False"
+                                   IsManipulationEnabled="False"
+                                   IsRowCellMenuEnabled="False"
+                                   IsTotalSummaryMenuEnabled="False"
+                                   ShowGroupPanel="False"
+                                   ShowGridMenu="ShowMenu_Click"/>
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status"/>

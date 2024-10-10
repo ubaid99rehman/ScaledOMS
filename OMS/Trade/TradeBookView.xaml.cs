@@ -8,8 +8,6 @@ namespace OMS.Trade
     public partial class TradeBookView : UserControl
     {
         IContextMenuHelper ContextMenuHelper;
-        GridColumn CurrentColumn;
-        Point MousePositon;
 
         //Constructor
         public TradeBookView()
