@@ -91,18 +91,12 @@ namespace OMS.ViewModels
             {
                 if (SetProperty(ref _selectedOrder, value, nameof(SelectedOrder)))
                 {
-                    if (value is IOrder order && order.Total >= 1 && !string.IsNullOrEmpty(order.Symbol))
+                    if (value is IOrder order && order.OrderID >= 1 )
                     {
-                        if (order.OrderID >= 1 && order.Quantity >= 1)
-                        {
-                            SelectedOrder.OrderID = order.OrderID;
-                            Quantity = (decimal)order.Quantity;
-
-                            Total = (decimal)order.Total;
-
-                            SelectedAccount = (int)order.AccountID;
-                            OrderType = (OrderType)order.OrderType;
-                        }
+                        Quantity = (decimal)order.Quantity;
+                        Total = (decimal)order.Total;
+                        SelectedAccount = (int)order.AccountID;
+                        OrderType = (OrderType)order.OrderType;
                     }
                 }
             }
@@ -346,20 +340,6 @@ namespace OMS.ViewModels
                 }
             }
         }
-        [Command]
-        public void ClearOrder()
-        {
-            ClearFields();
-        }
-        public bool isValidOrder(IOrder SelectedOrder)
-        {
-            if (SelectedOrder != null && !string.IsNullOrEmpty(SelectedOrder.Symbol) &&
-               SelectedOrder.Quantity > 0 && SelectedOrder.Price > 0 && SelectedOrder.AccountID != 0)
-            {
-                return true;
-            }
-            return false;
-        }
         public void UpdateOrder(out bool isUpdated, out string message)
         {
             isUpdated = false;
@@ -374,6 +354,21 @@ namespace OMS.ViewModels
                     UpdateData();
                 }
             }
+        }
+        
+        [Command]
+        public void ClearOrder()
+        {
+            ClearFields();
+        }
+        public bool isValidOrder(IOrder SelectedOrder)
+        {
+            if (SelectedOrder != null && !string.IsNullOrEmpty(SelectedOrder.Symbol) &&
+               SelectedOrder.Quantity > 0 && SelectedOrder.Price > 0 && SelectedOrder.AccountID != 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

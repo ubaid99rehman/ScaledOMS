@@ -31,8 +31,8 @@ namespace OMS.Services.MarketServices.RealtimeServices
             StockTradeDataRepository = stockTradeDataRepository;
             StockDataService = stockDataService;
             CacheService = cacheService;
-            timerService.MinuteTick += OnMinuteTimerTick;
-            timerService.HourTick += OnHourTimerTick;
+            //timerService.MinuteTick += OnMinuteTimerTick;
+            //timerService.HourTick += OnHourTimerTick;
         }
 
         //Public Access Methods Implementation

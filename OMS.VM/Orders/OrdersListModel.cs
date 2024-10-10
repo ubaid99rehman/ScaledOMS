@@ -152,7 +152,6 @@ namespace OMS.ViewModels
         private void InitData()
         {
             AccountsList = AccountService.GetAccountsList();
-            FetchOrders(0);
             IOrder order = Orders?.Cast<IOrder>().FirstOrDefault();
 
             if (order != null) 
@@ -160,10 +159,6 @@ namespace OMS.ViewModels
                 SelectedOrder = order;
             }
             SelectedOrder = new Order();
-        }
-        private void FetchOrders(int id)
-        {
-            //Orders = OrderService.GetOpenOrders();
         }
 
         //Public Methods
