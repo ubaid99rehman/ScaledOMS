@@ -86,7 +86,7 @@
     <Compile Include="Cache\ICacheService.cs" />
     <Compile Include="Services\IReadonlyService.cs" />
     <Compile Include="Services\AppServices\IOrderService.cs" />
-    <Compile Include="Services\IRealtimeService.cs" />
+    <Compile Include="Services\ITimerService.cs" />
     <Compile Include="Services\AppServices\RealtimeServices\ISessionInfoServce.cs" />
     <Compile Include="Services\StartupService\IBootStrapper.cs" />
   </ItemGroup>

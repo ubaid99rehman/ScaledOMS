@@ -147,7 +147,14 @@ namespace OMS
         }
         public ObservableCollection<BarItem> CreateSortingMenuItems()
         {
-            var sortingMenuItems = new ObservableCollection<BarItem>();
+            if (SortingMenuItems == null)
+            {
+                SortingMenuItems = new ObservableCollection<BarItem>();
+            }
+            if (SortingMenuItems.Count > 0)
+            {
+                return SortingMenuItems;
+            }
             // Sorting Asc Items
             var sortAscMenu = new BarSubItem
             {
@@ -180,15 +187,22 @@ namespace OMS
             };
             clearSort.ItemClick += ClearSorting_Clicked;
             // Add Sorting Items to Collection
-            sortingMenuItems.Add(sortAscMenu);
-            sortingMenuItems.Add(sortDescMenu);
-            sortingMenuItems.Add(clearSort);
+            SortingMenuItems.Add(sortAscMenu);
+            SortingMenuItems.Add(sortDescMenu);
+            SortingMenuItems.Add(clearSort);
 
-            return sortingMenuItems;
+            return SortingMenuItems;
         }
         public ObservableCollection<BarItem> CreateAlignmentMenuItems()
         {
-            var alignmentMenuItems = new ObservableCollection<BarItem>();
+            if (AlignMenuItems == null)
+            {
+                AlignMenuItems = new ObservableCollection<BarItem>();
+            }
+            if (AlignMenuItems.Count > 0)
+            {
+                return AlignMenuItems;
+            }
             // Alignment Left Items
             var alignLeftMenu = new BarSubItem
             {
@@ -226,16 +240,25 @@ namespace OMS
             alignRightMenu.Items.Add(alignRight);
             alignRightMenu.Items.Add(alignAllRight);
             // Add Alignment Items to Collection
-            alignmentMenuItems.Add(new BarItemSeparator());
-            alignmentMenuItems.Add(alignLeftMenu);
-            alignmentMenuItems.Add(alignCenterMenu);
-            alignmentMenuItems.Add(alignRightMenu);
+            AlignMenuItems.Add(new BarItemSeparator());
+            AlignMenuItems.Add(alignLeftMenu);
+            AlignMenuItems.Add(alignCenterMenu);
+            AlignMenuItems.Add(alignRightMenu);
 
-            return alignmentMenuItems;
+            return AlignMenuItems;
         }
         public ObservableCollection<BarItem> CreateSearchAndFilterMenuItems()
         {
-            var searchAndFilterMenuItems = new ObservableCollection<BarItem>();
+
+            if(SearchFilterMenuItems == null)
+            {
+                SearchFilterMenuItems = new ObservableCollection<BarItem>();
+            }
+            if (SearchFilterMenuItems.Count > 0)
+            {
+                return SearchFilterMenuItems;
+            }
+
             // Search Panel
             BarButtonItem searchPanel = new BarButtonItem
             {
@@ -257,11 +280,12 @@ namespace OMS
             };
             clearFilter.ItemClick += ClearFilter_Clicked;
             // Add Search and Filter Items to Collection
-            searchAndFilterMenuItems.Add(new BarItemSeparator());
-            searchAndFilterMenuItems.Add(searchPanel);
-            searchAndFilterMenuItems.Add(filterColumn);
-            searchAndFilterMenuItems.Add(clearFilter);
-            return searchAndFilterMenuItems;
+            SearchFilterMenuItems.Add(new BarItemSeparator());
+            SearchFilterMenuItems.Add(searchPanel);
+            SearchFilterMenuItems.Add(filterColumn);
+            SearchFilterMenuItems.Add(clearFilter);
+
+            return SearchFilterMenuItems;
         }
 
         //Custom Context Menu Creation

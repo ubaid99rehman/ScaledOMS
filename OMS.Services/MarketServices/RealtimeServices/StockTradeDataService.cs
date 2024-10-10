@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm.Native;
 using OMS.Common.Helper;
 using OMS.Core.Models.Stocks;
+using OMS.Core.Services;
 using OMS.Core.Services.Cache;
 using OMS.Core.Services.MarketServices.RealtimeServices;
 using OMS.DataAccess.Repositories.MarketRepositories;
@@ -24,37 +25,21 @@ namespace OMS.Services.MarketServices.RealtimeServices
         ICacheService CacheService;
         #endregion
 
-        private readonly DispatcherTimer _timer;
-        private const int TickInterval = 61000;
-
         public StockTradeDataService(IStockRepository stockRepository,
             IStockTradeDataRepository stockTradeDataRepository, 
-            IStockDataService stockDataService,
+            IStockDataService stockDataService, ITimerService timerService,
             ICacheService cacheService)
         {
             StockRepository = stockRepository;
             StockTradeDataRepository = stockTradeDataRepository;
             StockDataService = stockDataService;
             CacheService = cacheService;
-
-            _timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(TickInterval)
-            };
-            _timer.Tick += OnTimerTick;
+            timerService.MinuteTick += OnTimerTick;
             
-            _timer.Start();
+            
         }
 
         //Public Access Methods Implementation
-        public ObservableCollection<IStockTradingData> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-        public IStockTradingData GetById(int key)
-        {
-            throw new NotImplementedException();
-        }
         public IStockTradingData GetBySymbol(string symbol)
         {
             TradeTimeInterval interval = TradeTimeInterval.Minute;
@@ -67,7 +52,8 @@ namespace OMS.Services.MarketServices.RealtimeServices
 
             return StockTradeDataRepository.GetLastTradeData(symbol).GetAwaiter().GetResult();
         }
-        public ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
+        public ObservableCollection<IStockTradingData> GetTradingData(string symbol, DateTime startTime, 
+            int points=180, TradeTimeInterval interval= TradeTimeInterval.Minute)
         {
             if(startTime == null)
             {
@@ -122,7 +108,6 @@ namespace OMS.Services.MarketServices.RealtimeServices
         {
             TradeTimeInterval interval = TradeTimeInterval.Minute;
             var symbols = StockDataService.GetStockSymbols();
-
             foreach (var symbol in symbols)
             {
                 var data = StockTradeDataRepository.GetLastTradeData(symbol).GetAwaiter().GetResult();

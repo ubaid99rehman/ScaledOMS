@@ -39,7 +39,7 @@ namespace OMS.Services.AppServices
             StockDetailRepository = stockDetailRepository;
             StockRepository = stockRepository;
 
-            timerService.Tick += OnTimerTick;
+            timerService.SecondTick += OnTimerTick;
             timerService.Start();
         }
 

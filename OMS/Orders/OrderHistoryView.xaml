@@ -33,18 +33,23 @@
                          FontSize="{DynamicResource FontSize}"
                          ItemsSource="{Binding Orders}">
             <dxg:GridControl.View>
-                    <dxg:TableView AllowGrouping="False" 
-                                   AutoWidth="True"
-                                   AllowEditing="False"
-                                   ShowIndicator="False"
-                                   IsColumnMenuEnabled="False"
-                                   IsRowCellMenuEnabled="False"
-                                   IsTotalSummaryMenuEnabled="False"
-                                   ShowGroupPanel="False"
-                                   IsGroupPanelMenuEnabled="False"
-                                   IsGroupFooterMenuEnabled="False"
-                                   IsGroupRowMenuEnabled="False">
-                    </dxg:TableView>
+                <dxg:TableView Name="gridView"
+                               AutoWidth="True"
+                               AllowEditing="False" 
+                               ShowIndicator="False" 
+                               AllowColumnFiltering="False"
+                               AllowColumnMoving="False"
+                               IsGroupFooterMenuEnabled="False"
+                               IsGroupRowMenuEnabled="False"
+                               IsGroupPanelMenuEnabled="False"
+                               IsManipulationEnabled="False"
+                               IsRowCellMenuEnabled="False"
+                               SearchPanelClearOnClose="True"
+                               ShowSearchPanelCloseButton="False"
+                               IsTotalSummaryMenuEnabled="False"
+                               ShowGroupPanel="False"
+                               MouseRightButtonDown="Mouse_Right_Button_Clicked"
+                               ShowGridMenu="ShowMenu_Click"/>
             </dxg:GridControl.View>
 
             <dxg:GridColumn FieldName="ID" Header="ID" Visible="False"/>
@@ -52,7 +57,7 @@
             <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
             <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending" />
             <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
-            <dxg:GridColumn FieldName="OrderType" Header="Order Type" />
+            <dxg:GridColumn FieldName="Order_Types" Header="Order Type" />
             <dxg:GridColumn FieldName="AccountID" Header="Account" />
             <dxg:GridColumn FieldName="Price" Header="Price" />
             <dxg:GridColumn FieldName="Quantity" Header="Quantity" />

@@ -15,7 +15,7 @@ namespace OMS.Services.AppServices
         public AppTimerService(ITimerService timerService)
         {
             CurrentTime = new AppTime();
-            timerService.Tick += OnTimerTick;
+            timerService.SecondTick += OnTimerTick;
             timerService.Start();
         }
         

@@ -230,34 +230,21 @@ namespace OMS.ViewModels
                 //Orders = OrderService.GetOpenOrders();
             }
         }
-        private void FetchOrders()
-        {
-           // Orders = OrderService.GetOpenOrders();
-        }
         private void InitData()
         {
             //Stocks related Data
             StockSymbols = StockDataService.GetStockSymbols();
             SelectedStockSymbol = StockSymbols.FirstOrDefault();
             SelectedStock = StockDataService.GetStock(StockSymbols.FirstOrDefault());
-
             UpdateData();
-
             //Accounts Data
             Accounts = AccountService.GetAccountsList();
-            //Orders
-            //LastOrder = OrderService.GetLastOrderByUser();
-            //StockOrders = OrderService.GetOrdersByStock(SelectedStockSymbol);
-            FetchOrders();
-
         }
         private void UpdateData()
         {
             SelectedStock = StockDataService.GetStock(_selectedStockSymbol);
             StockDetailsModel.Symbol = SelectedStockSymbol;
             LastOrder = OrderService.GetLastOrderByUser();
-            //StockOrders = OrderService.GetOrdersByStock(_selectedStockSymbol);
-            FetchOrders();
             SelectedOrder = new Order();
             SelectedOrder.Price = SelectedStock.LastPrice;
             Total = SelectedStock.LastPrice;
@@ -359,13 +346,14 @@ namespace OMS.ViewModels
         public void UpdateOrder(out bool isUpdated, out string message)
         {
             isUpdated = false;
-            message = "";
+            message = "Order Does not Exists!";
 
-            if (!(SelectedOrder.OrderID >= 0))
+            if (SelectedOrder.OrderID >= 0)
             {
                 isUpdated = OrderService.Update(SelectedOrder);
                 if (isUpdated)
                 {
+                    message = "Order Updated Successfully!";
                     UpdateData();
                 }
             }

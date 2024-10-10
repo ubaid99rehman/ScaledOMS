@@ -16,7 +16,7 @@ namespace OMS.Services.AppServices
         {
             _random = new Random();
             _sessionInfo = new SessionInfo();
-            timerService.Tick += OnTimerTick;
+            timerService.SecondTick += OnTimerTick;
             timerService.Start();
         }
 

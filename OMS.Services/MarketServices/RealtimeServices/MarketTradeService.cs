@@ -36,7 +36,7 @@ namespace OMS.Services.MarketServices.RealtimeServices
             marketTradeRepository = tradeRepository;
             CacheService = cacheService;
 
-            timerService.Tick += OnTimerTick; 
+            timerService.SecondTick += OnTimerTick; 
             timerService.Start();
         }
 

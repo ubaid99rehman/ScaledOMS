@@ -20,6 +20,7 @@
                                AllowEditing="False" 
                                ShowIndicator="False" 
                                AllowColumnFiltering="False"
+                               AllowColumnMoving="False"
                                IsGroupFooterMenuEnabled="False"
                                IsGroupRowMenuEnabled="False"
                                IsGroupPanelMenuEnabled="False"

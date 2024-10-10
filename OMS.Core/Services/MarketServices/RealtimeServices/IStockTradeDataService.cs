@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace OMS.Core.Services.MarketServices.RealtimeServices
 {
-    public interface IStockTradeDataService : IReadonlyService<IStockTradingData>
+    public interface IStockTradeDataService
     {
         event Action DataUpdated;
         IStockTradingData GetBySymbol(string symbol);

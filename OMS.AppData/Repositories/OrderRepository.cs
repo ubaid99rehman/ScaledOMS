@@ -112,7 +112,7 @@ namespace OMS.SqlData.Repositories
                 userEntity.Status = order.Status;
                 userEntity.AccountID = order.AccountID;
                 userEntity.ExpirationDate = order.ExpirationDate;
-                userEntity.LastUpdatedDate = order.LasUpdatedDate;
+                userEntity.LastUpdatedDate = DateTime.Now;
 
                 int result = Context.SaveChanges();
                 if(result > 0)

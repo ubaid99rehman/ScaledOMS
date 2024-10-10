@@ -6,23 +6,64 @@ namespace OMS.Services
 {
     public class TimerService : ITimerService
     {
-        private readonly DispatcherTimer _timer;
-        private const int TickInterval = 600;
-        public event EventHandler Tick;
+        private readonly DispatcherTimer _secondTimer;
+        private readonly DispatcherTimer _minuteTimer;
+        private readonly DispatcherTimer _hourTimer;
+
+        private const int SecondInterval = 1000;  
+        private const int MinuteInterval = 60000; 
+        private const int HourInterval = 3600000; 
+
+        public event EventHandler SecondTick;
+        public event EventHandler MinuteTick;
+        public event EventHandler HourTick;
 
         public TimerService()
         {
-            _timer = new DispatcherTimer
+            _secondTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(TickInterval)
+                Interval = TimeSpan.FromMilliseconds(SecondInterval)
             };
-            _timer.Tick += (s, e) => OnTick();
+            _secondTimer.Tick += (s, e) => OnSecondTick();
+
+            _minuteTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(MinuteInterval)
+            };
+            _minuteTimer.Tick += (s, e) => OnMinuteTick();
+
+            _hourTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(HourInterval)
+            };
+            _hourTimer.Tick += (s, e) => OnHourTick();
         }
-        public void Start() => _timer.Start();
-        public void Stop() => _timer.Stop();
-        protected virtual void OnTick()
+
+        public void Start()
         {
-            Tick?.Invoke(this, EventArgs.Empty);
+            _secondTimer.Start();
+            _minuteTimer.Start();
+            _hourTimer.Start();
+        }
+        public void Stop()
+        {
+            _secondTimer.Stop();
+            _minuteTimer.Stop();
+            _hourTimer.Stop();
+        }
+
+        protected virtual void OnSecondTick()
+        {
+            SecondTick?.Invoke(this, EventArgs.Empty);
+        }
+        protected virtual void OnMinuteTick()
+        {
+            MinuteTick?.Invoke(this, EventArgs.Empty);
+        }
+        protected virtual void OnHourTick()
+        {
+            HourTick?.Invoke(this, EventArgs.Empty);
         }
     }
+
 }

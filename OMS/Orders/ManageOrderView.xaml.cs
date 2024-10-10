@@ -72,6 +72,10 @@ namespace OMS.Orders
                 {
                     MessageBox.Show(message, "Order Updated", MessageBoxButton.OK);
                 }
+                else
+                {
+                    MessageBox.Show(message, "Invalid Updated Request", MessageBoxButton.OK);
+                }
             }
         }
         private void btnAddOrder_Click(object sender, RoutedEventArgs e)
@@ -93,6 +97,10 @@ namespace OMS.Orders
                 if (isUpdated)
                 {
                     MessageBox.Show(message, "Order Cancelled", MessageBoxButton.OK);
+                }
+                else
+                {
+                    MessageBox.Show(message, "Invalid Cancel Request", MessageBoxButton.OK);
                 }
             }
         }
