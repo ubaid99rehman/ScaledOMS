@@ -253,7 +253,7 @@ namespace OMS.ViewModels
             SelectedOrder.Order_Statuses = OrderStatus.New;
             SelectedOrder.OrderDate = DateTime.Now;
             SelectedOrder.CreatedDate = DateTime.Now;
-            SelectedOrder.LasUpdatedDate = DateTime.Now;
+            SelectedOrder.LastUpdatedDate = DateTime.Now;
             SelectedOrder.ExpirationDate = DateTime.Now;
 
             return OrderService.Add(SelectedOrder);

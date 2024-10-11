@@ -1,4 +1,4 @@
-﻿using OMS.Core.Core.Models.Books;
+﻿using OMS.Core.Models.Books;
 
 namespace OMS.Core.Models
 {

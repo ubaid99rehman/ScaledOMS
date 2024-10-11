@@ -1,5 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Xpf.Charts;
+using DevExpress.Xpf.Charts.Native;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Native;
 using OMS.Common.Helper;
@@ -13,6 +15,7 @@ using OMS.Core.Services.Cache;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 
@@ -50,7 +53,6 @@ namespace OMS.ViewModels
         private bool _CanViewAddOrder;
         private bool _CanViewEditOrder;
         private bool _CanViewOpenOrders;
-        
         //Landing Page Displayed 
         private bool landingPageLoaded;
         #endregion
@@ -230,28 +232,49 @@ namespace OMS.ViewModels
         {
             Title = (string)e.NewDocument?.Title ?? "HOME";
         }
-        
-        //Open New View
+
+        //Document Open Close
         private void AddView(string view, string title)
         {
+            if(title.Equals("DashboardView"))
+            {
+                return;
+            }
             Navigating();
             if (DocumentManagerService == null)
             {
                 var exception = new InvalidOperationException("DocumentManagerService is not available.");
                 Logger.LogError(exception.Message, exception);
+                return;
             }
-
-            IDocument document = DocumentManagerService.CreateDocument(view, null, this);
-            document.Title = title;
-            document.Show();
-            Title = title;
-            Logger.LogInfo($"Loaded View: {view}");
+            IDocument existingDocument = GetDocument(title);
+            if (existingDocument == null)
+            {
+                // Create a new document if no existing document is found
+                IDocument document = DocumentManagerService.CreateDocument(view, null, this);
+                document.Title = title;
+                document.DestroyOnClose = true;
+                document.Show();
+                Title = title;
+                if(document.Content is IDisposable doisposable)
+                {
+                    doisposable.Dispose();
+                }
+                    
+                Logger.LogInfo($"Loaded new View: {view}");
+            }
             Navigated();
-            if(landingPageLoaded)
+            if (landingPageLoaded)
             {
                 SaveOpenedDocumentsState();
             }
         }
+        private IDocument GetDocument(string title)
+        {
+            return DocumentManagerService.Documents.FirstOrDefault(doc => doc.Title.ToString() == title);
+        }
+
+
 
         //Layouts
         public IEnumerable<IDocument> GetOpenedDocuments()
@@ -283,6 +306,5 @@ namespace OMS.ViewModels
             landingPageLoaded = true;
             DocumentManagerService.ActiveDocumentChanged += OnDocumentActivated;
         } 
-
     }
 }

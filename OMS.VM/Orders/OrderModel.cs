@@ -18,12 +18,13 @@ namespace OMS.ViewModels
 {
     public class OrderModel : ViewModelBase
     {
-        //Services
-        IStockDataService StockDataService;
-        IOrderService OrderService;
-        IAccountService AccountService;
+        #region Services
+        private IStockDataService StockDataService;
+        private IOrderService OrderService;
+        private IAccountService AccountService;
         private IUserService UserService;
-        private IPermissionService PermissionService;
+        private IPermissionService PermissionService; 
+        #endregion
 
         #region Private Members
         private StockDetailViewModel _stockDetailsModel;
@@ -302,7 +303,7 @@ namespace OMS.ViewModels
                 Total = Total,
                 CreatedDate = DateTime.Now,
                 OrderDate = DateTime.Now,
-                LasUpdatedDate = DateTime.Now,
+                LastUpdatedDate = DateTime.Now,
                 ExpirationDate = DateTime.Now
             };
             if (isValidOrder(newOrder))

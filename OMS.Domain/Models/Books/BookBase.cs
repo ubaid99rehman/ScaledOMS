@@ -1,10 +1,9 @@
-﻿using OMS.Core.Models;
-using OMS.Enums;
+﻿using OMS.Enums;
 using System;
 
-namespace OMS.Core.Core.Models.Books
+namespace OMS.Core.Models.Books
 {
-    public abstract class BookBase : BaseModel
+    public abstract class BookBase : BaseModel, IBookBase
     {
         #region Private Members
         private string _symbol;
@@ -27,18 +26,6 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         }
-        public decimal Price
-        {
-            get => _price;
-            set
-            {
-                if (_price != value)
-                {
-                    _price = (decimal)Math.Round((double)value, 3);
-                    OnPropertyChanged(nameof(Price));
-                }
-            }
-        }
         public int Quantity
         {
             get => _quantity;
@@ -48,6 +35,18 @@ namespace OMS.Core.Core.Models.Books
                 {
                     _quantity = value;
                     OnPropertyChanged(nameof(Quantity));
+                }
+            }
+        }
+        public decimal Price
+        {
+            get => _price;
+            set
+            {
+                if (_price != value)
+                {
+                    _price = (decimal)Math.Round((double)value, 3);
+                    OnPropertyChanged(nameof(Price));
                 }
             }
         }
@@ -87,11 +86,12 @@ namespace OMS.Core.Core.Models.Books
                 }
             }
         } 
-
+        
         #region Numeric Formatted Members
         public string FormattedQuantity => FormatNumber(_quantity);
         public string FormattedPrice => FormatNumber(_price);
         public string FormattedTotal => FormatNumber(_total);
+        public string FormattedTimestamp => FormatTime(_time);
         #endregion
     }
 }

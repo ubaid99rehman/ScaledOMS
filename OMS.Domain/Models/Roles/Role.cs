@@ -65,6 +65,6 @@ namespace OMS.Core.Models.Roles
             get => _permissions; 
             set => SetProperty(ref _permissions, value);
         }
-    
+
     }
 }

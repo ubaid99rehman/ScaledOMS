@@ -13,7 +13,7 @@ namespace OMS.Core.Models.User
         private string _connectionstatus;
         private string _ping;
         private string _sessionTime;
-        private DateTime _loginTime; 
+        private DateTime _loginTime;  
         #endregion
 
         //Constructor

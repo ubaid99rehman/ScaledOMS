@@ -143,7 +143,7 @@ namespace OMS.Core.Models
                 }
             }
         }
-        public DateTime LasUpdatedDate
+        public DateTime LastUpdatedDate
         {
             get => _lastupdatedDate;
             set
@@ -151,7 +151,7 @@ namespace OMS.Core.Models
                 if (_lastupdatedDate != value)
                 {
                     _lastupdatedDate = value;
-                    OnPropertyChanged(nameof(LasUpdatedDate));
+                    OnPropertyChanged(nameof(LastUpdatedDate));
                 }
             }
         }
@@ -226,9 +226,5 @@ namespace OMS.Core.Models
                 SetProperty(ref _trades, value);
             }
         }
-        
-        public string FormattedQuantity => FormatNumber(_quantity);
-        public string FormattedPrice => FormatNumber(_price);
-        public string FormattedTotal => FormatNumber(_total);
     }
 }

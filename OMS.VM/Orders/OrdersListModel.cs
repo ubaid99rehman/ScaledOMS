@@ -165,7 +165,7 @@ namespace OMS.ViewModels
         public void CancelOrder(out bool isCancelled, out string message)
         {
             isCancelled = false;
-            SelectedOrder.LasUpdatedDate = DateTime.Now;
+            SelectedOrder.LastUpdatedDate = DateTime.Now;
             message = "Cannot Update Order!";
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
@@ -204,7 +204,7 @@ namespace OMS.ViewModels
             SelectedOrder.Price = StockCurrentPrice;
             SelectedOrder.Quantity = (int)OrderUpdatedQuantity;
             SelectedOrder.Total = OrderUpdatedTotal;
-            SelectedOrder.LasUpdatedDate = DateTime.Now;
+            SelectedOrder.LastUpdatedDate = DateTime.Now;
             if (SelectedOrder != null && SelectedOrder.OrderID >= 0)
             {
                 if (SelectedOrder.Order_Statuses == OrderStatus.Cancelled)

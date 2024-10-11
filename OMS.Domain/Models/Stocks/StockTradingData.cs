@@ -50,7 +50,7 @@ namespace OMS.Core.Models.Stocks
         public string FormattedHigh => FormatNumber(High);
         public string FormattedLow => FormatNumber(Low);
         public string FormattedOpen => FormatNumber(Open);
-        public string FormattedClose => FormatNumber(Close); 
+        public string FormattedClose => FormatNumber(Close);
         #endregion
 
     }

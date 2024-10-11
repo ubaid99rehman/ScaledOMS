@@ -54,8 +54,8 @@
     <Compile Include="Models\App\IScreen.cs" />
     <Compile Include="Models\App\IThemeModel.cs" />
     <Compile Include="Models\App\ScreenState.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Books\BookBase.cs" />
+    <Compile Include="Models\Books\IBookBase.cs" />
+    <Compile Include="Models\IBaseMode.cs" />
     <Compile Include="Models\Orders\IOrder.cs" />
     <Compile Include="Models\Permissions\IPermission.cs" />
     <Compile Include="Models\Permissions\IUserPermission.cs" />

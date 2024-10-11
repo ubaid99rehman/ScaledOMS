@@ -17,7 +17,7 @@ namespace OMS.Core.Models.Orders
         int Status { get; set; }
         int AccountID { get; set; }
         DateTime ExpirationDate { get; set; }
-        DateTime LasUpdatedDate { get; set; }
+        DateTime LastUpdatedDate { get; set; }
         DateTime CreatedDate { get; set; }
         int AddedBy { get; set; }
         string Symbol { get; set; }
@@ -27,10 +27,5 @@ namespace OMS.Core.Models.Orders
         OrderStatus Order_Statuses { get; set; }
         OrderType Order_Types { get; set; }
         ICollection<ITrade> Trades { get; set; }
-
-        //NumericFormatted Members
-        string FormattedQuantity { get;}
-        string FormattedPrice { get;}
-        string FormattedTotal{ get; }
     }
 }

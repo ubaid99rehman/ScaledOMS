@@ -10,7 +10,7 @@ namespace OMS.Core.Models.Permissions
         private DateTime _AssignedDate;
         private IPermission _Permissions;
         private IUser _Users;
-        
+
         public int UserID
         {
             get { return _UserID; }

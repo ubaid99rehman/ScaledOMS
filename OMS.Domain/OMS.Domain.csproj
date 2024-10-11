@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,9 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Account\Account.cs" />
+    <Compile Include="Models\Account\UserAccount.cs" />
     <Compile Include="Models\App\AppTime.cs" />
     <Compile Include="Models\App\Screen.cs" />
     <Compile Include="Models\App\ThemeModel.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Books\BookBase.cs" />
     <Compile Include="Models\Books\OrderBook.cs" />
     <Compile Include="Models\Books\TradeBook.cs" />
     <Compile Include="Models\Orders\Order.cs" />

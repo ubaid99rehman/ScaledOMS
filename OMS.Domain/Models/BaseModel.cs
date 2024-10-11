@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace OMS.Core.Models
 {
-    public abstract class BaseModel : INotifyPropertyChanged
+    public abstract class BaseModel : IBaseModel, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -20,17 +21,29 @@ namespace OMS.Core.Models
             return true;
         }
 
-        protected string FormatNumber(int? value)
+        public string FormatNumber(int? value)
         {
             return value?.ToString("N0");
         }
-        protected string FormatNumber(decimal? value)
+        public string FormatNumber(decimal? value)
         {
             return value?.ToString("N3");
         }
-        protected string FormatNumber(double? value)
+        public string FormatNumber(double? value)
         {
             return value?.ToString("N3");
+        }
+        public string FormatDate(DateTime date)
+        {
+            return date.ToString("dd-MMM-yyyy");
+        }
+        public string FormatTime(DateTime date)
+        {
+            return date.ToString("HH:mm:ss");
+        }
+        public string FormatTimeStamp(DateTime date)
+        {
+            return date.ToString("dd-MMM-yyyy HH:mm:ss");
         }
     }
 
