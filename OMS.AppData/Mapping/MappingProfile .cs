@@ -56,7 +56,7 @@ namespace OMS.SqlData.Mapping
             CreateMap<UserRoles, IUserRole>().ReverseMap();
             CreateMap<Users,IUser>().ReverseMap();
             CreateMap<Orders, IOrder>()
-           .ForMember(dest => dest.LasUpdatedDate, opt => opt.MapFrom(src => src.LastUpdatedDate))
+           .ForMember(dest => dest.LastUpdatedDate, opt => opt.MapFrom(src => src.LastUpdatedDate))
            .ForMember(dest => dest.Order_Statuses, opt => opt.MapFrom(src => (OrderStatus)src.Order_Statuses.ID))
            .ForMember(dest => dest.Order_Types, opt => opt.MapFrom(src => (OrderType)src.Order_Types.ID))
            .ForMember(dest => dest.Account, opt => opt.MapFrom(src => new Account
@@ -67,7 +67,7 @@ namespace OMS.SqlData.Mapping
                CreatedDate = src.Accounts.CreatedDate,
            } ))
            .ReverseMap()
-           .ForMember(dest => dest.LastUpdatedDate, opt => opt.MapFrom(src => src.LasUpdatedDate))
+           .ForMember(dest => dest.LastUpdatedDate, opt => opt.MapFrom(src => src.LastUpdatedDate))
            .ForMember(dest => dest.Order_Statuses, opt => opt.MapFrom(src => new Order_Statuses { 
                 ID = (int)src.Order_Statuses,
                 Name = src.Order_Statuses.ToString()
