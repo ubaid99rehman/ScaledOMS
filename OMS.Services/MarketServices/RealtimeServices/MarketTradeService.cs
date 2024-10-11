@@ -1,6 +1,5 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Core.Models.Books;
-using OMS.Core.Models;
+using OMS.Core.Models.Books;
 using OMS.Core.Models.Orders;
 using OMS.Core.Services;
 using OMS.Core.Services.Cache;
@@ -50,11 +49,11 @@ namespace OMS.Services.MarketServices.RealtimeServices
             LoadTrades(symbol);
             return GetCollectionView(GetTradesFromCache(symbol));
         }
-        private ICollectionView GetCollectionView(ObservableCollection<BookBase> collection)
+        private ICollectionView GetCollectionView(ObservableCollection<IBookBase> collection)
         {
             if (collection == null)
             {
-                collection = new ObservableCollection<BookBase>();
+                collection = new ObservableCollection<IBookBase>();
             }
             var collectionViewSource = new CollectionViewSource { Source = collection };
             ICollectionViewLiveShaping liveShapingView = collectionViewSource.
@@ -81,7 +80,7 @@ namespace OMS.Services.MarketServices.RealtimeServices
             }
             else
             {
-                CacheService.Set(cacheKey, new ObservableCollection<BookBase>());
+                CacheService.Set(cacheKey, new ObservableCollection<IBookBase>());
             }
         }
         
@@ -99,9 +98,9 @@ namespace OMS.Services.MarketServices.RealtimeServices
             var trades = GetTradesFromCache(symbol);
             if(trades == null)
             {
-                trades = new ObservableCollection<BookBase>();
+                trades = new ObservableCollection<IBookBase>();
             }
-            ObservableCollection<BookBase> latestTrades = FetchTrades(symbol);
+            ObservableCollection<IBookBase> latestTrades = FetchTrades(symbol);
             if (latestTrades.Any())
             {
                 int Count = trades.Count + latestTrades.Count;
@@ -125,19 +124,19 @@ namespace OMS.Services.MarketServices.RealtimeServices
             return StockDataService.GetStockSymbols();
         } 
         
-        private ObservableCollection<BookBase> FetchTrades(string symbol)
+        private ObservableCollection<IBookBase> FetchTrades(string symbol)
         {
-            ObservableCollection<BookBase> trades = marketTradeRepository.GetTradesBySymbol(symbol).ToObservableCollection();
+            ObservableCollection<IBookBase> trades = marketTradeRepository.GetTradesBySymbol(symbol).ToObservableCollection();
             if (trades != null && trades.Count > 0)
             {
                 return trades;
             }
-            return new ObservableCollection<BookBase>();
+            return new ObservableCollection<IBookBase>();
         }
-        private ObservableCollection<BookBase> GetTradesFromCache(string symbol)
+        private ObservableCollection<IBookBase> GetTradesFromCache(string symbol)
         {
             string cacheKey = cacheKeyPrefix + symbol;
-            return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
+            return CacheService.Get<ObservableCollection<IBookBase>>(cacheKey);
         }
     }
 }

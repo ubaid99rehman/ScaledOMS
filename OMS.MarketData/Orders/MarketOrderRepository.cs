@@ -1,11 +1,10 @@
-﻿using OMS.Core.Core.Models.Books;
-using OMS.Core.Models;
+﻿using OMS.Core.Models;
+using OMS.Core.Models.Books;
 using OMS.Core.Models.Stocks;
 using OMS.DataAccess.Repositories.MarketRepositories;
 using OMS.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OMS.MarketData
 {
@@ -25,11 +24,11 @@ namespace OMS.MarketData
             sellOrdersCount = random.Next(1, 5);
             buyOrdersCount = random.Next(1, 5);        }
 
-        public IEnumerable<BookBase> GetOrdersBySymbol(string symbol)
+        public IEnumerable<IBookBase> GetOrdersBySymbol(string symbol)
         {
             return AddTrades(symbol);
         }
-        private IEnumerable<BookBase> AddTrades(string symbol)
+        private IEnumerable<IBookBase> AddTrades(string symbol)
         {
             IStock stock = StockRepository.GetBySymbol(symbol);
             if (stock == null)

@@ -11,10 +11,5 @@ namespace OMS.Core.Models.Books
         decimal Total { get; set; }
         DateTime Timestamp { get; set; }
         OrderType Type { get; set; }
-
-        string FormattedQuantity{get;}
-        string FormattedPrice{get;}
-        string FormattedTotal{get;}
-        string FormattedTimestamp { get; }
     }
 }

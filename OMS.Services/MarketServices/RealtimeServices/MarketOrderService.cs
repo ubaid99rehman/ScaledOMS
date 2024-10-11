@@ -1,6 +1,5 @@
 ﻿using DevExpress.Mvvm.Native;
-using OMS.Core.Core.Models.Books;
-using OMS.Core.Models;
+using OMS.Core.Models.Books;
 using OMS.Core.Models.Orders;
 using OMS.Core.Services;
 using OMS.Core.Services.Cache;
@@ -61,11 +60,11 @@ namespace OMS.Services.MarketServices.RealtimeServices
             LoadTrades(symbol);
             return GetBuyOrdersCollectionView(GetSellOrdersFromCache(symbol));
         }
-        private ICollectionView GetBuyOrdersCollectionView(ObservableCollection<BookBase> collection)
+        private ICollectionView GetBuyOrdersCollectionView(ObservableCollection<IBookBase> collection)
         {
             if (collection == null)
             {
-                collection = new ObservableCollection<BookBase>();
+                collection = new ObservableCollection<IBookBase>();
             }
             var collectionViewSource = new CollectionViewSource { Source = collection };
             ICollectionViewLiveShaping liveShapingView = collectionViewSource.
@@ -82,11 +81,11 @@ namespace OMS.Services.MarketServices.RealtimeServices
             return collectionViewSource.View;
 
         }
-        private ICollectionView GetSellOrdersCollectionView(ObservableCollection<BookBase> collection)
+        private ICollectionView GetSellOrdersCollectionView(ObservableCollection<IBookBase> collection)
         {
             if (collection == null)
             {
-                collection = new ObservableCollection<BookBase>();
+                collection = new ObservableCollection<IBookBase>();
             }
             var collectionViewSource = new CollectionViewSource { Source = collection };
             ICollectionViewLiveShaping liveShapingView = collectionViewSource.
@@ -110,8 +109,8 @@ namespace OMS.Services.MarketServices.RealtimeServices
             string sellCacheKey = cacheSellPrefix + symbol;
 
             var latestOrders = FetchOrders(symbol);
-            ObservableCollection<BookBase> latestBuyOrders = latestOrders.Where(o => o.Type == OrderType.Buy).ToObservableCollection<BookBase>();
-            ObservableCollection<BookBase> latestSellOrders = latestOrders.Where(o => o.Type == OrderType.Sell).ToObservableCollection<BookBase>();
+            ObservableCollection<IBookBase> latestBuyOrders = latestOrders.Where(o => o.Type == OrderType.Buy).ToObservableCollection<IBookBase>();
+            ObservableCollection<IBookBase> latestSellOrders = latestOrders.Where(o => o.Type == OrderType.Sell).ToObservableCollection<IBookBase>();
 
             if (latestBuyOrders != null && latestBuyOrders.Count > 0)
             {
@@ -119,7 +118,7 @@ namespace OMS.Services.MarketServices.RealtimeServices
             }
             else
             {
-                CacheService.Set(buyCacheKey, new ObservableCollection<BookBase>());
+                CacheService.Set(buyCacheKey, new ObservableCollection<IBookBase>());
             }
             if (latestSellOrders != null && latestSellOrders.Count > 0)
             {
@@ -127,7 +126,7 @@ namespace OMS.Services.MarketServices.RealtimeServices
             }
             else
             {
-                CacheService.Set(sellCacheKey, new ObservableCollection<BookBase>());
+                CacheService.Set(sellCacheKey, new ObservableCollection<IBookBase>());
             }
         }
         private void OnTimerTick(object sender, EventArgs e)
@@ -148,17 +147,17 @@ namespace OMS.Services.MarketServices.RealtimeServices
             var buyOrders = GetBuyOrdersFromCache(symbol);
             if (buyOrders == null)
             {
-                buyOrders = new ObservableCollection<BookBase>();
+                buyOrders = new ObservableCollection<IBookBase>();
             }
             if (sellOrders == null)
             {
-                sellOrders = new ObservableCollection<BookBase>();
+                sellOrders = new ObservableCollection<IBookBase>();
             }
 
             //New Market Orders
             var latestOrders = FetchOrders(symbol);
-            ObservableCollection<BookBase> latestBuyOrders = latestOrders.Where(o => o.Type == OrderType.Buy).ToObservableCollection<BookBase>();
-            ObservableCollection<BookBase> latestSellOrders = latestOrders.Where(o => o.Type == OrderType.Sell).ToObservableCollection<BookBase>();
+            ObservableCollection<IBookBase> latestBuyOrders = latestOrders.Where(o => o.Type == OrderType.Buy).ToObservableCollection<IBookBase>();
+            ObservableCollection<IBookBase> latestSellOrders = latestOrders.Where(o => o.Type == OrderType.Sell).ToObservableCollection<IBookBase>();
             
             //Add Market Orders to cache
             //Sell Orders
@@ -201,24 +200,24 @@ namespace OMS.Services.MarketServices.RealtimeServices
             return StockDataService.GetStockSymbols();
         }
 
-        private ObservableCollection<BookBase> FetchOrders(string symbol)
+        private ObservableCollection<IBookBase> FetchOrders(string symbol)
         {
-            ObservableCollection<BookBase> orders = marketOrderRepository.GetOrdersBySymbol(symbol).ToObservableCollection();
+            ObservableCollection<IBookBase> orders = marketOrderRepository.GetOrdersBySymbol(symbol).ToObservableCollection();
             if (orders != null && orders.Count > 0)
             {
                 return orders;
             }
-            return new ObservableCollection<BookBase>();
+            return new ObservableCollection<IBookBase>();
         }
-        private ObservableCollection<BookBase> GetBuyOrdersFromCache(string symbol)
+        private ObservableCollection<IBookBase> GetBuyOrdersFromCache(string symbol)
         {
             string cacheKey = cacheBuyPrefix + symbol;
-            return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
+            return CacheService.Get<ObservableCollection<IBookBase>>(cacheKey);
         }
-        private ObservableCollection<BookBase> GetSellOrdersFromCache(string symbol)
+        private ObservableCollection<IBookBase> GetSellOrdersFromCache(string symbol)
         {
             string cacheKey = cacheSellPrefix + symbol;
-            return CacheService.Get<ObservableCollection<BookBase>>(cacheKey);
+            return CacheService.Get<ObservableCollection<IBookBase>>(cacheKey);
         }
     }
 }

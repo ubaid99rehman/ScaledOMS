@@ -86,13 +86,6 @@ namespace OMS.Core.Models.Books
                 }
             }
         } 
-        
-        #region Numeric Formatted Members
-        public string FormattedQuantity => FormatNumber(_quantity);
-        public string FormattedPrice => FormatNumber(_price);
-        public string FormattedTotal => FormatNumber(_total);
-        public string FormattedTimestamp => FormatTime(_time);
-        #endregion
     }
 }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using OMS.Enums;
-using OMS.Core.Core.Models.Books;
+using OMS.Core.Models.Books;
 
 namespace OMS.DataAccess.Repositories.MarketRepositories
 {
@@ -26,11 +26,11 @@ namespace OMS.DataAccess.Repositories.MarketRepositories
     //Trading Data
     public interface IMarketOrderRepository
     {
-        IEnumerable<BookBase> GetOrdersBySymbol(string symbol);
+        IEnumerable<IBookBase> GetOrdersBySymbol(string symbol);
     }
     public interface IMarketTradeRepository 
     {
-        IEnumerable<BookBase> GetTradesBySymbol(string symbol);
+        IEnumerable<IBookBase> GetTradesBySymbol(string symbol);
     }
     public interface IStockTradeDataRepository
     {

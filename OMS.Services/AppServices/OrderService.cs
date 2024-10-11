@@ -232,7 +232,7 @@ namespace OMS.Services.AppServices
         public bool Update(IOrder entity)
         {
             IOrder updatedOrder = GetAll().Where(o => o.OrderID == entity.OrderID).First();
-            updatedOrder.LasUpdatedDate = DateTime.Now;
+            updatedOrder.LastUpdatedDate = DateTime.Now;
             updatedOrder.Quantity = entity.Quantity;
             updatedOrder.Total = entity.Total;
             updatedOrder.AccountID = entity.AccountID;
