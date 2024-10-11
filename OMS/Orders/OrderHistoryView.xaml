@@ -52,19 +52,42 @@
                                ShowGridMenu="ShowMenu_Click"/>
             </dxg:GridControl.View>
 
-            <dxg:GridColumn FieldName="ID" Header="ID" Visible="False"/>
-            <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status" GroupIndex="0"  />
-            <dxg:GridColumn FieldName="OrderID" Header="Order ID" />
-            <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending" />
-            <dxg:GridColumn FieldName="Symbol" Header="Symbol" />
-            <dxg:GridColumn FieldName="Order_Types" Header="Order Type" />
-            <dxg:GridColumn FieldName="AccountID" Header="Account" />
-            <dxg:GridColumn FieldName="Price" Header="Price" />
-            <dxg:GridColumn FieldName="Quantity" Header="Quantity" />
-            <dxg:GridColumn FieldName="Total" Header="Total" />
-            <dxg:GridColumn FieldName="ExpirationDate" Header="Expiration Date" />
-            <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated" />
-            
+            <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status" GroupIndex="0"/>
+            <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
+            <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="{}{0:dd-MMM-yyyy HH:mm:ss}"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
+            <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
+            <dxg:GridColumn FieldName="AccountID" Header="Account"/>
+            <dxg:GridColumn Name="priceCol" FieldName="Price" Header="Price">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="{}{0:N3}"/>
+                    <!-- Format as 1,000,000.000 -->
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn Name="quantityCol" FieldName="Quantity" Header="Quantity">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="{}{0:N0}"/>
+                    <!-- Format as 1,000,000 -->
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn Name="totalCol" FieldName="Total" Header="Total">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="{}{0:N3}"/>
+                    <!-- Format as 1,000,000.000 -->
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="LastUpdatedDate" Header="Last Updated">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings DisplayFormat="{}{0:dd-MMM-yyyy HH:mm:ss}"/>
+                    <!-- Format as 10-Oct-2024 19:24:36 -->
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+
+
         </dxg:GridControl>
     </Grid>
 

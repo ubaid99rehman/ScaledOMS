@@ -152,50 +152,45 @@
             <!-- Last Order Details Group -->
             <GroupBox Header="Last Order" Grid.Row="1" Grid.Column="0" Margin="10">
                 <!--Recent Orders Details-->
-                <WrapPanel Grid.Column="0" Grid.Row="1" 
-                   Orientation="Vertical" >
-                    <StackPanel Orientation="Vertical" 
-                        VerticalAlignment="Center"
-                        Margin="0 10 0 0">
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock Text="Last Order Date: " 
-                               FontSize="16"
-                               FontWeight="Bold"/>
-                            <TextBlock Text="{Binding LastOrder.OrderDate}" 
-                               FontSize="16"
-                               Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock Text="Added By: "
-                               FontSize="16"
-                               FontWeight="Bold"/>
-                            <TextBlock Text="{Binding LastOrder.AddedBy}" 
-                               FontSize="16" 
-                               Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock Text="Stock: "
-                               FontSize="16"
-                               FontWeight="Bold"/>
-                            <TextBlock Text="{Binding LastOrder.Symbol}" 
-                               FontSize="16" 
-                               Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock FontSize="16"  Text="Price: " FontWeight="Bold"/>
-                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Price}" Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock FontSize="16"  Text="Units: " FontWeight="Bold"/>
-                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Quantity}" Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10, 5">
-                            <TextBlock FontSize="16"  Text="Volume: " FontWeight="Bold"/>
-                            <TextBlock FontSize="16"  Text="{Binding LastOrder.Volume}" Margin="5,0"/>
-                        </StackPanel>
+            <WrapPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0 10 0 0">
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Last Order Date: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.OrderDate, StringFormat={}{0:dd-MMM-yyyy HH:mm:ss}}" FontSize="16" Margin="5,0"/>
                     </StackPanel>
-                </WrapPanel>
-            </GroupBox>
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Added By: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.AddedBy}" FontSize="16" Margin="5,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Stock: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.Symbol}" FontSize="16" Margin="5,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Price: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.Price, StringFormat={}{0:#,0.###}}" FontSize="16" Margin="5,0"/>
+                        <!-- Flexible format for Price -->
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Units: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.Quantity, StringFormat={}{0:N0}}" FontSize="16" Margin="5,0"/>
+                        <!-- 1,000,000 format -->
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10, 5">
+                        <TextBlock Text="Volume: " FontSize="16" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding LastOrder.Volume, StringFormat={}{0:N0}}" FontSize="16" Margin="5,0"/>
+                        <!-- 1,000,000 format -->
+                    </StackPanel>
+                </StackPanel>
+            </WrapPanel>
+
+        </GroupBox>
 
             <!-- Recent Orders Group -->
             <GroupBox Header="Recent Stock Orders" Grid.Row="1" Grid.Column="2" Margin="10">
@@ -204,38 +199,42 @@
                              ItemsSource="{Binding StockOrders}"
                              ShowBorder="False"
                              dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="OrderDate" Header="Order Date">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:dd-MMM-yyyy HH:mm:ss}" HorizontalContentAlignment="Left"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Total" Header="Volume">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Total" Header="Volume">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N2}" HorizontalContentAlignment="Left"/>
+                            <!-- Format as 1,000,000.00 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Quantity" Header="Units" Width="70">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Quantity" Header="Units" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N0}" HorizontalContentAlignment="Left"/>
+                            <!-- Format as 1,000,000 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Price" Header="Price" >
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="f2" HorizontalContentAlignment="Left"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Price" Header="Price">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N2}" HorizontalContentAlignment="Left"/>
+                            <!-- Format as 1,000,000.00 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="AddedBy" Header="Added By">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings  HorizontalContentAlignment="Left"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                    </dxg:GridControl.Columns>
-                    <dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="AddedBy" Header="Added By">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings HorizontalContentAlignment="Left"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                </dxg:GridControl.Columns>
+
+                <dxg:GridControl.View>
                         <dxg:TableView AllowEditing="False"
                                        FadeSelectionOnLostFocus="False"
                                        AllowPerPixelScrolling="True"
@@ -280,17 +279,41 @@
                     </dxg:GridControl.View>
                     <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Order_Statuses" Header="Order Status"/>
-                        <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
-                        <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending"/>
-                        <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
-                        <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
-                        <dxg:GridColumn FieldName="AccountID" Header="Account"/>
-                        <dxg:GridColumn FieldName="Price" Header="Price"/>
-                        <dxg:GridColumn FieldName="Quantity" Header="Quantity"/>
-                        <dxg:GridColumn FieldName="Total" Header="Total"/>
-                        <dxg:GridColumn FieldName="ExpirationDate" Header="Expiration Date"/>
-                        <dxg:GridColumn FieldName="LasUpdatedDate" Header="Last Updated"/>
-                    </dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="OrderID" Header="Order ID"/>
+                    <dxg:GridColumn FieldName="OrderDate" Header="Order Date" SortOrder="Descending">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:dd-MMM-yyyy HH:mm:ss}"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Symbol" Header="Symbol"/>
+                    <dxg:GridColumn FieldName="Order_Types" Header="Order Type"/>
+                    <dxg:GridColumn FieldName="AccountID" Header="Account"/>
+                    <dxg:GridColumn Name="priceCol" FieldName="Price" Header="Price">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N3}"/>
+                            <!-- Format as 1,000,000.000 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Name="quantityCol" FieldName="Quantity" Header="Quantity">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N0}"/>
+                            <!-- Format as 1,000,000 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Name="totalCol" FieldName="Total" Header="Total">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:N3}"/>
+                            <!-- Format as 1,000,000.000 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="LastUpdatedDate" Header="Last Updated">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="{}{0:dd-MMM-yyyy HH:mm:ss}"/>
+                            <!-- Format as 10-Oct-2024 19:24:36 -->
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+
+                </dxg:GridControl.Columns>
                 </dxg:GridControl>
             </GroupBox>
         </Grid>
